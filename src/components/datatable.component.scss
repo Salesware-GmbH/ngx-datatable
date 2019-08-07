@@ -65,7 +65,7 @@
   &.fixed-row {
     .datatable-scroll{
       white-space: nowrap;
-      
+
       .datatable-body-row {
         white-space: nowrap;
 
@@ -79,7 +79,7 @@
           overflow: hidden;
           white-space: nowrap;
           text-overflow: ellipsis;
-        }        
+        }
       }
     }
   }
@@ -218,6 +218,7 @@
 
     .datatable-scroll{
       display: inline-block;
+      position: relative;
     }
 
     .datatable-row-detail {

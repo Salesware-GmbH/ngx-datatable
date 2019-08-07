@@ -1,6 +1,8 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
+import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
+
 import {
   DatatableComponent,
   DataTableColumnDirective,
@@ -43,7 +45,8 @@ import {
 
 @NgModule({
   imports: [
-    CommonModule
+    CommonModule,
+    PerfectScrollbarModule
   ],
   providers: [
     ScrollbarHelper,

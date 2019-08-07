@@ -136,5 +136,8 @@
     "webpack-merge": "^4.1.1",
     "webpack-notifier": "^1.5.0",
     "zone.js": "^0.9.1"
+  },
+  "dependencies": {
+    "ngx-perfect-scrollbar": "^8.0.0"
   }
 }

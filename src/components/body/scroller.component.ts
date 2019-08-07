@@ -1,9 +1,6 @@
 import {
-  Component, Input, ElementRef, Output, EventEmitter, Renderer2, NgZone,
-  OnInit, OnDestroy, HostBinding, ChangeDetectionStrategy
+  Component, Input, ElementRef, Output, EventEmitter, HostBinding, ChangeDetectionStrategy
 } from '@angular/core';
-
-import { MouseEvent } from '../../events';
 
 @Component({
   selector: 'datatable-scroller',
@@ -15,7 +12,7 @@ import { MouseEvent } from '../../events';
   },
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ScrollerComponent implements OnInit, OnDestroy {
+export class ScrollerComponent {
 
   @Input() scrollbarV: boolean = false;
   @Input() scrollbarH: boolean = false;
@@ -36,28 +33,8 @@ export class ScrollerComponent implements OnInit, OnDestroy {
   parentElement: any;
   onScrollListener: any;
 
-  private _scrollEventListener: any = null;
-  
-  constructor(private ngZone: NgZone, element: ElementRef, private renderer: Renderer2) {
-
+  constructor(element: ElementRef) {
     this.element = element.nativeElement;
-  }
-
-  ngOnInit(): void {
-    // manual bind so we don't always listen
-    if (this.scrollbarV || this.scrollbarH) {
-      const renderer = this.renderer;
-      this.parentElement = renderer.parentNode(renderer.parentNode(this.element));
-      this._scrollEventListener = this.onScrolled.bind(this);
-      this.parentElement.addEventListener('scroll', this._scrollEventListener);
-    }
-  }
-
-  ngOnDestroy(): void {
-    if (this._scrollEventListener) {
-      this.parentElement.removeEventListener('scroll', this._scrollEventListener);
-      this._scrollEventListener = null;
-    }
   }
 
   setOffset(offsetY: number): void {
@@ -66,8 +43,8 @@ export class ScrollerComponent implements OnInit, OnDestroy {
     }
   }
 
-  onScrolled(event: MouseEvent): void {
-    const dom: Element = <Element>event.currentTarget;
+  onScrolled(event: CustomEvent): void {
+    const dom: Element = <Element>event.target;
     requestAnimationFrame(() => {
       this.scrollYPos = dom.scrollTop;
       this.scrollXPos = dom.scrollLeft;

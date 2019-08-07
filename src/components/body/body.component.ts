@@ -18,11 +18,11 @@ import {
 } from '../../utils';
 import { SelectionType } from '../../types';
 import { ScrollerComponent } from './scroller.component';
-import { MouseEvent } from '../../events';
 
 @Component({
   selector: 'datatable-body',
   template: `
+  <perfect-scrollbar (psScrollY)="onScroll($event)" (psScrollX)="onScroll($event)">
     <datatable-selection
       #selector
       [selected]="selected"
@@ -124,6 +124,7 @@ import { MouseEvent } from '../../events';
         [innerHTML]="emptyMessage"
       ></div>
     </datatable-selection>
+  </perfect-scrollbar>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
@@ -365,10 +366,10 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
     // if scroll change, trigger update
     // this is mainly used for header cell positions
     if (this.offsetY !== scrollYPos || this.offsetX !== scrollXPos) {
-      this.scroll.emit({
+      setTimeout(() => this.scroll.emit({
         offsetY: scrollYPos,
         offsetX: scrollXPos
-      });
+      }));
     }
 
     this.offsetY = scrollYPos;
@@ -775,5 +776,10 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
 
   onTreeAction(row: any) {
     this.treeAction.emit({ row });
+  }
+
+  /** custom 4sellers */
+  onScroll(event: CustomEvent) {
+    this.scroller.onScrolled(event);
   }
 }
