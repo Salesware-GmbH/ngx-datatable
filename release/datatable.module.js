@@ -8,16 +8,32 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var common_1 = require("@angular/common");
+var ngx_perfect_scrollbar_1 = require("ngx-perfect-scrollbar");
 var components_1 = require("./components");
 var directives_1 = require("./directives");
 var services_1 = require("./services");
 var NgxDatatableModule = /** @class */ (function () {
     function NgxDatatableModule() {
     }
-    NgxDatatableModule = __decorate([
+    NgxDatatableModule_1 = NgxDatatableModule;
+    /**
+     * Configure global configuration via INgxDatatableConfig
+     * @param configuration
+     */
+    NgxDatatableModule.forRoot = function (configuration) {
+        return {
+            ngModule: NgxDatatableModule_1,
+            providers: [
+                { provide: 'configuration', useValue: configuration },
+            ]
+        };
+    };
+    var NgxDatatableModule_1;
+    NgxDatatableModule = NgxDatatableModule_1 = __decorate([
         core_1.NgModule({
             imports: [
-                common_1.CommonModule
+                common_1.CommonModule,
+                ngx_perfect_scrollbar_1.PerfectScrollbarModule
             ],
             providers: [
                 services_1.ScrollbarHelper,

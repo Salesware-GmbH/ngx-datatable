@@ -14,6 +14,13 @@ var footer_template_directive_1 = require("./footer-template.directive");
 var DatatableFooterDirective = /** @class */ (function () {
     function DatatableFooterDirective() {
     }
+    Object.defineProperty(DatatableFooterDirective.prototype, "template", {
+        get: function () {
+            return this._templateInput || this._templateQuery;
+        },
+        enumerable: true,
+        configurable: true
+    });
     __decorate([
         core_1.Input(),
         __metadata("design:type", Number)
@@ -43,13 +50,13 @@ var DatatableFooterDirective = /** @class */ (function () {
         __metadata("design:type", String)
     ], DatatableFooterDirective.prototype, "pagerNextIcon", void 0);
     __decorate([
-        core_1.Input(),
-        core_1.ContentChild(footer_template_directive_1.DataTableFooterTemplateDirective, {
-            read: core_1.TemplateRef,
-            static: false
-        }),
+        core_1.Input('template'),
         __metadata("design:type", core_1.TemplateRef)
-    ], DatatableFooterDirective.prototype, "template", void 0);
+    ], DatatableFooterDirective.prototype, "_templateInput", void 0);
+    __decorate([
+        core_1.ContentChild(footer_template_directive_1.DataTableFooterTemplateDirective, { read: core_1.TemplateRef, static: false }),
+        __metadata("design:type", core_1.TemplateRef)
+    ], DatatableFooterDirective.prototype, "_templateQuery", void 0);
     DatatableFooterDirective = __decorate([
         core_1.Directive({ selector: 'ngx-datatable-footer' })
     ], DatatableFooterDirective);

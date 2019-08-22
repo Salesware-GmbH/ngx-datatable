@@ -23,6 +23,13 @@ var DatatableRowDetailDirective = /** @class */ (function () {
          */
         this.toggle = new core_1.EventEmitter();
     }
+    Object.defineProperty(DatatableRowDetailDirective.prototype, "template", {
+        get: function () {
+            return this._templateInput || this._templateQuery;
+        },
+        enumerable: true,
+        configurable: true
+    });
     /**
      * Toggle the expansion of the row
      */
@@ -55,13 +62,13 @@ var DatatableRowDetailDirective = /** @class */ (function () {
         __metadata("design:type", Object)
     ], DatatableRowDetailDirective.prototype, "rowHeight", void 0);
     __decorate([
-        core_1.Input(),
-        core_1.ContentChild(row_detail_template_directive_1.DatatableRowDetailTemplateDirective, {
-            read: core_1.TemplateRef,
-            static: true
-        }),
+        core_1.Input('template'),
         __metadata("design:type", core_1.TemplateRef)
-    ], DatatableRowDetailDirective.prototype, "template", void 0);
+    ], DatatableRowDetailDirective.prototype, "_templateInput", void 0);
+    __decorate([
+        core_1.ContentChild(row_detail_template_directive_1.DatatableRowDetailTemplateDirective, { read: core_1.TemplateRef, static: true }),
+        __metadata("design:type", core_1.TemplateRef)
+    ], DatatableRowDetailDirective.prototype, "_templateQuery", void 0);
     __decorate([
         core_1.Output(),
         __metadata("design:type", core_1.EventEmitter)

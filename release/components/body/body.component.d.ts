@@ -199,4 +199,6 @@ export declare class DataTableBodyComponent implements OnInit, OnDestroy {
      */
     getRowIndex(row: any): number;
     onTreeAction(row: any): void;
+    /** custom 4sellers */
+    onScroll(event: CustomEvent): void;
 }

@@ -11,9 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var ScrollerComponent = /** @class */ (function () {
-    function ScrollerComponent(ngZone, element, renderer) {
-        this.ngZone = ngZone;
-        this.renderer = renderer;
+    function ScrollerComponent(element) {
         this.scrollbarV = false;
         this.scrollbarH = false;
         this.scroll = new core_1.EventEmitter();
@@ -23,19 +21,6 @@ var ScrollerComponent = /** @class */ (function () {
         this.prevScrollXPos = 0;
         this.element = element.nativeElement;
     }
-    ScrollerComponent.prototype.ngOnInit = function () {
-        // manual bind so we don't always listen
-        if (this.scrollbarV || this.scrollbarH) {
-            var renderer = this.renderer;
-            this.parentElement = renderer.parentNode(renderer.parentNode(this.element));
-            this.parentElement.addEventListener('scroll', this.onScrolled.bind(this));
-        }
-    };
-    ScrollerComponent.prototype.ngOnDestroy = function () {
-        if (this.scrollbarV || this.scrollbarH) {
-            this.parentElement.removeEventListener('scroll', this.onScrolled.bind(this));
-        }
-    };
     ScrollerComponent.prototype.setOffset = function (offsetY) {
         if (this.parentElement) {
             this.parentElement.scrollTop = offsetY;
@@ -43,7 +28,7 @@ var ScrollerComponent = /** @class */ (function () {
     };
     ScrollerComponent.prototype.onScrolled = function (event) {
         var _this = this;
-        var dom = event.currentTarget;
+        var dom = event.target;
         requestAnimationFrame(function () {
             _this.scrollYPos = dom.scrollTop;
             _this.scrollXPos = dom.scrollLeft;
@@ -97,7 +82,7 @@ var ScrollerComponent = /** @class */ (function () {
             },
             changeDetection: core_1.ChangeDetectionStrategy.OnPush
         }),
-        __metadata("design:paramtypes", [core_1.NgZone, core_1.ElementRef, core_1.Renderer2])
+        __metadata("design:paramtypes", [core_1.ElementRef])
     ], ScrollerComponent);
     return ScrollerComponent;
 }());

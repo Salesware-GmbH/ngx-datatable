@@ -19,6 +19,27 @@ var DataTableColumnDirective = /** @class */ (function () {
         this.columnChangesService = columnChangesService;
         this.isFirstChange = true;
     }
+    Object.defineProperty(DataTableColumnDirective.prototype, "cellTemplate", {
+        get: function () {
+            return this._cellTemplateInput || this._cellTemplateQuery;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(DataTableColumnDirective.prototype, "headerTemplate", {
+        get: function () {
+            return this._headerTemplateInput || this._headerTemplateQuery;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(DataTableColumnDirective.prototype, "treeToggleTemplate", {
+        get: function () {
+            return this._treeToggleTemplateInput || this._treeToggleTemplateQuery;
+        },
+        enumerable: true,
+        configurable: true
+    });
     DataTableColumnDirective.prototype.ngOnChanges = function () {
         if (this.isFirstChange) {
             this.isFirstChange = false;
@@ -116,29 +137,29 @@ var DataTableColumnDirective = /** @class */ (function () {
         __metadata("design:type", core_1.TemplateRef)
     ], DataTableColumnDirective.prototype, "summaryTemplate", void 0);
     __decorate([
-        core_1.Input(),
-        core_1.ContentChild(column_cell_directive_1.DataTableColumnCellDirective, {
-            read: core_1.TemplateRef,
-            static: true
-        }),
+        core_1.Input('cellTemplate'),
         __metadata("design:type", core_1.TemplateRef)
-    ], DataTableColumnDirective.prototype, "cellTemplate", void 0);
+    ], DataTableColumnDirective.prototype, "_cellTemplateInput", void 0);
     __decorate([
-        core_1.Input(),
-        core_1.ContentChild(column_header_directive_1.DataTableColumnHeaderDirective, {
-            read: core_1.TemplateRef,
-            static: true
-        }),
+        core_1.ContentChild(column_cell_directive_1.DataTableColumnCellDirective, { read: core_1.TemplateRef, static: true }),
         __metadata("design:type", core_1.TemplateRef)
-    ], DataTableColumnDirective.prototype, "headerTemplate", void 0);
+    ], DataTableColumnDirective.prototype, "_cellTemplateQuery", void 0);
     __decorate([
-        core_1.Input(),
-        core_1.ContentChild(tree_directive_1.DataTableColumnCellTreeToggle, {
-            read: core_1.TemplateRef,
-            static: true
-        }),
+        core_1.Input('headerTemplate'),
         __metadata("design:type", core_1.TemplateRef)
-    ], DataTableColumnDirective.prototype, "treeToggleTemplate", void 0);
+    ], DataTableColumnDirective.prototype, "_headerTemplateInput", void 0);
+    __decorate([
+        core_1.ContentChild(column_header_directive_1.DataTableColumnHeaderDirective, { read: core_1.TemplateRef, static: true }),
+        __metadata("design:type", core_1.TemplateRef)
+    ], DataTableColumnDirective.prototype, "_headerTemplateQuery", void 0);
+    __decorate([
+        core_1.Input('treeToggleTemplate'),
+        __metadata("design:type", core_1.TemplateRef)
+    ], DataTableColumnDirective.prototype, "_treeToggleTemplateInput", void 0);
+    __decorate([
+        core_1.ContentChild(tree_directive_1.DataTableColumnCellTreeToggle, { read: core_1.TemplateRef, static: true }),
+        __metadata("design:type", core_1.TemplateRef)
+    ], DataTableColumnDirective.prototype, "_treeToggleTemplateQuery", void 0);
     DataTableColumnDirective = __decorate([
         core_1.Directive({ selector: 'ngx-datatable-column' }),
         __metadata("design:paramtypes", [column_changes_service_1.ColumnChangesService])

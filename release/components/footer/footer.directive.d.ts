@@ -7,5 +7,7 @@ export declare class DatatableFooterDirective {
     pagerRightArrowIcon: string;
     pagerPreviousIcon: string;
     pagerNextIcon: string;
-    template: TemplateRef<any>;
+    _templateInput: TemplateRef<any>;
+    _templateQuery: TemplateRef<any>;
+    readonly template: TemplateRef<any>;
 }

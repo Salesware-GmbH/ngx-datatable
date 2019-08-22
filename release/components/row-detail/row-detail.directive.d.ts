@@ -5,7 +5,9 @@ export declare class DatatableRowDetailDirective {
      * when virtual scroll is enabled.
      */
     rowHeight: number | ((row?: any, index?: number) => number);
-    template: TemplateRef<any>;
+    _templateInput: TemplateRef<any>;
+    _templateQuery: TemplateRef<any>;
+    readonly template: TemplateRef<any>;
     /**
      * Row detail row visbility was toggled.
      */

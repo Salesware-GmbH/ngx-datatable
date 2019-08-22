@@ -145,7 +145,8 @@
     z-index: 10;
     display: block; }
     .ngx-datatable .datatable-body .datatable-scroll {
-      display: inline-block; }
+      display: inline-block;
+      position: relative; }
     .ngx-datatable .datatable-body .datatable-row-detail {
       overflow-y: hidden; }
     .ngx-datatable .datatable-body .datatable-row-wrapper {

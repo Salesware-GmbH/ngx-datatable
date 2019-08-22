@@ -25,9 +25,15 @@ export declare class DataTableColumnDirective implements OnChanges {
     treeLevelIndent: number;
     summaryFunc: (cells: any[]) => any;
     summaryTemplate: TemplateRef<any>;
-    cellTemplate: TemplateRef<any>;
-    headerTemplate: TemplateRef<any>;
-    treeToggleTemplate: TemplateRef<any>;
+    _cellTemplateInput: TemplateRef<any>;
+    _cellTemplateQuery: TemplateRef<any>;
+    readonly cellTemplate: TemplateRef<any>;
+    _headerTemplateInput: TemplateRef<any>;
+    _headerTemplateQuery: TemplateRef<any>;
+    readonly headerTemplate: TemplateRef<any>;
+    _treeToggleTemplateInput: TemplateRef<any>;
+    _treeToggleTemplateQuery: TemplateRef<any>;
+    readonly treeToggleTemplate: TemplateRef<any>;
     private isFirstChange;
     constructor(columnChangesService: ColumnChangesService);
     ngOnChanges(): void;

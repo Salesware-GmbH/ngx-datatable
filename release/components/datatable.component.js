@@ -35,11 +35,12 @@ var footer_1 = require("./footer");
 var header_1 = require("./header");
 var rxjs_1 = require("rxjs");
 var DatatableComponent = /** @class */ (function () {
-    function DatatableComponent(scrollbarHelper, dimensionsHelper, cd, element, differs, columnChangesService) {
+    function DatatableComponent(scrollbarHelper, dimensionsHelper, cd, element, differs, columnChangesService, configuration) {
         this.scrollbarHelper = scrollbarHelper;
         this.dimensionsHelper = dimensionsHelper;
         this.cd = cd;
         this.columnChangesService = columnChangesService;
+        this.configuration = configuration;
         /**
          * List of row objects that should be
          * represented as selected in the grid.
@@ -218,6 +219,10 @@ var DatatableComponent = /** @class */ (function () {
         // get ref to elm for measuring
         this.element = element.nativeElement;
         this.rowDiffer = differs.find({}).create();
+        // apply global settings from Module.forRoot
+        if (this.configuration && this.configuration.messages) {
+            this.messages = __assign({}, this.configuration.messages);
+        }
     }
     Object.defineProperty(DatatableComponent.prototype, "rows", {
         /**
@@ -1225,12 +1230,13 @@ var DatatableComponent = /** @class */ (function () {
         }),
         __param(0, core_1.SkipSelf()),
         __param(1, core_1.SkipSelf()),
+        __param(6, core_1.Optional()), __param(6, core_1.Inject('configuration')),
         __metadata("design:paramtypes", [services_1.ScrollbarHelper,
             services_1.DimensionsHelper,
             core_1.ChangeDetectorRef,
             core_1.ElementRef,
             core_1.KeyValueDiffers,
-            services_1.ColumnChangesService])
+            services_1.ColumnChangesService, Object])
     ], DatatableComponent);
     return DatatableComponent;
 }());

@@ -8,11 +8,13 @@ import { DatatableRowDetailDirective } from './row-detail';
 import { DatatableFooterDirective } from './footer';
 import { DataTableHeaderComponent } from './header';
 import { BehaviorSubject, Subscription } from 'rxjs';
+import { INgxDatatableConfig } from "../datatable.module";
 export declare class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
     private scrollbarHelper;
     private dimensionsHelper;
     private cd;
     private columnChangesService;
+    private configuration;
     /**
      * Template for the target marker of drag target columns.
      */
@@ -386,7 +388,7 @@ export declare class DatatableComponent implements OnInit, DoCheck, AfterViewIni
     _columns: TableColumn[];
     _columnTemplates: QueryList<DataTableColumnDirective>;
     _subscriptions: Subscription[];
-    constructor(scrollbarHelper: ScrollbarHelper, dimensionsHelper: DimensionsHelper, cd: ChangeDetectorRef, element: ElementRef, differs: KeyValueDiffers, columnChangesService: ColumnChangesService);
+    constructor(scrollbarHelper: ScrollbarHelper, dimensionsHelper: DimensionsHelper, cd: ChangeDetectorRef, element: ElementRef, differs: KeyValueDiffers, columnChangesService: ColumnChangesService, configuration: INgxDatatableConfig);
     /**
      * Lifecycle hook that is called after data-bound
      * properties of a directive are initialized.

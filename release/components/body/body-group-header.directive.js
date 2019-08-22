@@ -22,6 +22,13 @@ var DatatableGroupHeaderDirective = /** @class */ (function () {
          */
         this.toggle = new core_1.EventEmitter();
     }
+    Object.defineProperty(DatatableGroupHeaderDirective.prototype, "template", {
+        get: function () {
+            return this._templateInput || this._templateQuery;
+        },
+        enumerable: true,
+        configurable: true
+    });
     /**
      * Toggle the expansion of a group
      */
@@ -54,13 +61,13 @@ var DatatableGroupHeaderDirective = /** @class */ (function () {
         __metadata("design:type", Object)
     ], DatatableGroupHeaderDirective.prototype, "rowHeight", void 0);
     __decorate([
-        core_1.Input(),
-        core_1.ContentChild(body_group_header_template_directive_1.DatatableGroupHeaderTemplateDirective, {
-            read: core_1.TemplateRef,
-            static: true
-        }),
+        core_1.Input('template'),
         __metadata("design:type", core_1.TemplateRef)
-    ], DatatableGroupHeaderDirective.prototype, "template", void 0);
+    ], DatatableGroupHeaderDirective.prototype, "_templateInput", void 0);
+    __decorate([
+        core_1.ContentChild(body_group_header_template_directive_1.DatatableGroupHeaderTemplateDirective, { read: core_1.TemplateRef, static: true }),
+        __metadata("design:type", core_1.TemplateRef)
+    ], DatatableGroupHeaderDirective.prototype, "_templateQuery", void 0);
     __decorate([
         core_1.Output(),
         __metadata("design:type", core_1.EventEmitter)

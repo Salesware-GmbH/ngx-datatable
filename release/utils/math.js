@@ -105,6 +105,7 @@ function forceFillColumnWidths(allColumns, expectedWidth, startIdx, allowBleed, 
     var contentWidth = getContentWidth(allColumns, defaultColWidth);
     var remainingWidth = expectedWidth - contentWidth;
     var columnsProcessed = [];
+    var remainingWidthLimit = 1; // when to stop
     // This loop takes care of the
     do {
         additionWidthPerColumn = remainingWidth / columnsToResize.length;
@@ -133,7 +134,7 @@ function forceFillColumnWidths(allColumns, expectedWidth, startIdx, allowBleed, 
         contentWidth = getContentWidth(allColumns);
         remainingWidth = expectedWidth - contentWidth;
         removeProcessedColumns(columnsToResize, columnsProcessed);
-    } while (remainingWidth > 0 && columnsToResize.length !== 0);
+    } while (Math.abs(remainingWidth) > remainingWidthLimit && columnsToResize.length !== 0);
 }
 exports.forceFillColumnWidths = forceFillColumnWidths;
 /**

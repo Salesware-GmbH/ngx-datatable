@@ -4,7 +4,9 @@ export declare class DatatableGroupHeaderDirective {
      * Row height is required when virtual scroll is enabled.
      */
     rowHeight: number | ((group?: any, index?: number) => number);
-    template: TemplateRef<any>;
+    _templateInput: TemplateRef<any>;
+    _templateQuery: TemplateRef<any>;
+    readonly template: TemplateRef<any>;
     /**
      * Track toggling of group visibility
      */
