@@ -774,6 +774,9 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
 
   /** custom 4sellers */
   onScroll(event: CustomEvent) {
+    if (this.scroller) {
+      return;
+    }
     this.scroller.onScrolled(event);
   }
 }
