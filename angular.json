@@ -109,7 +109,7 @@
         }
       }
     },
-    "@4sellers/ngx-datatable": {
+    "ngx-datatable-4sellers": {
       "projectType": "library",
       "root": "projects/swimlane/ngx-datatable",
       "sourceRoot": "projects/swimlane/ngx-datatable/src",
