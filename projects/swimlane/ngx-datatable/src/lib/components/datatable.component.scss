@@ -134,6 +134,10 @@
   .datatable-header {
     display: block;
     overflow: hidden;
+    
+    .datatable-row-center {
+      display: block;
+    }
 
     .datatable-header-inner {
       align-items: stretch;
