@@ -8,14 +8,15 @@ import {
   ViewChild,
   OnInit,
   OnDestroy,
-  ChangeDetectionStrategy
+  ChangeDetectionStrategy,
+  HostListener
 } from '@angular/core';
 import { ScrollerComponent } from './scroller.component';
-import { MouseEvent } from '../../events';
 import { SelectionType } from '../../types/selection.type';
 import { columnsByPin, columnGroupWidths } from '../../utils/column';
 import { RowHeightCache } from '../../utils/row-height-cache';
 import { translateXY } from '../../utils/translate';
+import { RowDragService } from '../../services/row-drag.service';
 
 @Component({
   selector: 'datatable-body',
@@ -51,6 +52,9 @@ import { translateXY } from '../../utils/translate';
         >
         </datatable-summary-row>
         <datatable-row-wrapper
+          row-draggable
+          [dragEnabled]="rowsDraggable"
+          [dragData]="indexes.first + i"
           [groupedRows]="groupedRows"
           *ngFor="let group of temp; let i = index; trackBy: rowTrackingFn"
           [innerWidth]="innerWidth"
@@ -64,6 +68,16 @@ import { translateXY } from '../../utils/translate';
           [rowIndex]="getRowIndex(group[i])"
           (rowContextmenu)="rowContextmenu.emit($event)"
         >
+          <div row-droppable (onDropEvent)="onDrop($event, indexes.first + i)" 
+            [ngClass]="'drop-area-top' + (dragService.dragActive ? ' drag-active' : '')" 
+              dragOverClass="drop-over-active">
+              <div class="drop-indicator"></div>
+          </div>
+          <div row-droppable (onDropEvent)="onDrop($event, indexes.first + i + 1)" 
+            [ngClass]="'drop-area-bottom' + (dragService.dragActive ? ' drag-active' : '')" 
+            dragOverClass="drop-over-active">
+            <div class="drop-indicator bottom"></div>
+          </div>
           <datatable-body-row
             *ngIf="!groupedRows; else groupedRowsTemplate"
             tabindex="-1"
@@ -146,6 +160,7 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
   @Input() summaryRow: boolean;
   @Input() summaryPosition: string;
   @Input() summaryHeight: number;
+  @Input() rowsDraggable: boolean;
 
   @Input() set pageSize(val: number) {
     this._pageSize = val;
@@ -224,6 +239,7 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
   @Output() activate: EventEmitter<any> = new EventEmitter();
   @Output() select: EventEmitter<any> = new EventEmitter();
   @Output() detailToggle: EventEmitter<any> = new EventEmitter();
+  @Output() rowDropped: EventEmitter<any> = new EventEmitter();
   @Output() rowContextmenu = new EventEmitter<{ event: MouseEvent; row: any }>(false);
   @Output() treeAction: EventEmitter<any> = new EventEmitter();
 
@@ -270,7 +286,7 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
   /**
    * Creates an instance of DataTableBodyComponent.
    */
-  constructor(private cd: ChangeDetectorRef) {
+  constructor(private cd: ChangeDetectorRef, public dragService: RowDragService) {
     // declare fn here so we can get access to the `this` property
     this.rowTrackingFn = (index: number, row: any): any => {
       const idx = this.getRowIndex(row);
@@ -778,5 +794,19 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
       return;
     }
     this.scroller.onScrolled(event);
+  }
+
+  @HostListener('dragend', ['$event'])
+  onDragEnd(event) {
+    this.dragService.endDrag();
+  }
+
+  // Event when user dropped a row on a specific index 
+  // For movement logic see demo page (row-drag-drop.component)
+  onDrop(startIndex: number, destIndex: number) {    
+    this.rowDropped.emit({
+      startindex: startIndex,
+      destindex: destIndex
+    });
   }
 }

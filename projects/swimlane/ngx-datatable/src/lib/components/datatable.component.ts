@@ -412,6 +412,11 @@ export class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
   @Input() summaryPosition: string = 'top';
 
   /**
+   * A property holds if row drag and drop is enabled
+   */
+  @Input() rowsDraggable: boolean = false;
+
+  /**
    * Body was scrolled typically in a `scrollbarV:true` scenario.
    */
   @Output() scroll: EventEmitter<any> = new EventEmitter();
@@ -457,6 +462,11 @@ export class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
    * A row was expanded ot collapsed for tree
    */
   @Output() treeAction: EventEmitter<any> = new EventEmitter();
+
+  /**
+   * Row was dropped
+   */
+  @Output() rowDropped: EventEmitter<any> = new EventEmitter();
 
   /**
    * CSS class applied if the header height if fixed height.
@@ -1128,6 +1138,13 @@ export class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
   ngOnDestroy() {
     this._subscriptions.forEach(subscription => subscription.unsubscribe());
   }
+  
+  /**
+   * A row drop was made
+   */
+  onRowDropped(event: any) {
+    this.rowDropped.emit(event);
+  }
 
   /**
    * listen for changes to input bindings of all DataTableColumnDirective and
@@ -1146,4 +1163,5 @@ export class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
   private sortInternalRows(): void {
     this._internalRows = sortRows(this._internalRows, this._internalColumns, this.sorts);
   }
+
 }

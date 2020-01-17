@@ -87,6 +87,9 @@
           <li>
             <a href="#responsive" (click)="state = 'responsive'">Responsive</a>
           </li>
+          <li>
+            <a href="#row_drag_drop" (click)="state = 'row_drag_drop'">DRAGDROP</a>
+          </li>
         </ul>
       </li>
       <li>
@@ -204,6 +207,7 @@
     <multiple-tables-demo *ngIf="state === 'multiple-tables'"></multiple-tables-demo>
     <row-details-demo *ngIf="state === 'row-details'"></row-details-demo>
     <responsive-demo *ngIf="state === 'responsive'"></responsive-demo>
+    <row-drag-drop-demo *ngIf="state === 'row_drag_drop'"></row-drag-drop-demo>
     <filter-demo *ngIf="state === 'filter'"></filter-demo>
     <tabs-demo *ngIf="state === 'hidden'"></tabs-demo>
     <live-data-demo *ngIf="state === 'live'"></live-data-demo>

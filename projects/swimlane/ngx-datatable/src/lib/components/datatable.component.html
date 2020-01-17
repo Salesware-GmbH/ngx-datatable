@@ -53,12 +53,14 @@
     [summaryRow]="summaryRow"
     [summaryHeight]="summaryHeight"
     [summaryPosition]="summaryPosition"
+    [rowsDraggable]="rowsDraggable"
     (page)="onBodyPage($event)"
     (activate)="activate.emit($event)"
     (rowContextmenu)="onRowContextmenu($event)"
     (select)="onBodySelect($event)"
     (scroll)="onBodyScroll($event)"
     (treeAction)="onTreeAction($event)"
+    (rowDropped)="onRowDropped($event)"
   >
   </datatable-body>
   <datatable-footer

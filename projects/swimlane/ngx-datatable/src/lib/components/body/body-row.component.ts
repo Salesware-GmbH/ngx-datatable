@@ -251,4 +251,22 @@ export class DataTableBodyRowComponent implements DoCheck {
   onTreeAction() {
     this.treeAction.emit();
   }
+
+  simulateClick() {
+    if (this._columns.length > 0 && !this.isSelected) {
+      this.activate.emit({
+        type: 'click',
+        event: null,
+        row: this.row,
+        group: this.group,
+        rowHeight: this.rowHeight,
+        column: this._columns[0],
+        value: '',
+        cellIndex: 0,
+        rowElement: this._element,
+        cellElement: this._element
+      });
+    }
+
+  }
 }

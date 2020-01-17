@@ -41,9 +41,9 @@ export class DataTableSelectionComponent {
     let selected: any[] = [];
 
     if (multi || chkbox || multiClick) {
-      if (event.shiftKey) {
+      if (!!event && event.shiftKey) {
         selected = selectRowsBetween([], this.rows, index, this.prevIndex, this.getRowSelectedIdx.bind(this));
-      } else if (event.ctrlKey || event.metaKey || multiClick || chkbox) {
+      } else if (!!event && (event.ctrlKey || event.metaKey || multiClick || chkbox)) {
         selected = selectRows([...this.selected], row, this.getRowSelectedIdx.bind(this));
       } else {
         selected = selectRows([], row, this.getRowSelectedIdx.bind(this));
