@@ -417,6 +417,11 @@ export class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
   @Input() rowsDraggable: boolean = false;
 
   /**
+   * HTML-Attributes for e.g. automated testing
+   */
+  @Input() dataAttributes: any;
+
+  /**
    * Body was scrolled typically in a `scrollbarV:true` scenario.
    */
   @Output() scroll: EventEmitter<any> = new EventEmitter();

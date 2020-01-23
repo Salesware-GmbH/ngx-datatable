@@ -90,6 +90,7 @@ import { RowDragService } from '../../services/row-drag.service';
             [rowIndex]="getRowIndex(group)"
             [expanded]="getRowExpanded(group)"
             [rowClass]="rowClass"
+            [dataAttributes]="dataAttributes"
             [displayCheck]="displayCheck"
             [treeStatus]="group.treeStatus"
             (treeAction)="onTreeAction(group)"
@@ -110,6 +111,7 @@ import { RowDragService } from '../../services/row-drag.service';
               [rowIndex]="getRowIndex(row)"
               [expanded]="getRowExpanded(row)"
               [rowClass]="rowClass"
+              [dataAttributes]="dataAttributes"
               (activate)="selector.onActivate($event, i)"
             >
             </datatable-body-row>
@@ -161,6 +163,7 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
   @Input() summaryPosition: string;
   @Input() summaryHeight: number;
   @Input() rowsDraggable: boolean;
+  @Input() dataAttributes: any;
 
   @Input() set pageSize(val: number) {
     this._pageSize = val;

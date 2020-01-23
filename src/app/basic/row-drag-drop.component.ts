@@ -22,6 +22,7 @@ import { Component, ViewEncapsulation, ViewChild } from '@angular/core';
         [scrollbarV]="true"        
         [rowHeight]="50"
         [selected]="selected"
+        [dataAttributes]="setDataAttributes"
         (select)='onSelect($event)'
         (rowDropped)="onDrop($event)">
         <ngx-datatable-column name="Id" [width]="80"></ngx-datatable-column>
@@ -47,7 +48,6 @@ export class RowDragDropComponent {
     this.fetch((data) => {
       this.rows = data;
     });
-
   }
 
   moveArraysElementPosition(array, from, to) {
@@ -117,4 +117,12 @@ export class RowDragDropComponent {
     }
   }
 
+  setDataAttributes(row) {
+    return { 
+      dataAttributes: [
+        {key: 'Name', value: row.name},
+        {key: 'Age', value: row.age}
+      ]
+    };
+  }
 }
