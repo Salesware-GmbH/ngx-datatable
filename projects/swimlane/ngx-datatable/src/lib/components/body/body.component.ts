@@ -68,12 +68,12 @@ import { RowDragService } from '../../services/row-drag.service';
           [rowIndex]="getRowIndex(group[i])"
           (rowContextmenu)="rowContextmenu.emit($event)"
         >
-          <div row-droppable (onDropEvent)="onDrop($event, indexes.first + i)" 
+          <div *ngIf="dragService.dragActive" row-droppable (onDropEvent)="onDrop($event, indexes.first + i)" 
             [ngClass]="'drop-area-top' + (dragService.dragActive ? ' drag-active' : '')" 
               dragOverClass="drop-over-active">
               <div class="drop-indicator"></div>
           </div>
-          <div row-droppable (onDropEvent)="onDrop($event, indexes.first + i + 1)" 
+          <div *ngIf="dragService.dragActive" row-droppable (onDropEvent)="onDrop($event, indexes.first + i + 1)" 
             [ngClass]="'drop-area-bottom' + (dragService.dragActive ? ' drag-active' : '')" 
             dragOverClass="drop-over-active">
             <div class="drop-indicator bottom"></div>
