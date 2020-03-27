@@ -55,6 +55,7 @@ import { translateXY } from '../../utils/translate';
           [sortAscendingIcon]="sortAscendingIcon"
           [sortDescendingIcon]="sortDescendingIcon"
           [allRowsSelected]="allRowsSelected"
+          [dataAttributesCell]="dataAttributesCell"
           (sort)="onSort($event)"
           (select)="select.emit($event)"
           (columnContextmenu)="columnContextmenu.emit($event)"
@@ -74,6 +75,7 @@ export class DataTableHeaderComponent implements OnDestroy {
   @Input() scrollbarH: boolean;
   @Input() dealsWithGroup: boolean;
   @Input() targetMarkerTemplate: any;
+  @Input() dataAttributesCell: any;
 
   targetMarkerContext: any;
 

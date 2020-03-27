@@ -6,7 +6,9 @@ import {
   HostBinding,
   HostListener,
   ChangeDetectionStrategy,
-  ChangeDetectorRef
+  ChangeDetectorRef,
+  ElementRef,
+  OnInit
 } from '@angular/core';
 import { MouseEvent } from '../../events';
 import { SortType } from '../../types/sort.type';
@@ -45,7 +47,7 @@ import { SortDirection } from '../../types/sort-direction.type';
   },
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DataTableHeaderCellComponent {
+export class DataTableHeaderCellComponent implements OnInit {
   @Input() sortType: SortType;
   @Input() sortAscendingIcon: string;
   @Input() sortDescendingIcon: string;
@@ -53,6 +55,8 @@ export class DataTableHeaderCellComponent {
   @Input() isTarget: boolean;
   @Input() targetMarkerTemplate: any;
   @Input() targetMarkerContext: any;
+
+  @Input() dataAttributesCell: any;
 
   _allRowsSelected: boolean;
 
@@ -169,8 +173,17 @@ export class DataTableHeaderCellComponent {
 
   private _column: TableColumn;
   private _sorts: any[];
+  private _element: any;
 
-  constructor(private cd: ChangeDetectorRef) {}
+  constructor(private element: ElementRef,
+    private cd: ChangeDetectorRef) {
+    this._element = element.nativeElement;
+  }
+  ngOnInit(): void {
+    if (this.dataAttributesCell && this.column) {
+      this.setDataAttributes();
+    }
+  }
 
   @HostListener('contextmenu', ['$event'])
   onContextmenu($event: MouseEvent): void {
@@ -205,6 +218,19 @@ export class DataTableHeaderCellComponent {
       return `sort-btn sort-desc ${this.sortDescendingIcon}`;
     } else {
       return `sort-btn`;
+    }
+  }
+
+  setDataAttributes() {
+    if (this.dataAttributesCell) {
+      const pre = 'data-'
+      const res = this.dataAttributesCell(this.column);
+      if (res.dataAttributes && res.dataAttributes.length > 0) {
+        res.dataAttributes.forEach(attribute => {
+          const attrName = pre + attribute.key
+          this._element.setAttribute(attrName, attribute.value);
+        })
+      }
     }
   }
 }

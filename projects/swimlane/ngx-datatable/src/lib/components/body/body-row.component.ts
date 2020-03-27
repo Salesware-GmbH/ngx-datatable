@@ -42,6 +42,7 @@ import { translateXY } from '../../utils/translate';
         [rowHeight]="rowHeight"
         [displayCheck]="displayCheck"
         [treeStatus]="treeStatus"
+        [dataAttributesCell]="dataAttributesCell"
         (activate)="onActivate($event, ii)"
         (treeAction)="onTreeAction()"
       >
@@ -75,7 +76,8 @@ export class DataTableBodyRowComponent implements DoCheck, OnInit {
     return this._innerWidth;
   }
 
-  @Input() dataAttributes: any;
+  @Input() dataAttributesRow: any;
+  @Input() dataAttributesCell: any;
   @Input() expanded: boolean;
   @Input() rowClass: any;
   @Input() row: any;
@@ -161,7 +163,7 @@ export class DataTableBodyRowComponent implements DoCheck, OnInit {
   }
   
   ngOnInit(): void {
-    if (this.dataAttributes && this.row) {
+    if (this.dataAttributesRow && this.row) {
       this.setDataAttributes();
     }
   }
@@ -278,9 +280,9 @@ export class DataTableBodyRowComponent implements DoCheck, OnInit {
   }
 
   setDataAttributes() {
-    if (this.dataAttributes) {
+    if (this.dataAttributesRow) {
       const pre = 'data-'
-      const res = this.dataAttributes(this.row);
+      const res = this.dataAttributesRow(this.row);
       if (res.dataAttributes && res.dataAttributes.length > 0) {
         res.dataAttributes.forEach(attribute => {
           const attrName = pre + attribute.key

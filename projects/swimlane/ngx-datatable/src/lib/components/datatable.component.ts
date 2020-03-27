@@ -419,7 +419,12 @@ export class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
   /**
    * HTML-Attributes for e.g. automated testing
    */
-  @Input() dataAttributes: any;
+  @Input() dataAttributesRow: any;
+
+  /**
+   * HTML-Attributes for e.g. automated testing
+   */
+  @Input() dataAttributesCell: any;
 
   /**
    * Body was scrolled typically in a `scrollbarV:true` scenario.

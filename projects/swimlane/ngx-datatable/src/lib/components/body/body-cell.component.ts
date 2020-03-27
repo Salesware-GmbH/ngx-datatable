@@ -12,7 +12,8 @@ import {
   ViewContainerRef,
   OnDestroy,
   DoCheck,
-  ChangeDetectionStrategy
+  ChangeDetectionStrategy,
+  OnInit
 } from '@angular/core';
 
 import { TableColumn } from '../../types/table-column.type';
@@ -65,7 +66,7 @@ export type TreeStatus = 'collapsed' | 'expanded' | 'loading' | 'disabled';
     </div>
   `
 })
-export class DataTableBodyCellComponent implements DoCheck, OnDestroy {
+export class DataTableBodyCellComponent implements DoCheck, OnDestroy, OnInit {
   @Input() displayCheck: (row: any, column?: TableColumn, value?: any) => boolean;
 
   @Input() set group(group: any) {
@@ -166,6 +167,8 @@ export class DataTableBodyCellComponent implements DoCheck, OnDestroy {
   get treeStatus(): TreeStatus {
     return this._treeStatus;
   }
+
+  @Input() dataAttributesCell: any;
 
   @Output() activate: EventEmitter<any> = new EventEmitter();
 
@@ -275,6 +278,12 @@ export class DataTableBodyCellComponent implements DoCheck, OnDestroy {
 
   constructor(element: ElementRef, private cd: ChangeDetectorRef) {
     this._element = element.nativeElement;
+  }
+
+  ngOnInit(): void {
+    if (this.dataAttributesCell && this.row && this.column) {
+      this.setDataAttributes();
+    }
   }
 
   ngDoCheck(): void {
@@ -420,5 +429,18 @@ export class DataTableBodyCellComponent implements DoCheck, OnDestroy {
   calcLeftMargin(column: any, row: any) {
     const levelIndent = column.treeLevelIndent != null ? column.treeLevelIndent : 50;
     return column.isTreeColumn ? row.level * levelIndent : 0;
+  }
+
+  setDataAttributes() {
+    if (this.dataAttributesCell) {
+      const pre = 'data-'
+      const res = this.dataAttributesCell(this.column, this.row);
+      if (res.dataAttributes && res.dataAttributes.length > 0) {
+        res.dataAttributes.forEach(attribute => {
+          const attrName = pre + attribute.key
+          this._element.setAttribute(attrName, attribute.value);
+        })
+      }
+    }
   }
 }
