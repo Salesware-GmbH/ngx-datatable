@@ -17,6 +17,7 @@ import { columnsByPin, columnGroupWidths } from '../../utils/column';
 import { RowHeightCache } from '../../utils/row-height-cache';
 import { translateXY } from '../../utils/translate';
 import { RowDragService } from '../../services/row-drag.service';
+import { PerfectScrollbarComponent } from 'ngx-perfect-scrollbar';
 
 @Component({
   selector: 'datatable-body',
@@ -250,6 +251,7 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
   @Output() treeAction: EventEmitter<any> = new EventEmitter();
 
   @ViewChild(ScrollerComponent, { static: false }) scroller: ScrollerComponent;
+  @ViewChild(PerfectScrollbarComponent, { static: false }) perfectScrollbar: PerfectScrollbarComponent;
 
   /**
    * Returns if selection is enabled.
