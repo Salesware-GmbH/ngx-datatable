@@ -66,7 +66,7 @@ export type TreeStatus = 'collapsed' | 'expanded' | 'loading' | 'disabled';
     </div>
   `
 })
-export class DataTableBodyCellComponent implements DoCheck, OnDestroy, OnInit {
+export class DataTableBodyCellComponent implements DoCheck, OnDestroy {
   @Input() displayCheck: (row: any, column?: TableColumn, value?: any) => boolean;
 
   @Input() set group(group: any) {
@@ -126,6 +126,7 @@ export class DataTableBodyCellComponent implements DoCheck, OnDestroy, OnInit {
     this._column = column;
     this.cellContext.column = column;
     this.checkValueUpdates();
+    this.setDataAttributes();
     this.cd.markForCheck();
   }
 
@@ -137,6 +138,7 @@ export class DataTableBodyCellComponent implements DoCheck, OnDestroy, OnInit {
     this._row = row;
     this.cellContext.row = row;
     this.checkValueUpdates();
+    this.setDataAttributes();
     this.cd.markForCheck();
   }
 
@@ -168,7 +170,14 @@ export class DataTableBodyCellComponent implements DoCheck, OnDestroy, OnInit {
     return this._treeStatus;
   }
 
-  @Input() dataAttributesCell: any;
+  private _dataAttributesCell: any;
+  @Input() public get dataAttributesCell(): any {
+    return this._dataAttributesCell;
+  }
+  public set dataAttributesCell(value: any) {
+    this._dataAttributesCell = value;
+    this.setDataAttributes();
+  }
 
   @Output() activate: EventEmitter<any> = new EventEmitter();
 
@@ -278,12 +287,6 @@ export class DataTableBodyCellComponent implements DoCheck, OnDestroy, OnInit {
 
   constructor(element: ElementRef, private cd: ChangeDetectorRef) {
     this._element = element.nativeElement;
-  }
-
-  ngOnInit(): void {
-    if (this.dataAttributesCell && this.row && this.column) {
-      this.setDataAttributes();
-    }
   }
 
   ngDoCheck(): void {
@@ -432,7 +435,7 @@ export class DataTableBodyCellComponent implements DoCheck, OnDestroy, OnInit {
   }
 
   setDataAttributes() {
-    if (this.dataAttributesCell) {
+    if (this.dataAttributesCell && this.row && this.column) {
       const pre = 'data-'
       const res = this.dataAttributesCell(this.column, this.row);
       if (res.dataAttributes && res.dataAttributes.length > 0) {

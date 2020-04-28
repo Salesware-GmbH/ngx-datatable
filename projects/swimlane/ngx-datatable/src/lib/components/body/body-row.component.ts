@@ -11,8 +11,7 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   DoCheck,
-  SkipSelf,
-  OnInit
+  SkipSelf
 } from '@angular/core';
 
 import { TreeStatus } from './body-cell.component';
@@ -50,7 +49,7 @@ import { translateXY } from '../../utils/translate';
     </div>
   `
 })
-export class DataTableBodyRowComponent implements DoCheck, OnInit {
+export class DataTableBodyRowComponent implements DoCheck {
   @Input() set columns(val: any[]) {
     this._columns = val;
     this.recalculateColumns(val);
@@ -76,11 +75,28 @@ export class DataTableBodyRowComponent implements DoCheck, OnInit {
     return this._innerWidth;
   }
 
-  @Input() dataAttributesRow: any;
+  private _dataAttributesRow: any;
+  @Input() public get dataAttributesRow(): any {
+    return this._dataAttributesRow;
+  }
+  public set dataAttributesRow(value: any) {
+    this._dataAttributesRow = value;
+    this.setDataAttributes();
+  }
+
   @Input() dataAttributesCell: any;
   @Input() expanded: boolean;
   @Input() rowClass: any;
-  @Input() row: any;
+
+  private _row: any;
+  @Input() public get row(): any {
+    return this._row;
+  }
+  public set row(value: any) {
+    this._row = value;
+    this.setDataAttributes();
+  }
+
   @Input() group: any;
   @Input() isSelected: boolean;
   @Input() rowIndex: number;
@@ -160,12 +176,6 @@ export class DataTableBodyRowComponent implements DoCheck, OnInit {
   ) {
     this._element = element.nativeElement;
     this._rowDiffer = differs.find({}).create();
-  }
-  
-  ngOnInit(): void {
-    if (this.dataAttributesRow && this.row) {
-      this.setDataAttributes();
-    }
   }
 
   ngDoCheck(): void {
@@ -279,8 +289,8 @@ export class DataTableBodyRowComponent implements DoCheck, OnInit {
     }
   }
 
-  setDataAttributes() {
-    if (this.dataAttributesRow) {
+  private setDataAttributes() {
+    if (this.dataAttributesRow && this.row) {
       const pre = 'data-'
       const res = this.dataAttributesRow(this.row);
       if (res.dataAttributes && res.dataAttributes.length > 0) {
