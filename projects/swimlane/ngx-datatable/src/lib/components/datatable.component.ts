@@ -427,6 +427,17 @@ export class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
   @Input() dataAttributesCell: any;
 
   /**
+   * Method fot getting the ColSpan of a certain cell.
+   * The result is the number of Cells this Cell should occupy.
+   * You must define a value > 1 for this to have any effect.
+   *
+   * Eg.: Value 2 means that the given column occupies the size of two columns
+   *
+   * @memberof DatatableComponent
+   */
+  @Input() colSpan: (row: any, column: any, columns: any[]) => number;
+
+  /**
    * Body was scrolled typically in a `scrollbarV:true` scenario.
    */
   @Output() scroll: EventEmitter<any> = new EventEmitter();
@@ -1152,7 +1163,7 @@ export class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
   ngOnDestroy() {
     this._subscriptions.forEach(subscription => subscription.unsubscribe());
   }
-  
+
   /**
    * A row drop was made
    */

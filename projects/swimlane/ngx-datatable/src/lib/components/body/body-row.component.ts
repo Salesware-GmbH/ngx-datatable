@@ -42,6 +42,7 @@ import { translateXY } from '../../utils/translate';
         [displayCheck]="displayCheck"
         [treeStatus]="treeStatus"
         [dataAttributesCell]="dataAttributesCell"
+        [explicitWidth]="getExplicitWidth(column)"
         (activate)="onActivate($event, ii)"
         (treeAction)="onTreeAction()"
       >
@@ -54,6 +55,7 @@ export class DataTableBodyRowComponent implements DoCheck {
     this._columns = val;
     this.recalculateColumns(val);
     this.buildStylesByGroup();
+    this.calculateColSpans();
   }
 
   get columns(): any[] {
@@ -95,6 +97,7 @@ export class DataTableBodyRowComponent implements DoCheck {
   public set row(value: any) {
     this._row = value;
     this.setDataAttributes();
+    this.calculateColSpans();
   }
 
   @Input() group: any;
@@ -110,6 +113,17 @@ export class DataTableBodyRowComponent implements DoCheck {
   }
   get offsetX() {
     return this._offsetX;
+  }
+
+
+  private _getColSpan: (row: any, column: any, columns: any[]) => number;
+  @Input()
+  public get getColSpan(): (row: any, column: any, columns: any[]) => number {
+    return this._getColSpan;
+  }
+  public set getColSpan(value: (row: any, column: any, columns: any[]) => number) {
+    this._getColSpan = value;
+    this.calculateColSpans();
   }
 
   @HostBinding('class')
@@ -167,6 +181,7 @@ export class DataTableBodyRowComponent implements DoCheck {
   };
 
   private _rowDiffer: KeyValueDiffer<{}, {}>;
+  private _columnWidthMap: WeakMap<any, number>;
 
   constructor(
     private differs: KeyValueDiffers,
@@ -287,6 +302,56 @@ export class DataTableBodyRowComponent implements DoCheck {
         cellElement: this._element
       });
     }
+  }
+
+  public getExplicitWidth(column: any) {
+    if (!column || !this.row) {
+      return null;
+    }
+
+    if (!this._columnWidthMap) {
+      this.calculateColSpans();
+    }
+
+    const result = Number(this._columnWidthMap.get(column));
+    if (isNaN(result) || !isFinite(result)) {
+      return null;
+    }
+    return result;
+  }
+
+  private calculateColSpans() {
+    this._columnWidthMap = new WeakMap();
+    if (!this.getColSpan || !this.row || !this.columns) {
+      return;
+    }
+
+    let ignoreCount = 0;
+    this.columns.forEach((column, i) => {
+      if (ignoreCount > 0) {
+        this._columnWidthMap.set(column, 0);
+        ignoreCount--;
+        return;
+      }
+
+      const colSpan = Number(this.getColSpan(this.row, column, this.columns));
+      if (colSpan <= 1 || isNaN(colSpan) || !isFinite(colSpan))
+      {
+        // Do not change Col-Span
+        return;
+      }
+
+      let newWidth = 0;
+      for (let j = i; j < i + colSpan; j++) {
+        const col = this.columns[j];
+        if (!!col && !!col.width) {
+          newWidth += col.width;
+        }
+      }
+      this._columnWidthMap.set(column, newWidth);
+      ignoreCount = colSpan - 1;
+    });
+
   }
 
   private setDataAttributes() {

@@ -179,6 +179,15 @@ export class DataTableBodyCellComponent implements DoCheck, OnDestroy {
     this.setDataAttributes();
   }
 
+  @Input() public get explicitWidth(): number {
+    return this._explicitWidth;
+  }
+
+  public set explicitWidth(value: number) {
+    this._explicitWidth = value;
+    this.cd.markForCheck();
+  }
+
   @Output() activate: EventEmitter<any> = new EventEmitter();
 
   @Output() treeAction: EventEmitter<any> = new EventEmitter();
@@ -229,8 +238,19 @@ export class DataTableBodyCellComponent implements DoCheck, OnDestroy {
     return cls;
   }
 
+  @HostBinding('style.display')
+  get display(): string {
+    if (this._explicitWidth === 0) {
+      return 'none';
+    }
+    return null;
+  }
+
   @HostBinding('style.width.px')
   get width(): number {
+    if (this._explicitWidth !== undefined && this._explicitWidth !== null && this._explicitWidth > 0) {
+      return this._explicitWidth;
+    }
     return this.column.width;
   }
 
@@ -284,6 +304,7 @@ export class DataTableBodyCellComponent implements DoCheck, OnDestroy {
   private _expanded: boolean;
   private _element: any;
   private _treeStatus: TreeStatus;
+  private _explicitWidth?: number;
 
   constructor(element: ElementRef, private cd: ChangeDetectorRef) {
     this._element = element.nativeElement;

@@ -69,13 +69,13 @@ import { PerfectScrollbarComponent } from 'ngx-perfect-scrollbar';
           [rowIndex]="getRowIndex(group[i])"
           (rowContextmenu)="rowContextmenu.emit($event)"
         >
-          <div *ngIf="dragService.dragActive" row-droppable (onDropEvent)="onDrop($event, indexes.first + i)" 
-            [ngClass]="'drop-area-top' + (dragService.dragActive ? ' drag-active' : '')" 
+          <div *ngIf="dragService.dragActive" row-droppable (onDropEvent)="onDrop($event, indexes.first + i)"
+            [ngClass]="'drop-area-top' + (dragService.dragActive ? ' drag-active' : '')"
               dragOverClass="drop-over-active">
               <div class="drop-indicator"></div>
           </div>
-          <div *ngIf="dragService.dragActive" row-droppable (onDropEvent)="onDrop($event, indexes.first + i + 1)" 
-            [ngClass]="'drop-area-bottom' + (dragService.dragActive ? ' drag-active' : '')" 
+          <div *ngIf="dragService.dragActive" row-droppable (onDropEvent)="onDrop($event, indexes.first + i + 1)"
+            [ngClass]="'drop-area-bottom' + (dragService.dragActive ? ' drag-active' : '')"
             dragOverClass="drop-over-active">
             <div class="drop-indicator bottom"></div>
           </div>
@@ -93,6 +93,7 @@ import { PerfectScrollbarComponent } from 'ngx-perfect-scrollbar';
             [rowClass]="rowClass"
             [dataAttributesRow]="dataAttributesRow"
             [dataAttributesCell]="dataAttributesCell"
+            [getColSpan]="colSpan"
             [displayCheck]="displayCheck"
             [treeStatus]="group.treeStatus"
             (treeAction)="onTreeAction(group)"
@@ -115,6 +116,7 @@ import { PerfectScrollbarComponent } from 'ngx-perfect-scrollbar';
               [rowClass]="rowClass"
               [dataAttributesRow]="dataAttributesRow"
               [dataAttributesCell]="dataAttributesCell"
+              [getColSpan]="colSpan"
               (activate)="selector.onActivate($event, i)"
             >
             </datatable-body-row>
@@ -168,6 +170,7 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
   @Input() rowsDraggable: boolean;
   @Input() dataAttributesRow: any;
   @Input() dataAttributesCell: any;
+  @Input() colSpan: (row: any, column: any, columns: any[]) => number;
 
   @Input() set pageSize(val: number) {
     this._pageSize = val;
@@ -829,9 +832,9 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
     this.dragService.endDrag();
   }
 
-  // Event when user dropped a row on a specific index 
+  // Event when user dropped a row on a specific index
   // For movement logic see demo page (row-drag-drop.component)
-  onDrop(startIndex: number, destIndex: number) {    
+  onDrop(startIndex: number, destIndex: number) {
     this.rowDropped.emit({
       startindex: startIndex,
       destindex: destIndex
