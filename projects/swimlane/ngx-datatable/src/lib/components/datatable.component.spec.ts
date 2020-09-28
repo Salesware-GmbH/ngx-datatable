@@ -1,4 +1,4 @@
-import { Component, DebugElement } from '@angular/core';
+import { Component } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
@@ -393,9 +393,7 @@ describe('DatatableComponent With Custom Templates', () => {
 });
 
 @Component({
-  template: `
-    <ngx-datatable [columns]="columns" [rows]="rows" [sorts]="sorts"> </ngx-datatable>
-  `
+  template: ` <ngx-datatable [columns]="columns" [rows]="rows" [sorts]="sorts"> </ngx-datatable> `
 })
 class TestFixtureComponent {
   columns: any[] = [];

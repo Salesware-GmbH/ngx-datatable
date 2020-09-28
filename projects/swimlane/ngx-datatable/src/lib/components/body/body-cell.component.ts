@@ -17,7 +17,6 @@ import {
 } from '@angular/core';
 
 import { TableColumn } from '../../types/table-column.type';
-import { MouseEvent, KeyboardEvent } from '../../events';
 import { SortDirection } from '../../types/sort-direction.type';
 import { Keys } from '../../utils/keys';
 
@@ -211,7 +210,7 @@ export class DataTableBodyCellComponent implements DoCheck, OnDestroy {
         });
 
         if (typeof res === 'string') {
-          cls += res;
+          cls += ' ' + res;
         } else if (typeof res === 'object') {
           const keys = Object.keys(res);
           for (const k of keys) {

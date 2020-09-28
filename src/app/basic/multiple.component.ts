@@ -21,9 +21,9 @@ import { ColumnMode } from 'projects/swimlane/ngx-datatable/src/public-api';
         [rows]="rows1"
         [columns]="columns1"
         [columnMode]="ColumnMode.force"
-        headerHeight="50"
-        footerHeight="0"
-        rowHeight="100"
+        [headerHeight]="50"
+        [footerHeight]="0"
+        [rowHeight]="100"
       >
       </ngx-datatable>
       <br />
@@ -31,8 +31,8 @@ import { ColumnMode } from 'projects/swimlane/ngx-datatable/src/public-api';
         class="material"
         [rows]="rows2"
         [columns]="columns2"
-        headerHeight="50"
-        footerHeight="50"
+        [headerHeight]="50"
+        [footerHeight]="50"
         rowHeight="auto"
       >
       </ngx-datatable>
@@ -44,9 +44,15 @@ export class MultipleTablesComponent {
 
   columns2 = [{ prop: 'name', name: 'Name' }, { name: 'Gender' }];
 
-  rows1 = [{ name: 'Larry', gender: 'Male', company: 'Cisco' }, { name: 'Lauren', gender: 'Female', company: 'HP' }];
+  rows1 = [
+    { name: 'Larry', gender: 'Male', company: 'Cisco' },
+    { name: 'Lauren', gender: 'Female', company: 'HP' }
+  ];
 
-  rows2 = [{ name: 'Callie', gender: 'Female' }, { name: 'Maggie', gender: 'Female' }];
+  rows2 = [
+    { name: 'Callie', gender: 'Female' },
+    { name: 'Maggie', gender: 'Female' }
+  ];
 
   ColumnMode = ColumnMode;
 }

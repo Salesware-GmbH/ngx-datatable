@@ -10,7 +10,6 @@ import {
   ChangeDetectorRef,
   KeyValueDiffers
 } from '@angular/core';
-import { MouseEvent } from '../../events';
 
 @Component({
   selector: 'datatable-row-wrapper',
@@ -24,7 +23,7 @@ import { MouseEvent } from '../../events';
       >
       </ng-template>
     </div>
-    <ng-content *ngIf="(groupHeader && groupHeader.template && expanded) || (!groupHeader || !groupHeader.template)">
+    <ng-content *ngIf="(groupHeader && groupHeader.template && expanded) || !groupHeader || !groupHeader.template">
     </ng-content>
     <div
       *ngIf="rowDetail && rowDetail.template && expanded"

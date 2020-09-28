@@ -37,7 +37,11 @@ export class ServerSortingComponent {
 
   rows = [];
 
-  columns = [{ name: 'Company', sortable: true }, { name: 'Name', sortable: true }, { name: 'Gender', sortable: true }];
+  columns = [
+    { name: 'Company', sortable: true },
+    { name: 'Name', sortable: true },
+    { name: 'Gender', sortable: true }
+  ];
 
   ColumnMode = ColumnMode;
 

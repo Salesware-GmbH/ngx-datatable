@@ -8,9 +8,7 @@ import { id } from '../utils/id';
 
 @Component({
   selector: 'test-fixture-component',
-  template: `
-    <div orderable></div>
-  `
+  template: ` <div orderable></div> `
 })
 class TestFixtureComponent {}
 

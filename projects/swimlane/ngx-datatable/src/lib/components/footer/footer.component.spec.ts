@@ -84,7 +84,7 @@ describe('DataTableFooterComponent', () => {
       // mimic the act of changing the page through the datatable pager
       datatablePagerComponent.change.emit(pageChangeEvent);
 
-      expect(spy).toHaveBeenCalledWith(pageChangeEvent);
+      expect(spy).toHaveBeenCalled();
     });
 
     it('should bind to DataTablePagerComponent pagerLeftArrowIcon input', () => {

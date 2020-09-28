@@ -1,5 +1,5 @@
 import { async, TestBed, ComponentFixture } from '@angular/core/testing';
-import { Component, DebugElement } from '@angular/core';
+import { Component } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { VisibilityDirective } from './visibility.directive';
 
@@ -13,9 +13,7 @@ import { VisibilityDirective } from './visibility.directive';
       }
     `
   ],
-  template: `
-    <div visibilityObserver></div>
-  `
+  template: ` <div visibilityObserver></div> `
 })
 class TestFixtureComponent {}
 

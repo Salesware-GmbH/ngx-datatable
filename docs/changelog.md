@@ -1,5 +1,31 @@
 # Changelog
 
+## 18.0.0
+
+- Breaking: Update to angular 10
+
+## 17.1.0
+
+- Feature: Add sorting: unset icon
+
+## 17.0.0
+
+- Chore: explicitly only suppot ng9
+
+## 16.1.1
+
+- Chore: Patch release to override 16.1.0
+
+## 16.1.0
+
+- Fix: [selectAllRowsOnPage] is broken. (#1809)
+- Fix: Bug when using cellClass as string. (#1817)
+- Fix: Docs. (#1812, #1837, #1845, #1854)
+- Fix: redraw after recalculate (#1816)
+- Fix: undefined row index for rows in groups (#1857)
+- Chore: Add pretty-quick as a precommit hook using husky (#1841)
+- Chore: Bump dependecies (#1858, #1862, #1859)
+
 ## 16.0.3
 
 - Bug: Fix disappearing rows with vertical scrollbar, virtual scrolling & rowdetail auto height (#1799)
