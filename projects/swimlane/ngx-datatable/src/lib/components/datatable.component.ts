@@ -470,7 +470,7 @@ export class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
   /**
    * Column was resized.
    */
-  @Output() resize: EventEmitter<any> = new EventEmitter();
+  @Output() columnResize: EventEmitter<any> = new EventEmitter();
 
   /**
    * The context menu was invoked on the table.
@@ -1034,7 +1034,7 @@ export class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
     this.recalculateColumns(cols, idx);
     this._internalColumns = cols;
 
-    this.resize.emit({
+    this.columnResize.emit({
       column,
       newValue
     });
@@ -1197,5 +1197,4 @@ export class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
   private sortInternalRows(): void {
     this._internalRows = sortRows(this._internalRows, this._internalColumns, this.sorts);
   }
-
 }
