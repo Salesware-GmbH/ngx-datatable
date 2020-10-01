@@ -175,11 +175,11 @@ export class DataTableHeaderCellComponent implements OnInit {
   private _sorts: any[];
   private _element: any;
 
-  constructor(private element: ElementRef,
-    private cd: ChangeDetectorRef) {
+  constructor(private element: ElementRef, private cd: ChangeDetectorRef) {
     this._element = element.nativeElement;
   }
   ngOnInit(): void {
+    this.sortClass = this.calcSortClass(this.sortDir);
     if (this.dataAttributesCell && this.column) {
       this.setDataAttributes();
     }
@@ -188,10 +188,6 @@ export class DataTableHeaderCellComponent implements OnInit {
   @HostListener('contextmenu', ['$event'])
   onContextmenu($event: MouseEvent): void {
     this.columnContextmenu.emit({ event: $event, column: this.column });
-  }
-
-  ngOnInit() {
-    this.sortClass = this.calcSortClass(this.sortDir);
   }
 
   calcSortDir(sorts: any[]): any {
@@ -228,13 +224,13 @@ export class DataTableHeaderCellComponent implements OnInit {
 
   setDataAttributes() {
     if (this.dataAttributesCell) {
-      const pre = 'data-'
+      const pre = 'data-';
       const res = this.dataAttributesCell(this.column);
       if (res.dataAttributes && res.dataAttributes.length > 0) {
         res.dataAttributes.forEach(attribute => {
-          const attrName = pre + attribute.key
+          const attrName = pre + attribute.key;
           this._element.setAttribute(attrName, attribute.value);
-        })
+        });
       }
     }
   }
