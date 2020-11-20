@@ -193,7 +193,7 @@ export class DataTableHeaderCellComponent implements OnInit {
   calcSortDir(sorts: any[]): any {
     if (sorts && this.column) {
       const sort = sorts.find((s: any) => {
-        return s.prop === this.column.prop;
+        return s.prop === this.column.prop || s.prop === this.column.sortingProperty;
       });
 
       if (sort) return sort.dir;

@@ -145,6 +145,8 @@ export interface TableColumn {
    */
   prop?: TableColumnProp;
 
+  sortingProperty?: string;
+
   /**
    * Cell template ref
    *

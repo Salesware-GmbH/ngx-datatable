@@ -430,7 +430,7 @@ export class DataTableBodyCellComponent implements DoCheck, OnDestroy {
     }
 
     const sort = sorts.find((s: any) => {
-      return s.prop === this.column.prop;
+      return s.prop === this.column.prop || s.prop === this.column.sortingProperty;
     });
 
     if (sort) {
@@ -456,13 +456,13 @@ export class DataTableBodyCellComponent implements DoCheck, OnDestroy {
 
   setDataAttributes() {
     if (this.dataAttributesCell && this.row && this.column) {
-      const pre = 'data-'
+      const pre = 'data-';
       const res = this.dataAttributesCell(this.column, this.row);
       if (res.dataAttributes && res.dataAttributes.length > 0) {
         res.dataAttributes.forEach(attribute => {
-          const attrName = pre + attribute.key
+          const attrName = pre + attribute.key;
           this._element.setAttribute(attrName, attribute.value);
-        })
+        });
       }
     }
   }

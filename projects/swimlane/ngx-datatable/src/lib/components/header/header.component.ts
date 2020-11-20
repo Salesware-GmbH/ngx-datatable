@@ -304,7 +304,7 @@ export class DataTableHeaderComponent implements OnDestroy {
         sorts.splice(0, this.sorts.length);
       }
 
-      sorts.push({ dir: newValue, prop: column.prop });
+      sorts.push({ dir: newValue, prop: !!column.sortingProperty ? column.sortingProperty : column.prop });
     }
 
     return sorts;
