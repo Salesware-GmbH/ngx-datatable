@@ -20,7 +20,8 @@ import {
   ChangeDetectorRef,
   SkipSelf,
   Optional,
-  Inject
+  Inject,
+  TemplateRef
 } from '@angular/core';
 
 import { DatatableGroupHeaderDirective } from './body/body-group-header.directive';
@@ -436,6 +437,8 @@ export class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
    * @memberof DatatableComponent
    */
   @Input() colSpan: (row: any, column: any, columns: any[]) => number;
+
+  @Input() endOfDataRow: { template: TemplateRef<any>; isShown: boolean };
 
   /**
    * Body was scrolled typically in a `scrollbarV:true` scenario.
