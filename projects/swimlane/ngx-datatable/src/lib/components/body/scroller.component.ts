@@ -57,8 +57,8 @@ export class ScrollerComponent {
   onScrolled(event: CustomEvent): void {
     const dom: Element = <Element>event.target;
     requestAnimationFrame(() => {
-      this.scrollYPos = dom.scrollTop;
-      this.scrollXPos = dom.scrollLeft;
+      this.scrollYPos = dom?.scrollTop || 0;
+      this.scrollXPos = dom?.scrollLeft || 0;
       this.updateOffset();
     });
   }
