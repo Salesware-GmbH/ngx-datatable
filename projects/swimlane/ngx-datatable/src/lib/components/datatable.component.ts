@@ -1183,6 +1183,11 @@ export class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
     this.bodyComponent.perfectScrollbar.directiveRef.scrollToBottom();
   }
 
+  scrollToLeft() {
+    this._offsetX.next(0);
+    this.bodyComponent.perfectScrollbar.directiveRef.scrollToLeft();
+  }
+
   /**
    * listen for changes to input bindings of all DataTableColumnDirective and
    * trigger the columnTemplates.changes observable to emit

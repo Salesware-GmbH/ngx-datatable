@@ -20,6 +20,8 @@ import { RowHeightCache } from '../../utils/row-height-cache';
 import { translateXY } from '../../utils/translate';
 import { RowDragService } from '../../services/row-drag.service';
 import { PerfectScrollbarComponent } from 'ngx-perfect-scrollbar';
+import { Subject } from 'rxjs';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'datatable-body',
@@ -200,6 +202,13 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
   @Input() set rows(val: any[]) {
     this._rows = val;
     this.recalcLayout();
+
+    // scroll to previous x-offset
+    if (val.length) {
+      this.scrollerSet.pipe(take(1)).subscribe(() => {
+        this.perfectScrollbar?.directiveRef?.scrollToX(this.offsetX);
+      });
+    }
   }
 
   get rows(): any[] {
@@ -270,7 +279,19 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
   @Output() rowContextmenu = new EventEmitter<{ event: MouseEvent; row: any }>(false);
   @Output() treeAction: EventEmitter<any> = new EventEmitter();
 
-  @ViewChild(ScrollerComponent) scroller: ScrollerComponent;
+  private scrollerSet = new Subject<void>();
+
+  private _scroller: ScrollerComponent;
+  @ViewChild(ScrollerComponent) set scroller(scroller: ScrollerComponent) {
+    this._scroller = scroller;
+    if (scroller) {
+      this.scrollerSet.next();
+    }
+  }
+  get scroller(): ScrollerComponent {
+    return this._scroller;
+  }
+
   @ViewChild(PerfectScrollbarComponent) perfectScrollbar: PerfectScrollbarComponent;
   @ViewChild(PerfectScrollbarComponent, { read: ElementRef }) perfectScrollbarElement: ElementRef;
 
@@ -373,6 +394,8 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
     if (this.rowDetail || this.groupHeader) {
       this.listener.unsubscribe();
     }
+
+    this.scrollerSet.complete();
   }
 
   /**
