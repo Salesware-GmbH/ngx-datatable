@@ -206,6 +206,7 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
     // scroll to previous x-offset
     if (val.length) {
       this.scrollerSet.pipe(take(1)).subscribe(() => {
+        this.scroller.scrollXPos = this.offsetX;
         this.perfectScrollbar?.directiveRef?.scrollToX(this.offsetX);
       });
     }
