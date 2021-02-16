@@ -204,10 +204,11 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
     this.recalcLayout();
 
     // scroll to previous x-offset
-    if (val.length) {
+    if (val.length && (this.offsetX || this.scrollToLeftRequested)) {
       this.scrollerSet.pipe(take(1)).subscribe(() => {
         this.scroller.scrollXPos = this.offsetX;
         this.perfectScrollbar?.directiveRef?.scrollToX(this.offsetX);
+        this.scrollToLeftRequested = false;
       });
     }
   }
@@ -326,6 +327,7 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
   listener: any;
   rowIndexes: any = new WeakMap<any, string>();
   rowExpansions: any[] = [];
+  scrollToLeftRequested = false;
 
   _rows: any[];
   _bodyHeight: any;

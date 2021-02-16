@@ -1185,6 +1185,7 @@ export class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
 
   scrollToLeft() {
     this._offsetX.next(0);
+    this.bodyComponent.scrollToLeftRequested = true;
     this.bodyComponent.perfectScrollbar.directiveRef.scrollToLeft();
   }
 
