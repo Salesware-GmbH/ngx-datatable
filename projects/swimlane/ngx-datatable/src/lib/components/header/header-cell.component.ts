@@ -163,13 +163,7 @@ export class DataTableHeaderCellComponent implements OnInit {
   sortDir: SortDirection;
   selectFn = this.select.emit.bind(this.select);
 
-  cellContext: any = {
-    column: this.column,
-    sortDir: this.sortDir,
-    sortFn: this.sortFn,
-    allRowsSelected: this.allRowsSelected,
-    selectFn: this.selectFn
-  };
+  cellContext: any;
 
   private _column: TableColumn;
   private _sorts: any[];
@@ -177,7 +171,15 @@ export class DataTableHeaderCellComponent implements OnInit {
 
   constructor(private element: ElementRef, private cd: ChangeDetectorRef) {
     this._element = element.nativeElement;
+    this.cellContext = {
+      column: this.column,
+      sortDir: this.sortDir,
+      sortFn: this.sortFn,
+      allRowsSelected: this.allRowsSelected,
+      selectFn: this.selectFn
+    };
   }
+
   ngOnInit(): void {
     this.sortClass = this.calcSortClass(this.sortDir);
     if (this.dataAttributesCell && this.column) {

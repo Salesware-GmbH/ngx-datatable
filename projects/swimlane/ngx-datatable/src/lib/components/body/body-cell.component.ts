@@ -279,19 +279,7 @@ export class DataTableBodyCellComponent implements DoCheck, OnDestroy {
   onCheckboxChangeFn = this.onCheckboxChange.bind(this);
   activateFn = this.activate.emit.bind(this.activate);
 
-  cellContext: any = {
-    onCheckboxChangeFn: this.onCheckboxChangeFn,
-    activateFn: this.activateFn,
-    row: this.row,
-    group: this.group,
-    value: this.value,
-    column: this.column,
-    rowHeight: this.rowHeight,
-    isSelected: this.isSelected,
-    rowIndex: this.rowIndex,
-    treeStatus: this.treeStatus,
-    onTreeAction: this.onTreeAction.bind(this)
-  };
+  cellContext: any;
 
   private _isSelected: boolean;
   private _sorts: any[];
@@ -306,6 +294,20 @@ export class DataTableBodyCellComponent implements DoCheck, OnDestroy {
   private _explicitWidth?: number;
 
   constructor(element: ElementRef, private cd: ChangeDetectorRef) {
+    this.cellContext = {
+      onCheckboxChangeFn: this.onCheckboxChangeFn,
+      activateFn: this.activateFn,
+      row: this.row,
+      group: this.group,
+      value: this.value,
+      column: this.column,
+      rowHeight: this.rowHeight,
+      isSelected: this.isSelected,
+      rowIndex: this.rowIndex,
+      treeStatus: this.treeStatus,
+      onTreeAction: this.onTreeAction.bind(this)
+    };
+
     this._element = element.nativeElement;
   }
 
