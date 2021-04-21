@@ -59,11 +59,28 @@ export class ScrollerComponent {
     requestAnimationFrame(() => {
       this.scrollYPos = dom?.scrollTop || 0;
       this.scrollXPos = dom?.scrollLeft || 0;
-      this.updateOffset();
+      this.updateOffsetInternal();
     });
   }
 
   updateOffset(): void {
+    let direction: string;
+    if (this.scrollYPos < this.prevScrollYPos) {
+      direction = 'down';
+    } else if (this.scrollYPos > this.prevScrollYPos) {
+      direction = 'up';
+    }
+
+    this.scroll.emit({
+      direction,
+      scrollYPos: this.scrollYPos
+    });
+
+    this.prevScrollYPos = this.scrollYPos;
+    this.prevScrollXPos = this.scrollXPos;
+  }
+
+  private updateOffsetInternal(): void {
     let direction: string;
     if (this.scrollYPos < this.prevScrollYPos) {
       direction = 'down';
