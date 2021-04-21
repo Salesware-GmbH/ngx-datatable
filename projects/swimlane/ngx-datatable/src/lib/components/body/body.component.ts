@@ -20,8 +20,8 @@ import { RowHeightCache } from '../../utils/row-height-cache';
 import { translateXY } from '../../utils/translate';
 import { RowDragService } from '../../services/row-drag.service';
 import { PerfectScrollbarComponent } from 'ngx-perfect-scrollbar';
-import { Subject } from 'rxjs';
-import { take } from 'rxjs/operators';
+import { Subject, Subscription } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'datatable-body',
@@ -202,12 +202,14 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
   @Input() set rows(val: any[]) {
     this._rows = val;
     this.recalcLayout();
+    this.previousOffsetX = this.offsetX;
 
     // scroll to previous x-offset
-    if (val.length && (this.offsetX || this.scrollToLeftRequested)) {
-      this.scrollerSet.pipe(take(1)).subscribe(() => {
-        this.scroller.scrollXPos = this.offsetX;
-        this.perfectScrollbar?.directiveRef?.scrollToX(this.offsetX);
+    if (val.length && (this.previousOffsetX || this.scrollToLeftRequested)) {
+      this.scrollerSetSubscription?.unsubscribe();
+      this.scrollerSetSubscription = this.scrollerSet.pipe(takeUntil(this.ngUnsubscribe)).subscribe(() => {
+        this.scroller.scrollXPos = this.previousOffsetX;
+        this.perfectScrollbar?.directiveRef?.scrollToX(this.previousOffsetX);
         this.scrollToLeftRequested = false;
       });
     }
@@ -282,6 +284,9 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
   @Output() treeAction: EventEmitter<any> = new EventEmitter();
 
   private scrollerSet = new Subject<void>();
+  private previousOffsetX: number;
+  private scrollerSetSubscription: Subscription;
+  private ngUnsubscribe = new Subject<void>();
 
   private _scroller: ScrollerComponent;
   @ViewChild(ScrollerComponent) set scroller(scroller: ScrollerComponent) {
@@ -399,6 +404,9 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
     }
 
     this.scrollerSet.complete();
+    this.scrollerSetSubscription?.unsubscribe();
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 
   /**
