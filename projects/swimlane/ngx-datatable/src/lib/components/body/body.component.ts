@@ -341,6 +341,8 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
   _offset: number;
   _pageSize: number;
 
+  private preventFocusOut = false;
+
   /**
    * Creates an instance of DataTableBodyComponent.
    */
@@ -477,6 +479,7 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
    * Updates the rows in the view port
    */
   updateRows(): void {
+    this.preventFocusOut = true;
     const { first, last } = this.indexes;
     let rowIndex = first;
     let idx = 0;
@@ -527,6 +530,7 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
     }
 
     this.temp = temp;
+    setTimeout(() => (this.preventFocusOut = false));
   }
 
   /**
@@ -918,5 +922,12 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
       startindex: startIndex,
       destindex: destIndex
     });
+  }
+
+  @HostListener('focusout', ['$event'])
+  onHostFocusout(event: Event) {
+    if (this.preventFocusOut) {
+      event.stopPropagation();
+    }
   }
 }
