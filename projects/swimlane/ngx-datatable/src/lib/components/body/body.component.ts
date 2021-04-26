@@ -21,7 +21,8 @@ import { translateXY } from '../../utils/translate';
 import { RowDragService } from '../../services/row-drag.service';
 import { PerfectScrollbarComponent } from 'ngx-perfect-scrollbar';
 import { Subject, Subscription } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil, throttleTime } from 'rxjs/operators';
+import { DataTableBodyRowComponent } from './body-row.component';
 
 @Component({
   selector: 'datatable-body',
@@ -72,6 +73,7 @@ import { takeUntil } from 'rxjs/operators';
             [expanded]="getRowExpanded(group)"
             [rowIndex]="getRowIndex(group && group[i])"
             (rowContextmenu)="rowContextmenu.emit($event)"
+            (onDragOverEvent)="onDragOver($event)"
           >
             <div
               *ngIf="dragService.dragActive"
@@ -284,6 +286,7 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
   @Output() treeAction: EventEmitter<any> = new EventEmitter();
 
   private scrollerSet = new Subject<void>();
+  private scrollOnDrag = new Subject<number>();
   private previousOffsetX: number;
   private scrollerSetSubscription: Subscription;
   private ngUnsubscribe = new Subject<void>();
@@ -395,6 +398,10 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
         this.cd.markForCheck();
       });
     }
+
+    this.scrollOnDrag.pipe(takeUntil(this.ngUnsubscribe), throttleTime(500)).subscribe(offsetY => {
+      this.perfectScrollbar?.directiveRef?.scrollToY(offsetY);
+    });
   }
 
   /**
@@ -406,6 +413,7 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
     }
 
     this.scrollerSet.complete();
+    this.scrollOnDrag.complete();
     this.scrollerSetSubscription?.unsubscribe();
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
@@ -922,6 +930,14 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
       startindex: startIndex,
       destindex: destIndex
     });
+  }
+
+  onDragOver(event: { rowIndex: number; row: DataTableBodyRowComponent }) {
+    if (event.rowIndex <= this.indexes.first) {
+      this.scrollOnDrag.next(this.offsetY - this.getRowHeight(event.row));
+    } else if (event.rowIndex >= this.indexes.last - 2) {
+      this.scrollOnDrag.next(this.offsetY + this.getRowHeight(event.row));
+    }
   }
 
   @HostListener('focusout', ['$event'])

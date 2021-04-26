@@ -1,6 +1,12 @@
 import {
-  Input, HostListener, ViewChild,
-  Directive, HostBinding, EventEmitter, Output, ContentChild
+  Input,
+  HostListener,
+  ViewChild,
+  Directive,
+  HostBinding,
+  EventEmitter,
+  Output,
+  ContentChild
 } from '@angular/core';
 import { RowDragService } from '../services/row-drag.service';
 import { DataTableBodyRowComponent } from '../components/body/body-row.component';
@@ -14,19 +20,22 @@ export interface DraggableOptions {
   selector: '[row-draggable]'
 })
 export class RowDraggableDirective {
-
-  @ContentChild(DataTableBodyRowComponent, {static: false}) row: DataTableBodyRowComponent;
+  @ContentChild(DataTableBodyRowComponent, { static: false }) row: DataTableBodyRowComponent;
   @Output() onDragStartEvent = new EventEmitter();
+  @Output() onDragOverEvent = new EventEmitter<{ rowIndex: number; row: DataTableBodyRowComponent }>();
   @Input() dragEnabled: boolean;
-  @Input() dragData: any;  
+  @Input() dragData: any;
 
-  constructor(private dragService: RowDragService) {
-
-  }
+  constructor(private dragService: RowDragService) {}
 
   @HostBinding('draggable')
   get draggable() {
     return this.dragEnabled;
+  }
+
+  @HostListener('dragover')
+  onDragOver() {
+    this.onDragOverEvent.emit({ rowIndex: this.dragData, row: this.row });
   }
 
   @HostListener('dragstart', ['$event'])
