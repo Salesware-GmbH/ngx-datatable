@@ -22,7 +22,6 @@ export interface DraggableOptions {
 export class RowDraggableDirective {
   @ContentChild(DataTableBodyRowComponent, { static: false }) row: DataTableBodyRowComponent;
   @Output() onDragStartEvent = new EventEmitter();
-  @Output() onDragOverEvent = new EventEmitter<{ rowIndex: number; row: DataTableBodyRowComponent }>();
   @Input() dragEnabled: boolean;
   @Input() dragData: any;
 
@@ -31,11 +30,6 @@ export class RowDraggableDirective {
   @HostBinding('draggable')
   get draggable() {
     return this.dragEnabled;
-  }
-
-  @HostListener('dragover')
-  onDragOver() {
-    this.onDragOverEvent.emit({ rowIndex: this.dragData, row: this.row });
   }
 
   @HostListener('dragstart', ['$event'])

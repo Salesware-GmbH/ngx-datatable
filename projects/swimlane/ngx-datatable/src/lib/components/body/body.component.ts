@@ -73,12 +73,12 @@ import { DataTableBodyRowComponent } from './body-row.component';
             [expanded]="getRowExpanded(group)"
             [rowIndex]="getRowIndex(group && group[i])"
             (rowContextmenu)="rowContextmenu.emit($event)"
-            (onDragOverEvent)="onDragOver($event)"
           >
             <div
               *ngIf="dragService.dragActive"
               row-droppable
               (onDropEvent)="onDrop($event, indexes.first + i)"
+              (onDragOverEvent)="onDragOver(indexes.first + i, 'top')"
               [ngClass]="'drop-area-top' + (dragService.dragActive ? ' drag-active' : '')"
               dragOverClass="drop-over-active"
             >
@@ -88,6 +88,7 @@ import { DataTableBodyRowComponent } from './body-row.component';
               *ngIf="dragService.dragActive"
               row-droppable
               (onDropEvent)="onDrop($event, indexes.first + i + 1)"
+              (onDragOverEvent)="onDragOver(indexes.first + i + 1, 'bottom')"
               [ngClass]="'drop-area-bottom' + (dragService.dragActive ? ' drag-active' : '')"
               dragOverClass="drop-over-active"
             >
@@ -932,11 +933,17 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
     });
   }
 
-  onDragOver(event: { rowIndex: number; row: DataTableBodyRowComponent }) {
-    if (event.rowIndex <= this.indexes.first) {
-      this.scrollOnDrag.next(this.offsetY - this.getRowHeight(event.row));
-    } else if (event.rowIndex >= this.indexes.last - 2) {
-      this.scrollOnDrag.next(this.offsetY + this.getRowHeight(event.row));
+  onDragOver(rowIndex: number, position: 'top' | 'bottom') {
+    if (position === 'top' && rowIndex <= this.indexes.first) {
+      const prevRow = this.rows[rowIndex - 1];
+      if (prevRow) {
+        this.scrollOnDrag.next(this.offsetY - this.getRowHeight(prevRow));
+      }
+    } else if (position === 'bottom' && rowIndex >= this.indexes.last - 1) {
+      const nextRow = this.rows[rowIndex + 1];
+      if (nextRow) {
+        this.scrollOnDrag.next(this.offsetY + this.getRowHeight(nextRow));
+      }
     }
   }
 

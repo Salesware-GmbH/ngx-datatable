@@ -1,6 +1,12 @@
 import {
-  Output, EventEmitter, Input, HostListener, Directive,
-  HostBinding, ElementRef, Renderer2
+  Output,
+  EventEmitter,
+  Input,
+  HostListener,
+  Directive,
+  HostBinding,
+  ElementRef,
+  Renderer2
 } from '@angular/core';
 import { RowDragService } from '../services/row-drag.service';
 
@@ -12,7 +18,6 @@ export interface DropTargetOptions {
   selector: '[row-droppable]'
 })
 export class RowDropDirective {
-
   /**
    * Added to the element any time a draggable element is being dragged
    */
@@ -24,27 +29,21 @@ export class RowDropDirective {
   @Input() dragOverClass: string;
 
   @Output() onDropEvent = new EventEmitter();
+  @Output() onDragOverEvent = new EventEmitter();
   private options: DropTargetOptions = {};
 
   constructor(
     private element: ElementRef<HTMLElement>,
     private renderer: Renderer2,
-    private dragService: RowDragService) {
-
-  }
+    private dragService: RowDragService
+  ) {}
 
   public addDragOverClass() {
-    this.renderer.addClass(
-      this.element.nativeElement,
-      this.dragOverClass
-    );
+    this.renderer.addClass(this.element.nativeElement, this.dragOverClass);
   }
 
   public removeDragOverClass() {
-    this.renderer.removeClass(
-      this.element.nativeElement,
-      this.dragOverClass
-    );
+    this.renderer.removeClass(this.element.nativeElement, this.dragOverClass);
   }
 
   @HostListener('dragenter', ['$event'])
@@ -54,12 +53,13 @@ export class RowDropDirective {
 
     this.dragService.setActiveDropElement(this);
     event.preventDefault();
+
+    this.onDragOverEvent.emit();
   }
 
   @HostListener('dragexit', ['$event'])
   onDragLeave(event: DragEvent) {
     this.removeDragOverClass();
-
   }
 
   @HostListener('drop', ['$event'])
