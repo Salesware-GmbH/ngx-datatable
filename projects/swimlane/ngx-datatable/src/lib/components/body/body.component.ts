@@ -88,7 +88,7 @@ import { DataTableBodyRowComponent } from './body-row.component';
               *ngIf="dragService.dragActive"
               row-droppable
               (onDropEvent)="onDrop($event, indexes.first + i + 1)"
-              (onDragOverEvent)="onDragOver(indexes.first + i + 1, 'bottom')"
+              (onDragOverEvent)="onDragOver(indexes.first + i, 'bottom')"
               [ngClass]="'drop-area-bottom' + (dragService.dragActive ? ' drag-active' : '')"
               dragOverClass="drop-over-active"
             >
@@ -939,7 +939,7 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
       if (prevRow) {
         this.scrollOnDrag.next(this.offsetY - this.getRowHeight(prevRow));
       }
-    } else if (position === 'bottom' && rowIndex >= this.indexes.last - 1) {
+    } else if (position === 'bottom' && rowIndex >= this.indexes.last - 2) {
       const nextRow = this.rows[rowIndex + 1];
       if (nextRow) {
         this.scrollOnDrag.next(this.offsetY + this.getRowHeight(nextRow));
