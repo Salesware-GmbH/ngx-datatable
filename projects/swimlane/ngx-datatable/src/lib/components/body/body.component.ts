@@ -287,6 +287,7 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
   @Output() treeAction: EventEmitter<any> = new EventEmitter();
 
   private scrollerSet = new Subject<void>();
+  scrollerSet$ = this.scrollerSet.asObservable();
   private scrollOnDrag = new Subject<number>();
   private previousOffsetX: number;
   private scrollerSetSubscription: Subscription;
