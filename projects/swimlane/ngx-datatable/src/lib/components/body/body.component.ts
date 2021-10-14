@@ -205,7 +205,6 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
   @Input() set rows(val: any[]) {
     this._rows = val;
     this.recalcLayout();
-    this.previousOffsetX = this.offsetX;
 
     // scroll to previous x-offset
     if (val.length && (this.previousOffsetX || this.scrollToLeftRequested)) {
@@ -462,6 +461,14 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
 
     this.offsetY = scrollYPos;
     this.offsetX = scrollXPos;
+
+    if (this.rows?.length && scrollXPos >= 0) {
+      this.previousOffsetX = scrollXPos;
+    }
+
+    if (this.scrollToLeftRequested) {
+      this.previousOffsetX = 0;
+    }
 
     this.updateIndexes();
     this.updatePage(event.direction);
