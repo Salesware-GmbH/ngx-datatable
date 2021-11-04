@@ -8,8 +8,12 @@ import {
   ChangeDetectionStrategy,
   KeyValueDiffer,
   ChangeDetectorRef,
-  KeyValueDiffers
+  KeyValueDiffers,
+  ElementRef,
+  ViewChild,
+  ContentChild
 } from '@angular/core';
+import { DataTableBodyRowComponent } from './body-row.component';
 
 @Component({
   selector: 'datatable-row-wrapper',
@@ -81,7 +85,7 @@ export class DataTableRowWrapperComponent implements DoCheck {
   private _expanded: boolean = false;
   private _rowIndex: number;
 
-  constructor(private cd: ChangeDetectorRef, private differs: KeyValueDiffers) {
+  constructor(private cd: ChangeDetectorRef, private differs: KeyValueDiffers, private elementRef: ElementRef) {
     this.groupContext = {
       group: this.row,
       expanded: this.expanded,
@@ -118,5 +122,19 @@ export class DataTableRowWrapperComponent implements DoCheck {
     styles['width'] = this.innerWidth;
 
     return styles;
+  }
+
+  public getRowHeight(): number {
+    const element = <HTMLElement>(<HTMLElement>this.elementRef?.nativeElement)?.querySelector('datatable-body-row');
+
+    if (!!element) {
+      const oldHeight = element.style.height;
+      element.style.height = 'auto';
+      const bounds = element.getBoundingClientRect();
+      element.style.height = oldHeight;
+      return bounds.height;
+    }
+
+    return 0;
   }
 }

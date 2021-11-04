@@ -440,6 +440,8 @@ export class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
 
   @Input() endOfDataRow: { template: TemplateRef<any>; isShown: boolean };
 
+  @Input() virtualizedFluidRowHeight: boolean;
+
   /**
    * Body was scrolled typically in a `scrollbarV:true` scenario.
    */

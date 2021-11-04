@@ -115,7 +115,6 @@ export class DataTableBodyRowComponent implements DoCheck {
     return this._offsetX;
   }
 
-
   private _getColSpan: (row: any, column: any, columns: any[]) => number;
   @Input()
   public get getColSpan(): (row: any, column: any, columns: any[]) => number {
@@ -159,6 +158,10 @@ export class DataTableBodyRowComponent implements DoCheck {
   @HostBinding('style.height.px')
   @Input()
   rowHeight: number;
+
+  @HostBinding('style.minHeight.px')
+  @Input()
+  minRowHeight: number;
 
   @HostBinding('style.width.px')
   get columnsTotalWidths(): string {
@@ -335,8 +338,7 @@ export class DataTableBodyRowComponent implements DoCheck {
       }
 
       const colSpan = Number(this.getColSpan(this.row, column, this.columns));
-      if (colSpan <= 1 || isNaN(colSpan) || !isFinite(colSpan))
-      {
+      if (colSpan <= 1 || isNaN(colSpan) || !isFinite(colSpan)) {
         // Do not change Col-Span
         return;
       }
@@ -351,18 +353,17 @@ export class DataTableBodyRowComponent implements DoCheck {
       this._columnWidthMap.set(column, newWidth);
       ignoreCount = colSpan - 1;
     });
-
   }
 
   private setDataAttributes() {
     if (this.dataAttributesRow && this.row) {
-      const pre = 'data-'
+      const pre = 'data-';
       const res = this.dataAttributesRow(this.row);
       if (res.dataAttributes && res.dataAttributes.length > 0) {
         res.dataAttributes.forEach(attribute => {
-          const attrName = pre + attribute.key
+          const attrName = pre + attribute.key;
           this._element.setAttribute(attrName, attribute.value);
-        })
+        });
       }
     }
   }

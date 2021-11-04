@@ -24,6 +24,7 @@ import { DynamicHeightComponent } from './basic/dynamic-height.component';
 import { FooterDemoComponent } from './basic/footer.component';
 import { RowGroupingComponent } from './basic/row-grouping.component';
 import { RowDragDropComponent } from './basic/row-drag-drop.component';
+import { VirtualAutoComponent } from './basic/virtual-auto.component';
 
 // -- Themes
 import { BootstrapThemeComponent } from './basic/bootstrap.component';
@@ -79,6 +80,7 @@ import { CommonModule } from '@angular/common';
   declarations: [
     AppComponent,
     BasicAutoComponent,
+    VirtualAutoComponent,
     BasicFixedComponent,
     FullScreenComponent,
     FullScreenTreeComponent,
