@@ -103,11 +103,13 @@ export class RowHeightCache {
     }
   }
 
-  set(atRowIndex: number, value: number) {
+  set(atRowIndex: number, value: number): boolean {
     const current = this.queryBetween(atRowIndex, atRowIndex);
     if (value !== current) {
       this.update(atRowIndex, value - current);
+      return true;
     }
+    return false;
   }
 
   /**

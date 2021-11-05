@@ -599,7 +599,12 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
       }
       const newHeight = rowWrapper?.getRowHeight();
       if (newHeight !== 0) {
-        this.rowHeightsCache.set(idx, newHeight);
+        if (this.rowHeightsCache.set(idx, newHeight)) {
+          this.scroll.emit({
+            offsetY: 0,
+            offsetX: 0
+          });
+        }
       }
     }
   }

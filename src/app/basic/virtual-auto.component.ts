@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ContentChild, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ContentChild, NgZone, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { ColumnMode, TableColumn } from 'projects/swimlane/ngx-datatable/src/public-api';
 
 @Component({
@@ -40,7 +40,12 @@ import { ColumnMode, TableColumn } from 'projects/swimlane/ngx-datatable/src/pub
       let-isReplaced="isReplaced"
       ngx-datatable-cell-template
     >
-      <div style=" width: 300px; border: 1px dashed red;" [style.height.px]="row.height">
+      <div
+        style=" width: 300px; border: 1px dashed red;"
+        [style.height.px]="row.height"
+        [attr.data-height]="row.height"
+        class="dynamicSize"
+      >
         Random Height of {{ row.height }} px
       </div>
     </ng-template>
@@ -56,7 +61,7 @@ export class VirtualAutoComponent implements AfterViewInit {
   ColumnMode = ColumnMode;
   @ViewChild('textAreaCellTemplate', { static: false }) cellTemplate: TemplateRef<any>;
 
-  constructor() {
+  constructor(private zone: NgZone) {
     this.fetch((data: any[]) => {
       data.forEach(row => {
         row.height = Math.random() * 300;
@@ -71,6 +76,23 @@ export class VirtualAutoComponent implements AfterViewInit {
 
   ngAfterViewInit() {
     this.columns.find(col => col.prop === 'name').cellTemplate = this.cellTemplate;
+
+    this.zone.runOutsideAngular(() => {
+      window.setInterval(() => {
+        const rows = document.querySelectorAll('.dynamicSize');
+        rows.forEach((row: HTMLElement) => {
+          const random = Math.random() * 200 - 100;
+          let oldSize = Number(row.dataset.height) ?? 0;
+          if (isNaN(oldSize)) {
+            oldSize = 0;
+          }
+          const newSize = Math.min(300, Math.max(0, oldSize + random));
+          row.style.height = `${newSize}px`;
+          row.dataset.height = newSize.toString();
+          row.innerText = `Random Height of ${newSize}px`;
+        });
+      }, 1000);
+    });
   }
 
   fetch(cb) {
