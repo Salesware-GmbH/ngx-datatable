@@ -74,6 +74,8 @@ import { DataTableRowWrapperComponent } from './body-row-wrapper.component';
             [expanded]="getRowExpanded(group)"
             [rowIndex]="getRowIndex(group && group[i])"
             (rowContextmenu)="rowContextmenu.emit($event)"
+            resize-observer
+            (heightChanged)="onRowHeightChanged(group, rowWrapper)"
             #rowWrapper
           >
             <div
@@ -584,6 +586,24 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
     return this.rowHeight as number;
   }
 
+  onRowHeightChanged(rows: any, rowWrapper: DataTableRowWrapperComponent) {
+    if (this.scrollbarV && this.virtualization && this.virtualizedFluidRowHeight) {
+      let idx = 0;
+
+      if (this.groupedRows) {
+        // Get the latest row rowindex in a group
+        const row = rows[rows.length - 1];
+        idx = row ? this.getRowIndex(row) : 0;
+      } else {
+        idx = this.getRowIndex(rows);
+      }
+      const newHeight = rowWrapper?.getRowHeight();
+      if (newHeight !== 0) {
+        this.rowHeightsCache.set(idx, newHeight);
+      }
+    }
+  }
+
   /**
    * @param group the group with all rows
    */
@@ -662,13 +682,6 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
         idx = row ? this.getRowIndex(row) : 0;
       } else {
         idx = this.getRowIndex(rows);
-      }
-
-      if (this.virtualizedFluidRowHeight) {
-        const newHeight = rowInstance?.getRowHeight();
-        if (newHeight !== 0) {
-          this.rowHeightsCache.set(idx, newHeight);
-        }
       }
 
       // const pos = idx * rowHeight;
