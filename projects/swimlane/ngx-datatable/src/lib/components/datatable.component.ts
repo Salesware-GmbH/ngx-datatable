@@ -497,7 +497,7 @@ export class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
   /**
    * The size of a Row was changed
    */
-  @Output() rowSizeChanged: EventEmitter<any> = new EventEmitter();
+  @Output() rowSizeChanged: EventEmitter<{ row: any; newHeight: number }> = new EventEmitter();
 
   /**
    * CSS class applied if the header height if fixed height.
@@ -957,8 +957,8 @@ export class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
     }
   }
 
-  onRowSizeChanged(row: any) {
-    this.rowSizeChanged.emit(row);
+  onRowSizeChanged(data: { row: any; newHeight: number }) {
+    this.rowSizeChanged.emit(data);
     this.cd.detectChanges();
   }
 

@@ -291,7 +291,7 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
   @Output() rowDropped: EventEmitter<any> = new EventEmitter();
   @Output() rowContextmenu = new EventEmitter<{ event: MouseEvent; row: any }>(false);
   @Output() treeAction: EventEmitter<any> = new EventEmitter();
-  @Output() rowSizeChanged: EventEmitter<any> = new EventEmitter();
+  @Output() rowSizeChanged: EventEmitter<{ row: any; newHeight: number }> = new EventEmitter();
 
   private scrollerSet = new Subject<void>();
   scrollerSet$ = this.scrollerSet.asObservable();
@@ -601,7 +601,7 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
       const newHeight = rowWrapper?.getRowHeight();
       if (newHeight !== 0) {
         if (this.rowHeightsCache.set(idx, newHeight)) {
-          this.rowSizeChanged.next(rows);
+          this.rowSizeChanged.emit({ row: rows, newHeight });
         }
       }
     }
