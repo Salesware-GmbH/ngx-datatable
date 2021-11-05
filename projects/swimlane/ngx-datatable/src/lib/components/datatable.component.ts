@@ -440,6 +440,8 @@ export class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
 
   @Input() endOfDataRow: { template: TemplateRef<any>; isShown: boolean };
 
+  @Input() virtualizedFluidRowHeight: boolean = false;
+
   /**
    * Body was scrolled typically in a `scrollbarV:true` scenario.
    */
@@ -491,6 +493,11 @@ export class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
    * Row was dropped
    */
   @Output() rowDropped: EventEmitter<any> = new EventEmitter();
+
+  /**
+   * The size of a Row was changed
+   */
+  @Output() rowSizeChanged: EventEmitter<{ row: any; newHeight: number }> = new EventEmitter();
 
   /**
    * CSS class applied if the header height if fixed height.
@@ -948,6 +955,11 @@ export class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
         selected: this.selected
       });
     }
+  }
+
+  onRowSizeChanged(data: { row: any; newHeight: number }) {
+    this.rowSizeChanged.emit(data);
+    this.cd.detectChanges();
   }
 
   /**

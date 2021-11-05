@@ -103,6 +103,15 @@ export class RowHeightCache {
     }
   }
 
+  set(atRowIndex: number, value: number): boolean {
+    const current = this.queryBetween(atRowIndex, atRowIndex);
+    if (value !== current) {
+      this.update(atRowIndex, value - current);
+      return true;
+    }
+    return false;
+  }
+
   /**
    * Range Sum query from 1 to the rowIndex
    */

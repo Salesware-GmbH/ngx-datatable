@@ -23,6 +23,7 @@ import { PerfectScrollbarComponent } from 'ngx-perfect-scrollbar';
 import { Subject, Subscription } from 'rxjs';
 import { takeUntil, throttleTime } from 'rxjs/operators';
 import { DataTableBodyRowComponent } from './body-row.component';
+import { DataTableRowWrapperComponent } from './body-row-wrapper.component';
 
 @Component({
   selector: 'datatable-body',
@@ -64,7 +65,7 @@ import { DataTableBodyRowComponent } from './body-row.component';
             [groupedRows]="groupedRows"
             *ngFor="let group of temp; let i = index; trackBy: rowTrackingFn"
             [innerWidth]="innerWidth"
-            [ngStyle]="getRowsStyles(group)"
+            [ngStyle]="getRowsStyles(group, rowWrapper)"
             [rowDetail]="rowDetail"
             [groupHeader]="groupHeader"
             [offsetX]="offsetX"
@@ -73,6 +74,9 @@ import { DataTableBodyRowComponent } from './body-row.component';
             [expanded]="getRowExpanded(group)"
             [rowIndex]="getRowIndex(group && group[i])"
             (rowContextmenu)="rowContextmenu.emit($event)"
+            resize-observer
+            (heightChanged)="onRowHeightChanged(group, rowWrapper)"
+            #rowWrapper
           >
             <div
               *ngIf="dragService.dragActive"
@@ -102,6 +106,7 @@ import { DataTableBodyRowComponent } from './body-row.component';
               [offsetX]="offsetX"
               [columns]="columns"
               [rowHeight]="getRowHeight(group)"
+              [minRowHeight]="getMinRowHeight(group)"
               [row]="group"
               [rowIndex]="getRowIndex(group)"
               [expanded]="getRowExpanded(group)"
@@ -124,6 +129,7 @@ import { DataTableBodyRowComponent } from './body-row.component';
                 [offsetX]="offsetX"
                 [columns]="columns"
                 [rowHeight]="getRowHeight(row)"
+                [minRowHeight]="getMinRowHeight(row)"
                 [row]="row"
                 [group]="group.value"
                 [rowIndex]="getRowIndex(row)"
@@ -192,6 +198,7 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
   @Input() dataAttributesRow: any;
   @Input() dataAttributesCell: any;
   @Input() colSpan: (row: any, column: any, columns: any[]) => number;
+  @Input() virtualizedFluidRowHeight: boolean;
 
   @Input() set pageSize(val: number) {
     this._pageSize = val;
@@ -284,6 +291,7 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
   @Output() rowDropped: EventEmitter<any> = new EventEmitter();
   @Output() rowContextmenu = new EventEmitter<{ event: MouseEvent; row: any }>(false);
   @Output() treeAction: EventEmitter<any> = new EventEmitter();
+  @Output() rowSizeChanged: EventEmitter<{ row: any; newHeight: number }> = new EventEmitter();
 
   private scrollerSet = new Subject<void>();
   scrollerSet$ = this.scrollerSet.asObservable();
@@ -554,12 +562,49 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
    * Get the row height
    */
   getRowHeight(row: any): number {
+    if (this.virtualizedFluidRowHeight) {
+      return undefined;
+    }
+
     // if its a function return it
     if (typeof this.rowHeight === 'function') {
       return this.rowHeight(row);
     }
 
     return this.rowHeight as number;
+  }
+
+  getMinRowHeight(row: any): number {
+    if (!this.virtualizedFluidRowHeight) {
+      return undefined;
+    }
+
+    // if its a function return it
+    if (typeof this.rowHeight === 'function') {
+      return this.rowHeight(row);
+    }
+
+    return this.rowHeight as number;
+  }
+
+  onRowHeightChanged(rows: any, rowWrapper: DataTableRowWrapperComponent) {
+    if (this.scrollbarV && this.virtualization && this.virtualizedFluidRowHeight) {
+      let idx = 0;
+
+      if (this.groupedRows) {
+        // Get the latest row rowindex in a group
+        const row = rows[rows.length - 1];
+        idx = row ? this.getRowIndex(row) : 0;
+      } else {
+        idx = this.getRowIndex(rows);
+      }
+      const newHeight = rowWrapper?.getRowHeight();
+      if (newHeight !== 0) {
+        if (this.rowHeightsCache.set(idx, newHeight)) {
+          this.rowSizeChanged.emit({ row: rows, newHeight });
+        }
+      }
+    }
   }
 
   /**
@@ -623,7 +668,7 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
    *
    * @memberOf DataTableBodyComponent
    */
-  getRowsStyles(rows: any): any {
+  getRowsStyles(rows: any, rowInstance: DataTableRowWrapperComponent): any {
     const styles: any = {};
 
     // only add styles for the group if there is a group

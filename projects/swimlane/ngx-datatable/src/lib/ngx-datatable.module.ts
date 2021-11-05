@@ -35,15 +35,11 @@ import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { RowDraggableDirective } from './directives/row-draggable.directive';
 import { RowDropDirective } from './directives/row-droppable.directive';
 import { RowDragService } from './services/row-drag.service';
+import { ResizeObserverDirective } from './directives/resize-observer.directive';
 
 @NgModule({
   imports: [CommonModule, PerfectScrollbarModule],
-  providers: [
-    ScrollbarHelper, 
-    DimensionsHelper, 
-    ColumnChangesService,
-    RowDragService
-  ],
+  providers: [ScrollbarHelper, DimensionsHelper, ColumnChangesService, RowDragService],
   declarations: [
     DataTableFooterTemplateDirective,
     VisibilityDirective,
@@ -74,7 +70,8 @@ import { RowDragService } from './services/row-drag.service';
     DatatableGroupHeaderTemplateDirective,
     DataTableSummaryRowComponent,
     RowDraggableDirective,
-    RowDropDirective
+    RowDropDirective,
+    ResizeObserverDirective
   ],
   exports: [
     DatatableComponent,

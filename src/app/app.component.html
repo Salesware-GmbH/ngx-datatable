@@ -22,6 +22,9 @@
             <a href="#virtual-scroll" (click)="state = 'virtual-scroll'">10k Rows</a>
           </li>
           <li>
+            <a href="#virtual-auto" (click)="state = 'virtual-auto'">Virtual Fluid-Height</a>
+          </li>
+          <li>
             <a href="#full-screen" (click)="state = 'full-screen'">Full Screen</a>
           </li>
           <li>
@@ -216,6 +219,7 @@
     <row-css-demo *ngIf="state === 'css'"></row-css-demo>
     <dynamic-height-demo *ngIf="state === 'dynamic'"></dynamic-height-demo>
     <footer-demo *ngIf="state === 'footer'"></footer-demo>
+    <virtual-auto-demo *ngIf="state === 'virtual-auto'"></virtual-auto-demo>
 
     <!-- Themes -->
     <basic-dark-theme-demo *ngIf="state === 'dark'"></basic-dark-theme-demo>
