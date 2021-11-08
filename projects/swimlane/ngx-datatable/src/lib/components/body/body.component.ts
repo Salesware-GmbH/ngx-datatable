@@ -687,6 +687,9 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
         idx = this.getRowIndex(rows);
       }
 
+      // Make sure the correct height is set
+      this.onRowHeightChanged(rows, rowInstance);
+
       // const pos = idx * rowHeight;
       // The position of this row would be the sum of all row heights
       // until the previous row position.
