@@ -232,6 +232,7 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
     this._columns = val;
     const colsByPin = columnsByPin(val);
     this.columnGroupWidths = columnGroupWidths(colsByPin, val);
+    this.perfectScrollbar?.directiveRef?.update();
   }
 
   get columns(): any[] {
