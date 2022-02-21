@@ -99,6 +99,7 @@ import { DataTableRowWrapperComponent } from './body-row-wrapper.component';
               <div class="drop-indicator bottom"></div>
             </div>
             <datatable-body-row
+              role="row"
               *ngIf="!groupedRows; else groupedRowsTemplate"
               tabindex="-1"
               [isSelected]="selector.getRowSelected(group)"
@@ -122,6 +123,7 @@ import { DataTableRowWrapperComponent } from './body-row-wrapper.component';
             </datatable-body-row>
             <ng-template #groupedRowsTemplate>
               <datatable-body-row
+                role="row"
                 *ngFor="let row of group.value; let i = index; trackBy: rowTrackingFn"
                 tabindex="-1"
                 [isSelected]="selector.getRowSelected(row)"
@@ -144,6 +146,7 @@ import { DataTableRowWrapperComponent } from './body-row-wrapper.component';
             </ng-template>
           </datatable-row-wrapper>
           <datatable-summary-row
+            role="row"
             *ngIf="summaryRow && summaryPosition === 'bottom'"
             [ngStyle]="getBottomSummaryRowStyles()"
             [rowHeight]="summaryHeight"

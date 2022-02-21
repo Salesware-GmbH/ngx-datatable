@@ -19,6 +19,7 @@ import { translateXY } from '../../utils/translate';
   selector: 'datatable-header',
   template: `
     <div
+      role="row"
       orderable
       (reorder)="onColumnReordered($event)"
       (targetChanged)="onTargetChanged($event)"
@@ -31,6 +32,7 @@ import { translateXY } from '../../utils/translate';
         [ngStyle]="_styleByGroup[colGroup.type]"
       >
         <datatable-header-cell
+          role="columnheader"
           *ngFor="let column of colGroup.columns; trackBy: columnTrackingFn"
           resizeable
           [resizeEnabled]="column.resizeable"
