@@ -36,12 +36,16 @@ export class ResizeableDirective implements OnDestroy, AfterViewInit {
 
   ngAfterViewInit(): void {
     const renderer2 = this.renderer;
-    this.resizeHandle = renderer2.createElement('span');
+    this.resizeHandle = renderer2.createElement('div');
+    const span = renderer2.createElement('span');
+    renderer2.addClass(span, 'resize-span');
+
     if (this.resizeEnabled) {
       renderer2.addClass(this.resizeHandle, 'resize-handle');
     } else {
       renderer2.addClass(this.resizeHandle, 'resize-handle--not-resizable');
     }
+    renderer2.appendChild(this.resizeHandle, span);
     renderer2.appendChild(this.element, this.resizeHandle);
   }
 
