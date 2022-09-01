@@ -7,10 +7,12 @@ import { DOCUMENT } from '@angular/common';
  */
 @Injectable()
 export class ScrollbarHelper {
-  width: number = this.getWidth();
+  // 4Sellers: We use the perfect-scrollbar. So this value needs to be 0
+  width: number = 0; // this.getWidth();
 
   constructor(@Inject(DOCUMENT) private document: any) {}
 
+  /*
   getWidth(): number {
     const outer = this.document.createElement('div');
     outer.style.visibility = 'hidden';
@@ -30,4 +32,5 @@ export class ScrollbarHelper {
 
     return widthNoScroll - widthWithScroll;
   }
+  */
 }
