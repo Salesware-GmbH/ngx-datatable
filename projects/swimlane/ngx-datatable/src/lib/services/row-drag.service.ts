@@ -4,35 +4,39 @@ import { DataTableBodyRowComponent } from '../components/body/body-row.component
 
 @Injectable()
 export class RowDragService {
-
   // variable for holding if drag is active at the moment
   // This is important for dynamically setting z-index on drop areas
   // @see body.component.ts
   public dragActive = false;
 
   /**
+   * The Element current beening dragged
+   */
+  public row: DataTableBodyRowComponent = null;
+
+  /**
    * Event which will be emitted on Drag Start
    */
-  @Output() onDragStart = new EventEmitter();
+  @Output() onDragStart = new EventEmitter<DataTableBodyRowComponent>();
 
   /**
    * Event which will be emitted on Drag End
    */
-  @Output() onDragEnd = new EventEmitter();
+  @Output() onDragEnd = new EventEmitter<DataTableBodyRowComponent>();
 
   private currentDropDirective: RowDropDirective = null;
-  private row: DataTableBodyRowComponent = null;
 
   startDrag(row: DataTableBodyRowComponent) {
     this.row = row;
     this.dragActive = true;
-    this.onDragStart.emit();
+    this.onDragStart.emit(row);
   }
 
   endDrag() {
+    const currentDragElement = this.row;
     this.row = null;
     this.dragActive = false;
-    this.onDragEnd.emit();
+    this.onDragEnd.emit(currentDragElement);
     if (this.currentDropDirective !== null) {
       this.currentDropDirective.removeDragOverClass();
       this.currentDropDirective = null;
@@ -40,7 +44,6 @@ export class RowDragService {
   }
 
   setActiveDropElement(dropDirective: RowDropDirective) {
-
     if (this.currentDropDirective !== dropDirective) {
       if (this.currentDropDirective !== null) {
         this.currentDropDirective.removeDragOverClass();

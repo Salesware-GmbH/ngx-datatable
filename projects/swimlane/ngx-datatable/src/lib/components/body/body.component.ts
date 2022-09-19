@@ -63,6 +63,7 @@ import { DataTableRowWrapperComponent } from './body-row-wrapper.component';
             [dragEnabled]="rowsDraggable"
             [dragData]="indexes.first + i"
             [groupedRows]="groupedRows"
+            [selectOnDrag]="selectRowOnDrag"
             *ngFor="let group of temp; let i = index; trackBy: rowTrackingFn"
             [innerWidth]="innerWidth"
             [ngStyle]="getRowsStyles(group, rowWrapper)"
@@ -198,6 +199,7 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
   @Input() summaryPosition: string;
   @Input() summaryHeight: number;
   @Input() rowsDraggable: boolean;
+  @Input() selectRowOnDrag: boolean;
   @Input() dataAttributesRow: any;
   @Input() dataAttributesCell: any;
   @Input() colSpan: (row: any, column: any, columns: any[]) => number;

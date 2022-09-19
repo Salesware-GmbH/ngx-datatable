@@ -24,6 +24,7 @@ export class RowDraggableDirective {
   @Output() onDragStartEvent = new EventEmitter();
   @Input() dragEnabled: boolean;
   @Input() dragData: any;
+  @Input() selectOnDrag = true;
 
   constructor(private dragService: RowDragService) {}
 
@@ -35,9 +36,10 @@ export class RowDraggableDirective {
   @HostListener('dragstart', ['$event'])
   onDragStart(event: DragEvent) {
     // when dragging row is not selected --> select it programmatically
-    if (this.row !== null) {
+    if (this.selectOnDrag && this.row !== null) {
       this.row.simulateClick();
     }
+
     this.dragService.startDrag(this.row);
     event.dataTransfer.setData('data', this.dragData);
   }

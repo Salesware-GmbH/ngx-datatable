@@ -413,9 +413,14 @@ export class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
   @Input() summaryPosition: string = 'top';
 
   /**
-   * A property holds if row drag and drop is enabled
+   * Is row drag and drop enabled
    */
   @Input() rowsDraggable: boolean = false;
+
+  /**
+   * Should the row be selected when a row is dragged
+   */
+  @Input() selectRowOnDrag: boolean = true;
 
   /**
    * HTML-Attributes for e.g. automated testing
