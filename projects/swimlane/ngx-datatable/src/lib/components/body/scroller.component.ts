@@ -20,7 +20,7 @@ import {
   },
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ScrollerComponent {
+export class ScrollerComponent implements OnInit, OnDestroy {
   @Input() scrollbarV: boolean = false;
   @Input() scrollbarH: boolean = false;
 
@@ -46,6 +46,23 @@ export class ScrollerComponent {
 
   constructor(private ngZone: NgZone, element: ElementRef, private renderer: Renderer2) {
     this.element = element.nativeElement;
+  }
+
+  ngOnInit(): void {
+    // manual bind so we don't always listen
+    if (this.scrollbarV || this.scrollbarH) {
+      const renderer = this.renderer;
+      this.parentElement = renderer.parentNode(renderer.parentNode(this.element));
+      this._scrollEventListener = this.onScrolled.bind(this);
+      this.parentElement.addEventListener('scroll', this._scrollEventListener);
+    }
+  }
+
+  ngOnDestroy(): void {
+    if (this._scrollEventListener) {
+      this.parentElement.removeEventListener('scroll', this._scrollEventListener);
+      this._scrollEventListener = null;
+    }
   }
 
   setOffset(offsetY: number): void {

@@ -28,7 +28,6 @@ import { DataTableRowWrapperComponent } from './body-row-wrapper.component';
 @Component({
   selector: 'datatable-body',
   template: `
-    <perfect-scrollbar (psScrollY)="onScroll($event)" (psScrollX)="onScroll($event)">
       <datatable-selection
         #selector
         [selected]="selected"
@@ -40,6 +39,7 @@ import { DataTableRowWrapperComponent } from './body-row-wrapper.component';
         (select)="select.emit($event)"
         (activate)="activate.emit($event)"
       >
+      <perfect-scrollbar>
         <datatable-progress *ngIf="loadingIndicator"> </datatable-progress>
         <datatable-scroller
           *ngIf="rows?.length"
@@ -164,9 +164,9 @@ import { DataTableRowWrapperComponent } from './body-row-wrapper.component';
             <ng-container [ngTemplateOutlet]="endOfDataRow.template"></ng-container>
           </div>
         </datatable-scroller>
+        </perfect-scrollbar>
         <div class="empty-row" *ngIf="!rows?.length && !loadingIndicator" [innerHTML]="emptyMessage"></div>
       </datatable-selection>
-    </perfect-scrollbar>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
@@ -974,13 +974,6 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
   }
 
   /** custom 4sellers */
-  onScroll(event: CustomEvent) {
-    if (!this.scroller) {
-      return;
-    }
-    this.scroller.onScrolled(event);
-  }
-
   @HostListener('dragend', ['$event'])
   onDragEnd(event) {
     this.dragService.endDrag();
