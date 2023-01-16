@@ -15,6 +15,11 @@ export class RowDragService {
   public row: DataTableBodyRowComponent = null;
 
   /**
+   * The Event currently beeing emitted
+   */
+  public currentEvent: DragEvent;
+
+  /**
    * Event which will be emitted on Drag Start
    */
   @Output() onDragStart = new EventEmitter<DataTableBodyRowComponent>();
@@ -26,21 +31,26 @@ export class RowDragService {
 
   private currentDropDirective: RowDropDirective = null;
 
-  startDrag(row: DataTableBodyRowComponent) {
+  startDrag(row: DataTableBodyRowComponent, event: DragEvent) {
     this.row = row;
     this.dragActive = true;
+    this.currentEvent = event;
     this.onDragStart.emit(row);
+    this.currentEvent = null;
+    this.row = null;
   }
 
-  endDrag() {
+  endDrag(event: DragEvent) {
     const currentDragElement = this.row;
-    this.row = null;
+    this.currentEvent = event;
     this.dragActive = false;
     this.onDragEnd.emit(currentDragElement);
     if (this.currentDropDirective !== null) {
       this.currentDropDirective.removeDragOverClass();
       this.currentDropDirective = null;
     }
+    this.row = null;
+    this.currentEvent = null;
   }
 
   setActiveDropElement(dropDirective: RowDropDirective) {

@@ -40,7 +40,7 @@ export class RowDraggableDirective {
       this.row.simulateClick();
     }
 
-    this.dragService.startDrag(this.row);
+    this.dragService.startDrag(this.row, event);
     event.dataTransfer.setData('data', this.dragData);
   }
 }

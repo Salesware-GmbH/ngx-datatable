@@ -66,7 +66,7 @@ export class RowDropDirective {
   onDrop(event: DragEvent) {
     const data = Number.parseInt(event.dataTransfer.getData('data'), 10);
     this.removeDragOverClass();
-    this.dragService.endDrag();
+    this.dragService.endDrag(event);
     this.onDropEvent.emit(data);
   }
 }

@@ -28,17 +28,17 @@ import { DataTableRowWrapperComponent } from './body-row-wrapper.component';
 @Component({
   selector: 'datatable-body',
   template: `
-      <datatable-selection
-        #selector
-        [selected]="selected"
-        [rows]="rows"
-        [selectCheck]="selectCheck"
-        [selectEnabled]="selectEnabled"
-        [selectionType]="selectionType"
-        [rowIdentity]="rowIdentity"
-        (select)="select.emit($event)"
-        (activate)="activate.emit($event)"
-      >
+    <datatable-selection
+      #selector
+      [selected]="selected"
+      [rows]="rows"
+      [selectCheck]="selectCheck"
+      [selectEnabled]="selectEnabled"
+      [selectionType]="selectionType"
+      [rowIdentity]="rowIdentity"
+      (select)="select.emit($event)"
+      (activate)="activate.emit($event)"
+    >
       <perfect-scrollbar>
         <datatable-progress *ngIf="loadingIndicator"> </datatable-progress>
         <datatable-scroller
@@ -164,9 +164,9 @@ import { DataTableRowWrapperComponent } from './body-row-wrapper.component';
             <ng-container [ngTemplateOutlet]="endOfDataRow.template"></ng-container>
           </div>
         </datatable-scroller>
-        </perfect-scrollbar>
-        <div class="empty-row" *ngIf="!rows?.length && !loadingIndicator" [innerHTML]="emptyMessage"></div>
-      </datatable-selection>
+      </perfect-scrollbar>
+      <div class="empty-row" *ngIf="!rows?.length && !loadingIndicator" [innerHTML]="emptyMessage"></div>
+    </datatable-selection>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
@@ -976,7 +976,7 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
   /** custom 4sellers */
   @HostListener('dragend', ['$event'])
   onDragEnd(event) {
-    this.dragService.endDrag();
+    this.dragService.endDrag(event);
   }
 
   // Event when user dropped a row on a specific index
