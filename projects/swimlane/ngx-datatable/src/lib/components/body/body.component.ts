@@ -990,14 +990,16 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
 
   onDragOver(rowIndex: number, position: 'top' | 'bottom') {
     if (position === 'top' && rowIndex <= this.indexes.first) {
-      const prevRow = this.rows[rowIndex - 1];
+      const id = rowIndex - 1;
+      const prevRow = this.rows[id];
       if (prevRow) {
-        this.scrollOnDrag.next(this.offsetY - this.getRowHeight(prevRow));
+        this.scrollOnDrag.next(this.rowHeightsCache.query(id));
       }
     } else if (position === 'bottom' && rowIndex >= this.indexes.last - 2) {
-      const nextRow = this.rows[rowIndex + 1];
+      const id = rowIndex + 1;
+      const nextRow = this.rows[id];
       if (nextRow) {
-        this.scrollOnDrag.next(this.offsetY + this.getRowHeight(nextRow));
+        this.scrollOnDrag.next(this.rowHeightsCache.query(id));
       }
     }
   }
