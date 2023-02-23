@@ -993,13 +993,13 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
       const id = rowIndex - 1;
       const prevRow = this.rows[id];
       if (prevRow) {
-        this.scrollOnDrag.next(this.rowHeightsCache.query(id));
+        this.scrollOnDrag.next(this.rowHeightsCache.query(id - 1));
       }
     } else if (position === 'bottom' && rowIndex >= this.indexes.last - 2) {
       const id = rowIndex + 1;
       const nextRow = this.rows[id];
       if (nextRow) {
-        this.scrollOnDrag.next(this.rowHeightsCache.query(id));
+        this.scrollOnDrag.next(this.rowHeightsCache.query(this.indexes.first));
       }
     }
   }
