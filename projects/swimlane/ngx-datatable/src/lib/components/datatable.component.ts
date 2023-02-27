@@ -880,6 +880,10 @@ export class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
       adjustColumnWidths(columns, width);
     }
 
+    if (!!this.bodyComponent) {
+      this.bodyComponent.columns = this._internalColumns;
+    }
+
     return columns;
   }
 
