@@ -60,6 +60,7 @@ import { DataTableRowWrapperComponent } from './body-row-wrapper.component';
           </datatable-summary-row>
           <datatable-row-wrapper
             row-draggable
+            [dragReference]="dragReference"
             [dragEnabled]="rowsDraggable"
             [dragData]="indexes.first + i"
             [groupedRows]="groupedRows"
@@ -80,7 +81,7 @@ import { DataTableRowWrapperComponent } from './body-row-wrapper.component';
             #rowWrapper
           >
             <div
-              *ngIf="dragService.dragActive"
+              *ngIf="dragService.dragActive && rowsDraggable && dragReference === dragService.dragReference"
               row-droppable
               (onDropEvent)="onDrop($event, indexes.first + i)"
               (onDragOverEvent)="onDragOver(indexes.first + i, 'top')"
@@ -90,7 +91,7 @@ import { DataTableRowWrapperComponent } from './body-row-wrapper.component';
               <div class="drop-indicator"></div>
             </div>
             <div
-              *ngIf="dragService.dragActive"
+              *ngIf="dragService.dragActive && rowsDraggable && dragReference === dragService.dragReference"
               row-droppable
               (onDropEvent)="onDrop($event, indexes.first + i + 1)"
               (onDragOverEvent)="onDragOver(indexes.first + i, 'bottom')"
@@ -340,6 +341,7 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
     return undefined;
   }
 
+  dragReference = this;
   rowHeightsCache: RowHeightCache = new RowHeightCache();
   temp: any[] = [];
   offsetY = 0;

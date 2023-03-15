@@ -25,6 +25,7 @@ export class RowDraggableDirective {
   @Input() dragEnabled: boolean;
   @Input() dragData: any;
   @Input() selectOnDrag = true;
+  @Input() dragReference: any;
 
   constructor(private dragService: RowDragService) {}
 
@@ -40,7 +41,7 @@ export class RowDraggableDirective {
       this.row.simulateClick();
     }
 
-    this.dragService.startDrag(this.row, event);
+    this.dragService.startDrag(this.row, event, this.dragReference);
     event.dataTransfer.setData('data', this.dragData);
   }
 }
