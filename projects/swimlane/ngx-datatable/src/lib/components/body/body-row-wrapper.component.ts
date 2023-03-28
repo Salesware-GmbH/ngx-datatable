@@ -124,9 +124,17 @@ export class DataTableRowWrapperComponent implements DoCheck {
     return styles;
   }
 
-  public getRowHeight(): number {
+  public getActualRowHeight(): number {
     const element = <HTMLElement>(<HTMLElement>this.elementRef?.nativeElement)?.querySelector('datatable-body-row');
+    return this.getHeight(element);
+  }
 
+  public getActualRowDetailHeight(): number {
+    const element = <HTMLElement>(<HTMLElement>this.elementRef?.nativeElement)?.querySelector('.datatable-row-detail');
+    return this.getHeight(element);
+  }
+
+  private getHeight(element: HTMLElement): number {
     if (!!element) {
       const oldHeight = element.style.height;
       element.style.height = 'auto';

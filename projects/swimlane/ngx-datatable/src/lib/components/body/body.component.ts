@@ -205,6 +205,7 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
   @Input() dataAttributesCell: any;
   @Input() colSpan: (row: any, column: any, columns: any[]) => number;
   @Input() virtualizedFluidRowHeight: boolean;
+  @Input() forceDetailOpen = false;
 
   @Input() set pageSize(val: number) {
     this._pageSize = val;
@@ -298,7 +299,7 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
   @Output() rowDropped: EventEmitter<any> = new EventEmitter();
   @Output() rowContextmenu = new EventEmitter<{ event: MouseEvent; row: any }>(false);
   @Output() treeAction: EventEmitter<any> = new EventEmitter();
-  @Output() rowSizeChanged: EventEmitter<{ row: any; newHeight: number }> = new EventEmitter();
+  @Output() rowSizeChanged: EventEmitter<{ row: any; newHeight: number; detailHeight: number }> = new EventEmitter();
 
   private scrollerSet = new Subject<void>();
   scrollerSet$ = this.scrollerSet.asObservable();
@@ -606,10 +607,11 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
       } else {
         idx = this.getRowIndex(rows);
       }
-      const newHeight = rowWrapper?.getRowHeight();
-      if (newHeight !== 0) {
-        if (this.rowHeightsCache.set(idx, newHeight)) {
-          this.rowSizeChanged.emit({ row: rows, newHeight });
+      const newRowHeight = rowWrapper?.getActualRowHeight() ?? 0;
+      const newDetailHeight = !this.rowDetail ? 0 : rowWrapper?.getActualRowDetailHeight() ?? 0;
+      if (newRowHeight !== 0) {
+        if (this.rowHeightsCache.set(idx, newRowHeight + newDetailHeight)) {
+          this.rowSizeChanged.emit({ row: rows, newHeight: newRowHeight, detailHeight: newDetailHeight });
         }
       }
     }
@@ -945,6 +947,10 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
    * Returns if the row was expanded and set default row expansion when row expansion is empty
    */
   getRowExpanded(row: any): boolean {
+    if (this.forceDetailOpen) {
+      return true;
+    }
+
     if (this.rowExpansions.length === 0 && this.groupExpansionDefault) {
       for (const group of this.groupedRows) {
         this.rowExpansions.push(group);

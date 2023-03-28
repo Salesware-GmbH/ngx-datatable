@@ -447,6 +447,8 @@ export class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
 
   @Input() virtualizedFluidRowHeight: boolean = false;
 
+  @Input() forceDetailOpen: boolean = false;
+
   /**
    * Body was scrolled typically in a `scrollbarV:true` scenario.
    */
@@ -502,7 +504,7 @@ export class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
   /**
    * The size of a Row was changed
    */
-  @Output() rowSizeChanged: EventEmitter<{ row: any; newHeight: number }> = new EventEmitter();
+  @Output() rowSizeChanged: EventEmitter<{ row: any; newHeight: number; detailHeight: number }> = new EventEmitter();
 
   /**
    * CSS class applied if the header height if fixed height.
@@ -966,7 +968,7 @@ export class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
     }
   }
 
-  onRowSizeChanged(data: { row: any; newHeight: number }) {
+  onRowSizeChanged(data: { row: any; newHeight: number; detailHeight: number }) {
     this.rowSizeChanged.emit(data);
     this.cd.detectChanges();
   }
