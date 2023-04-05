@@ -61,7 +61,7 @@ import { DataTableRowWrapperComponent } from './body-row-wrapper.component';
           <datatable-row-wrapper
             row-draggable
             [dragReference]="dragReference"
-            [dragEnabled]="rowsDraggable"
+            [dragEnabled]="rowsDraggable && !useCustomDragHandling"
             [dragData]="indexes.first + i"
             [groupedRows]="groupedRows"
             [selectOnDrag]="selectRowOnDrag"
@@ -200,6 +200,7 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
   @Input() summaryPosition: string;
   @Input() summaryHeight: number;
   @Input() rowsDraggable: boolean;
+  @Input() useCustomDragHandling: boolean;
   @Input() selectRowOnDrag: boolean;
   @Input() dataAttributesRow: any;
   @Input() dataAttributesCell: any;

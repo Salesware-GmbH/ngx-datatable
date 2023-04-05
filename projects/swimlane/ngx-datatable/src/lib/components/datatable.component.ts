@@ -418,6 +418,11 @@ export class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
   @Input() rowsDraggable: boolean = false;
 
   /**
+   * Should custom drag and drop handling be used
+   */
+  @Input() useCustomDragHandling: boolean = false;
+
+  /**
    * Should the row be selected when a row is dragged
    */
   @Input() selectRowOnDrag: boolean = true;
