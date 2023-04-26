@@ -84,7 +84,7 @@ import { DataTableRowWrapperComponent } from './body-row-wrapper.component';
               *ngIf="dragService.dragActive && rowsDraggable && dragReference === dragService.dragReference"
               row-droppable
               (onDropEvent)="onDrop($event, indexes.first + i)"
-              (onDragOverEvent)="onDragOver(indexes.first + i, 'top')"
+              (onDragOverEvent)="onDragOver(indexes.first + i)"
               [ngClass]="'drop-area-top' + (dragService.dragActive ? ' drag-active' : '')"
               dragOverClass="drop-over-active"
             >
@@ -94,7 +94,7 @@ import { DataTableRowWrapperComponent } from './body-row-wrapper.component';
               *ngIf="dragService.dragActive && rowsDraggable && dragReference === dragService.dragReference"
               row-droppable
               (onDropEvent)="onDrop($event, indexes.first + i + 1)"
-              (onDragOverEvent)="onDragOver(indexes.first + i, 'bottom')"
+              (onDragOverEvent)="onDragOver(indexes.first + i)"
               [ngClass]="'drop-area-bottom' + (dragService.dragActive ? ' drag-active' : '')"
               dragOverClass="drop-over-active"
             >
@@ -997,14 +997,14 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
     });
   }
 
-  onDragOver(rowIndex: number, position: 'top' | 'bottom') {
-    if (position === 'top' && rowIndex <= this.indexes.first) {
+  onDragOver(rowIndex: number) {
+    if (rowIndex <= this.indexes.first) {
       const id = rowIndex - 1;
       const prevRow = this.rows[id];
       if (prevRow) {
         this.scrollOnDrag.next(this.rowHeightsCache.query(id - 1));
       }
-    } else if (position === 'bottom' && rowIndex >= this.indexes.last - 2) {
+    } else if (rowIndex >= this.indexes.last - 2) {
       const id = rowIndex + 1;
       const nextRow = this.rows[id];
       if (nextRow) {
