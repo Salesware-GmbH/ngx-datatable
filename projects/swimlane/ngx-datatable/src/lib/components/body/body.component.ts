@@ -83,7 +83,6 @@ import { DataTableRowWrapperComponent } from './body-row-wrapper.component';
             <div
               *ngIf="dragService.dragActive && rowsDraggable && dragReference === dragService.dragReference"
               row-droppable
-              [dragEnabled]="rowsDraggable && !useCustomDragHandling"
               (onDropEvent)="onDrop($event, indexes.first + i)"
               (onDragOverEvent)="onDragOver(indexes.first + i)"
               [ngClass]="'drop-area-top' + (dragService.dragActive ? ' drag-active' : '')"
@@ -94,7 +93,6 @@ import { DataTableRowWrapperComponent } from './body-row-wrapper.component';
             <div
               *ngIf="dragService.dragActive && rowsDraggable && dragReference === dragService.dragReference"
               row-droppable
-              [dragEnabled]="rowsDraggable && !useCustomDragHandling"
               (onDropEvent)="onDrop($event, indexes.first + i + 1)"
               (onDragOverEvent)="onDragOver(indexes.first + i)"
               [ngClass]="'drop-area-bottom' + (dragService.dragActive ? ' drag-active' : '')"
@@ -1000,10 +998,6 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
   }
 
   onDragOver(rowIndex: number) {
-    if (!this.rowsDraggable || this.useCustomDragHandling) {
-      return;
-    }
-
     if (rowIndex <= this.indexes.first) {
       const id = rowIndex - 1;
       const prevRow = this.rows[id];
