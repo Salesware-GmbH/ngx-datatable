@@ -28,6 +28,8 @@ export class RowDropDirective {
    */
   @Input() dragOverClass: string;
 
+  @Input() dragEnabled = true;
+
   @Output() onDropEvent = new EventEmitter();
   @Output() onDragOverEvent = new EventEmitter();
   private options: DropTargetOptions = {};
@@ -49,6 +51,10 @@ export class RowDropDirective {
   @HostListener('dragenter', ['$event'])
   @HostListener('dragover', ['$event'])
   onDragOver(event: DragEvent) {
+    if (!this.dragEnabled) {
+      return;
+    }
+
     const { zone = 'zone' } = this.options;
 
     this.dragService.setActiveDropElement(this);
@@ -59,11 +65,19 @@ export class RowDropDirective {
 
   @HostListener('dragexit', ['$event'])
   onDragLeave(event: DragEvent) {
+    if (!this.dragEnabled) {
+      return;
+    }
+
     this.removeDragOverClass();
   }
 
   @HostListener('drop', ['$event'])
   onDrop(event: DragEvent) {
+    if (!this.dragEnabled) {
+      return;
+    }
+
     const data = Number.parseInt(event.dataTransfer.getData('data'), 10);
     this.removeDragOverClass();
     this.dragService.endDrag(event);

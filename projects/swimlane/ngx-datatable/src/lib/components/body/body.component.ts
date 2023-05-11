@@ -65,7 +65,7 @@ import { DataTableRowWrapperComponent } from './body-row-wrapper.component';
             [dragData]="indexes.first + i"
             [groupedRows]="groupedRows"
             [selectOnDrag]="selectRowOnDrag"
-            *ngFor="let group of temp; let i = index; trackBy: rowTrackingFn"
+            *ngFor="let group of temp; let i = index; trackBy: rowTrackingFn; let last = last"
             [innerWidth]="innerWidth"
             [ngStyle]="getRowsStyles(group, rowWrapper)"
             [rowDetail]="rowDetail"
@@ -83,6 +83,7 @@ import { DataTableRowWrapperComponent } from './body-row-wrapper.component';
             <div
               *ngIf="dragService.dragActive && rowsDraggable && dragReference === dragService.dragReference"
               row-droppable
+              [dragEnabled]="rowsDraggable && !useCustomDragHandling"
               (onDropEvent)="onDrop($event, indexes.first + i)"
               (onDragOverEvent)="onDragOver(indexes.first + i)"
               [ngClass]="'drop-area-top' + (dragService.dragActive ? ' drag-active' : '')"
@@ -93,12 +94,13 @@ import { DataTableRowWrapperComponent } from './body-row-wrapper.component';
             <div
               *ngIf="dragService.dragActive && rowsDraggable && dragReference === dragService.dragReference"
               row-droppable
+              [dragEnabled]="rowsDraggable && !useCustomDragHandling"
               (onDropEvent)="onDrop($event, indexes.first + i + 1)"
               (onDragOverEvent)="onDragOver(indexes.first + i)"
               [ngClass]="'drop-area-bottom' + (dragService.dragActive ? ' drag-active' : '')"
               dragOverClass="drop-over-active"
             >
-              <div class="drop-indicator bottom"></div>
+              <div class="drop-indicator bottom" [class.last]="last"></div>
             </div>
             <datatable-body-row
               role="row"
@@ -998,6 +1000,10 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
   }
 
   onDragOver(rowIndex: number) {
+    if (!this.rowsDraggable || this.useCustomDragHandling) {
+      return;
+    }
+
     if (rowIndex <= this.indexes.first) {
       const id = rowIndex - 1;
       const prevRow = this.rows[id];
