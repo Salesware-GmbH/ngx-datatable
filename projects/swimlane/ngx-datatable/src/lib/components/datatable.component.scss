@@ -348,6 +348,10 @@
   background: rgb(187, 10, 10);
   &.bottom {
     position: absolute;
+    bottom: -1px;
+  }
+
+  &.last {
     bottom: 0;
   }
 }
