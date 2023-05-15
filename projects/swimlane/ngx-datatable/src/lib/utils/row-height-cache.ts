@@ -16,9 +16,15 @@ export class RowHeightCache {
   private treeArray: number[] = [];
 
   /**
+   * This is used to use as a Source of truth if a Rebuild is in progress.
+   */
+  private swapTreeArray: number[] = null;
+
+  /**
    * Clear the Tree array.
    */
   clearCache(): void {
+    this.swapTreeArray = this.treeArray;
     this.treeArray = [];
   }
 
@@ -73,6 +79,8 @@ export class RowHeightCache {
 
       this.update(i, currentRowHeight);
     }
+
+    this.swapTreeArray = null;
   }
 
   /**
@@ -89,16 +97,20 @@ export class RowHeightCache {
    * be utilized in future when Angular Data table supports dynamic row heights.
    */
   update(atRowIndex: number, byRowHeight: number): void {
+    let source = this.treeArray;
     if (!this.treeArray.length) {
-      throw new Error(`Update at index ${atRowIndex} with value ${byRowHeight} failed:
+      if (!this.swapTreeArray) {
+        throw new Error(`Update at index ${atRowIndex} with value ${byRowHeight} failed:
         Row Height cache not initialized.`);
+      }
+      source = this.swapTreeArray;
     }
 
-    const n = this.treeArray.length;
+    const n = source.length;
     atRowIndex |= 0;
 
     while (atRowIndex < n) {
-      this.treeArray[atRowIndex] += byRowHeight;
+      source[atRowIndex] += byRowHeight;
       atRowIndex |= atRowIndex + 1;
     }
   }
@@ -116,15 +128,19 @@ export class RowHeightCache {
    * Range Sum query from 1 to the rowIndex
    */
   query(atIndex: number): number {
+    let source = this.treeArray;
     if (!this.treeArray.length) {
-      throw new Error(`query at index ${atIndex} failed: Fenwick tree array not initialized.`);
+      if (!this.swapTreeArray) {
+        throw new Error(`query at index ${atIndex} failed: Fenwick tree array not initialized.`);
+      }
+      source = this.swapTreeArray;
     }
 
     let sum = 0;
     atIndex |= 0;
 
     while (atIndex >= 0) {
-      sum += this.treeArray[atIndex];
+      sum += source[atIndex];
       atIndex = (atIndex & (atIndex + 1)) - 1;
     }
 
