@@ -72,9 +72,11 @@ import { DataTableRowWrapperComponent } from './body-row-wrapper.component';
             [groupHeader]="groupHeader"
             [offsetX]="offsetX"
             [detailRowHeight]="getDetailRowHeight(group && group[i], i)"
+            [groupRowHeight]="getRowHeight(group)"
             [row]="group"
             [expanded]="getRowExpanded(group)"
             [rowIndex]="getRowIndex(group && group[i])"
+            [groupWidth]="columnGroupWidths?.total"
             (rowContextmenu)="rowContextmenu.emit($event)"
             resize-observer
             (heightChanged)="onRowHeightChanged(group, rowWrapper)"

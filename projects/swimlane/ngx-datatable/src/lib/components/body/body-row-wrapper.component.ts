@@ -19,7 +19,7 @@ import { DataTableBodyRowComponent } from './body-row.component';
   selector: 'datatable-row-wrapper',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <div *ngIf="groupHeader && groupHeader.template" class="datatable-group-header" [ngStyle]="getGroupHeaderStyle()">
+    <div *ngIf="row?.isRowGroup && groupHeader?.template" class="datatable-group-header" [ngStyle]="getGroupHeaderStyle()">
       <ng-template
         *ngIf="groupHeader && groupHeader.template"
         [ngTemplateOutlet]="groupHeader.template"
@@ -27,7 +27,7 @@ import { DataTableBodyRowComponent } from './body-row.component';
       >
       </ng-template>
     </div>
-    <ng-content *ngIf="(groupHeader && groupHeader.template && expanded) || !groupHeader || !groupHeader.template">
+    <ng-content *ngIf="!row?.isRowGroup">
     </ng-content>
     <div
       *ngIf="rowDetail && rowDetail.template && expanded"
@@ -52,8 +52,11 @@ export class DataTableRowWrapperComponent implements DoCheck {
   @Input() groupHeader: any;
   @Input() offsetX: number;
   @Input() detailRowHeight: any;
+  @Input() groupRowHeight: any;
   @Input() row: any;
   @Input() groupedRows: any;
+  @Input() groupWidth: number;
+
   @Output() rowContextmenu = new EventEmitter<{ event: MouseEvent; row: any }>(false);
 
   @Input() set rowIndex(val: number) {
@@ -119,7 +122,8 @@ export class DataTableRowWrapperComponent implements DoCheck {
 
     styles['transform'] = 'translate3d(' + this.offsetX + 'px, 0px, 0px)';
     styles['backface-visibility'] = 'hidden';
-    styles['width'] = this.innerWidth;
+    styles['width.px'] = this.groupWidth;
+    styles['height.px'] = this.groupRowHeight;
 
     return styles;
   }
