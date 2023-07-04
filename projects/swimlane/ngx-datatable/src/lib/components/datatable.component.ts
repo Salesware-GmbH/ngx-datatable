@@ -120,6 +120,15 @@ export class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
     return this._groupRowsBy;
   }
 
+  @Input() set stickySummaryRow(value: any) {
+    this._stickySummaryRow = value;
+    this.recalculate();
+  }
+
+  get stickySummaryRow(): any {
+    return this._stickySummaryRow;
+  }
+
   /**
    * This attribute allows the user to set a grouped array in the following format:
    *  [
@@ -682,6 +691,7 @@ export class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
   _count: number = 0;
   _offset: number = 0;
   _rows: any[];
+  _stickySummaryRow: any;
   _groupRowsBy: string;
   _internalRows: any[];
   _internalColumns: TableColumn[];
@@ -906,6 +916,7 @@ export class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
     if (this.scrollbarV) {
       let height = dims.height;
       if (this.headerHeight) height = height - this.headerHeight;
+      if (this.stickySummaryRow) height = height - this.headerHeight;
       if (this.footerHeight) height = height - this.footerHeight;
       this.bodyHeight = height;
     }

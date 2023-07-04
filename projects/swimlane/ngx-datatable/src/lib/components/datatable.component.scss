@@ -89,7 +89,8 @@
    */
   .datatable-body-row,
   .datatable-row-center,
-  .datatable-header-inner {
+  .datatable-header-inner,
+  .datatable-sticky-summary-row-inner {
     display: -webkit-box;
     display: -moz-box;
     display: -ms-flexbox;
@@ -210,6 +211,14 @@
       .datatable-header-cell-template-wrap {
         height: inherit;
       }
+    }
+  }
+
+  .datatable-sticky-summary-row {
+    display: flex;
+
+    .datatable-sticky-summary-row-inner {
+      align-items: stretch;
     }
   }
 

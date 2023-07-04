@@ -36,6 +36,7 @@ import { RowDraggableDirective } from './directives/row-draggable.directive';
 import { RowDropDirective } from './directives/row-droppable.directive';
 import { RowDragService } from './services/row-drag.service';
 import { ResizeObserverDirective } from './directives/resize-observer.directive';
+import { StickySummaryRowComponent } from './components/sticky-summary-row/sticky-summary-row.component';
 
 @NgModule({
   imports: [CommonModule, PerfectScrollbarModule],
@@ -71,7 +72,8 @@ import { ResizeObserverDirective } from './directives/resize-observer.directive'
     DataTableSummaryRowComponent,
     RowDraggableDirective,
     RowDropDirective,
-    ResizeObserverDirective
+    ResizeObserverDirective,
+    StickySummaryRowComponent
   ],
   exports: [
     DatatableComponent,

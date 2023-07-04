@@ -25,6 +25,14 @@
     (columnContextmenu)="onColumnContextmenu($event)"
   >
   </datatable-header>
+  <sticky-summary-row
+    *ngIf="stickySummaryRow"
+    [columns]="_internalColumns"
+    [row]="stickySummaryRow"
+    [height]="headerHeight"
+    [offsetX]="_offsetX | async"
+    [innerWidth]="_innerWidth"
+  ></sticky-summary-row>
   <datatable-body
     role="rowgroup"
     [groupRowsBy]="groupRowsBy"

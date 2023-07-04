@@ -1,0 +1,14 @@
+<div [style.width.px]="_columnGroupWidths.total" class="datatable-sticky-summary-row-inner">
+  <div
+    *ngFor="let colGroup of _columnsByPin; trackBy: trackByGroups"
+    [class]="'datatable-row-' + colGroup.type"
+    [ngStyle]="_styleByGroup[colGroup.type]"
+  >
+    <datatable-body-cell
+      *ngFor="let column of colGroup.columns; trackBy: columnTrackingFn"
+      [row]="row"
+      [column]="column"
+    >
+    </datatable-body-cell>
+  </div>
+</div>
