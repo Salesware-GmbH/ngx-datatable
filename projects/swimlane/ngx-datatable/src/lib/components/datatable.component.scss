@@ -219,6 +219,10 @@
 
     .datatable-sticky-summary-row-inner {
       align-items: stretch;
+
+      > div {
+        display: flex;
+      }
     }
   }
 
