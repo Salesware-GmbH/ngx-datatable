@@ -19,6 +19,7 @@ import {
 import { TableColumn } from '../../types/table-column.type';
 import { SortDirection } from '../../types/sort-direction.type';
 import { Keys } from '../../utils/keys';
+import { Subject } from 'rxjs';
 
 export type TreeStatus = 'collapsed' | 'expanded' | 'loading' | 'disabled';
 
@@ -103,6 +104,7 @@ export class DataTableBodyCellComponent implements DoCheck, OnDestroy {
   @Input() set expanded(val: boolean) {
     this._expanded = val;
     this.cellContext.expanded = val;
+    this.expandedSubject.next(val);
     this.cd.markForCheck();
   }
 
@@ -292,6 +294,7 @@ export class DataTableBodyCellComponent implements DoCheck, OnDestroy {
   private _element: any;
   private _treeStatus: TreeStatus;
   private _explicitWidth?: number;
+  private expandedSubject = new Subject<boolean>();
 
   constructor(element: ElementRef, private cd: ChangeDetectorRef) {
     this.cellContext = {
@@ -305,7 +308,8 @@ export class DataTableBodyCellComponent implements DoCheck, OnDestroy {
       isSelected: this.isSelected,
       rowIndex: this.rowIndex,
       treeStatus: this.treeStatus,
-      onTreeAction: this.onTreeAction.bind(this)
+      onTreeAction: this.onTreeAction.bind(this),
+      expanded$: this.expandedSubject.asObservable()
     };
 
     this._element = element.nativeElement;
@@ -319,6 +323,8 @@ export class DataTableBodyCellComponent implements DoCheck, OnDestroy {
     if (this.cellTemplate) {
       this.cellTemplate.clear();
     }
+
+    this.expandedSubject.complete();
   }
 
   checkValueUpdates(): void {
