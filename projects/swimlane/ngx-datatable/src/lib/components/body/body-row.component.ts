@@ -129,14 +129,19 @@ export class DataTableBodyRowComponent implements DoCheck {
   @HostBinding('class')
   get cssClass() {
     let cls = 'datatable-body-row';
-    if (this.isSelected) {
-      cls += ' active';
-    }
-    if (this.rowIndex % 2 !== 0) {
-      cls += ' datatable-row-odd';
-    }
-    if (this.rowIndex % 2 === 0) {
-      cls += ' datatable-row-even';
+
+    if (this.row?.isRowGroup) {
+      cls += ' datatable-body-row-group-header';
+    } else {
+      if (this.isSelected) {
+        cls += ' active';
+      }
+      if (this.rowIndex % 2 !== 0) {
+        cls += ' datatable-row-odd';
+      }
+      if (this.rowIndex % 2 === 0) {
+        cls += ' datatable-row-even';
+      }
     }
 
     if (this.rowClass) {
@@ -242,6 +247,7 @@ export class DataTableBodyRowComponent implements DoCheck {
   onActivate(event: any, index: number): void {
     event.cellIndex = index;
     event.rowElement = this._element;
+    event.expanded = this.expanded;
     this.activate.emit(event);
   }
 
@@ -288,6 +294,10 @@ export class DataTableBodyRowComponent implements DoCheck {
   }
 
   onTreeAction() {
+    if (this.row?.isRowGroup) {
+      return;
+    }
+
     this.treeAction.emit();
   }
 

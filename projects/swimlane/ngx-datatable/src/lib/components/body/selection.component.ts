@@ -10,6 +10,7 @@ export interface Model {
   rowElement: any;
   cellElement: any;
   cellIndex: number;
+  expanded: boolean;
 }
 
 @Component({
@@ -68,6 +69,11 @@ export class DataTableSelectionComponent {
     const { type, event, row } = model;
     const chkbox = this.selectionType === SelectionType.checkbox;
     const select = (!chkbox && (type === 'click' || type === 'dblclick')) || (chkbox && type === 'checkbox');
+
+    if (row?.isRowGroup && type === 'click') {
+      this.activate.emit(model);
+      return;
+    }
 
     if (select) {
       this.selectRow(event, index, row);

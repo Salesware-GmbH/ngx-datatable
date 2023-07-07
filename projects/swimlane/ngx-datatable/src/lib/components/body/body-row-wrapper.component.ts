@@ -19,16 +19,7 @@ import { DataTableBodyRowComponent } from './body-row.component';
   selector: 'datatable-row-wrapper',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <div *ngIf="row?.isRowGroup && groupHeader?.template" class="datatable-group-header" [ngStyle]="getGroupHeaderStyle()">
-      <ng-template
-        *ngIf="groupHeader && groupHeader.template"
-        [ngTemplateOutlet]="groupHeader.template"
-        [ngTemplateOutletContext]="groupContext"
-      >
-      </ng-template>
-    </div>
-    <ng-content *ngIf="!row?.isRowGroup">
-    </ng-content>
+    <ng-content></ng-content>
     <div
       *ngIf="rowDetail && rowDetail.template && expanded"
       [style.height.px]="detailRowHeight"

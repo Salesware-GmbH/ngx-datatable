@@ -24,6 +24,7 @@ import { Subject, Subscription } from 'rxjs';
 import { takeUntil, throttleTime } from 'rxjs/operators';
 import { DataTableBodyRowComponent } from './body-row.component';
 import { DataTableRowWrapperComponent } from './body-row-wrapper.component';
+import { Model } from './selection.component';
 
 @Component({
   selector: 'datatable-body',
@@ -37,7 +38,7 @@ import { DataTableRowWrapperComponent } from './body-row-wrapper.component';
       [selectionType]="selectionType"
       [rowIdentity]="rowIdentity"
       (select)="select.emit($event)"
-      (activate)="activate.emit($event)"
+      (activate)="onActivate($event)"
     >
       <perfect-scrollbar>
         <datatable-progress *ngIf="loadingIndicator"> </datatable-progress>
@@ -1020,5 +1021,13 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
     if (this.preventFocusOut) {
       event.stopPropagation();
     }
+  }
+
+  onActivate(event: Model) {
+    if (event.row?.isRowGroup && event.type === 'click') {
+      this.toggleRowExpansion(event.row);
+    }
+
+    this.activate.emit(event);
   }
 }
