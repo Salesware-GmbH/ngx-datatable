@@ -438,7 +438,9 @@ export class DataTableBodyCellComponent implements DoCheck, OnDestroy {
     }
 
     const sort = sorts.find((s: any) => {
-      return s.prop === this.column.prop || s.prop === this.column.sortingProperty;
+      return (
+        s.prop === this.column.prop || s.prop === this.column.sortingProperty || s.prop === this.column.comparisonField
+      );
     });
 
     if (sort) {

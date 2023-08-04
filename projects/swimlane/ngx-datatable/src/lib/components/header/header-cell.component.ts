@@ -195,7 +195,11 @@ export class DataTableHeaderCellComponent implements OnInit {
   calcSortDir(sorts: any[]): any {
     if (sorts && this.column) {
       const sort = sorts.find((s: any) => {
-        return s.prop === this.column.prop || s.prop === this.column.sortingProperty;
+        return (
+          s.prop === this.column.prop ||
+          s.prop === this.column.sortingProperty ||
+          s.prop === this.column.comparisonField
+        );
       });
 
       if (sort) return sort.dir;
@@ -205,11 +209,14 @@ export class DataTableHeaderCellComponent implements OnInit {
   onSort(): void {
     if (!this.column.sortable) return;
 
+    const currentSortProp = this.sorts?.[0]?.prop;
+
     const newValue = nextSortDir(this.sortType, this.sortDir);
     this.sort.emit({
       column: this.column,
       prevValue: this.sortDir,
-      newValue
+      newValue,
+      prevProp: currentSortProp
     });
   }
 

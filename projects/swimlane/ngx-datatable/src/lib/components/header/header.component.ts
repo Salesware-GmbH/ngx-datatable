@@ -267,7 +267,7 @@ export class DataTableHeaderComponent implements OnDestroy {
     return this._columnsByPin[2].columns[index - leftColumnCount - centerColumnCount];
   }
 
-  onSort({ column, prevValue, newValue }: any): void {
+  onSort({ column, prevValue, newValue, prevProp }: any): void {
     // if we are dragging don't sort!
     if (column.dragging) {
       return;
@@ -278,7 +278,8 @@ export class DataTableHeaderComponent implements OnDestroy {
       sorts,
       column,
       prevValue,
-      newValue
+      newValue,
+      prevProp
     });
   }
 

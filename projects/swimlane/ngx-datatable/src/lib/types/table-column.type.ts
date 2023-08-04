@@ -147,6 +147,8 @@ export interface TableColumn {
 
   sortingProperty?: string;
 
+  comparisonField?: string;
+
   /**
    * Cell template ref
    *
