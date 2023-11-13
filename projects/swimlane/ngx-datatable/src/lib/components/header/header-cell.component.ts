@@ -197,7 +197,7 @@ export class DataTableHeaderCellComponent implements OnInit {
       const sort = sorts.find((s: any) => {
         return (
           s.prop === this.column.prop ||
-          s.prop === this.column.sortingProperty ||
+          this.column.sortingProperties?.includes(s.prop) ||
           s.prop === this.column.comparisonField
         );
       });

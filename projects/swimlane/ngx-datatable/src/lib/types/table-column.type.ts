@@ -145,7 +145,7 @@ export interface TableColumn {
    */
   prop?: TableColumnProp;
 
-  sortingProperty?: string;
+  sortingProperties?: string[];
 
   comparisonField?: string;
 
