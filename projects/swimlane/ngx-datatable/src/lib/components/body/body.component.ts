@@ -41,7 +41,7 @@ import { Model } from './selection.component';
       (activate)="onActivate($event)"
     >
       <perfect-scrollbar>
-        <datatable-progress *ngIf="loadingIndicator"> </datatable-progress>
+        <datatable-progress *ngIf="loadingIndicator" [columnGroupWidths]="columnGroupWidths"> </datatable-progress>
         <datatable-scroller
           *ngIf="rows?.length"
           [scrollbarV]="scrollbarV"

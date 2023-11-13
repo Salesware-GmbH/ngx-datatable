@@ -1,9 +1,9 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
 
 @Component({
   selector: 'datatable-progress',
   template: `
-    <div class="progress-linear" role="progressbar">
+    <div class="progress-linear" role="progressbar" [style.left.px]="columnGroupWidths?.left" [style.right.px]="columnGroupWidths?.right">
       <div class="container">
         <div class="bar"></div>
       </div>
@@ -11,4 +11,6 @@ import { Component, ChangeDetectionStrategy } from '@angular/core';
   `,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ProgressBarComponent {}
+export class ProgressBarComponent {
+  @Input() columnGroupWidths: any;
+}
