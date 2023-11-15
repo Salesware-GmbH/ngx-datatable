@@ -183,6 +183,7 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
   @Input() loadingIndicator: boolean;
   @Input() externalPaging: boolean;
   @Input() rowHeight: number | 'auto' | ((row?: any) => number);
+  @Input() virtualizedFluidRowHeightMin: number | 'auto' | ((row?: any) => number);
   @Input() offsetX: number;
   @Input() emptyMessage: string;
   @Input() selectionType: SelectionType;
@@ -593,11 +594,11 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
     }
 
     // if its a function return it
-    if (typeof this.rowHeight === 'function') {
-      return this.rowHeight(row);
+    if (typeof this.virtualizedFluidRowHeightMin === 'function') {
+      return this.virtualizedFluidRowHeightMin(row);
     }
 
-    return this.rowHeight as number;
+    return this.virtualizedFluidRowHeightMin as number;
   }
 
   onRowHeightChanged(rows: any, rowWrapper: DataTableRowWrapperComponent) {
