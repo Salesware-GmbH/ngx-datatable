@@ -19,7 +19,7 @@ import { columnsByPin, columnGroupWidths } from '../../utils/column';
 import { RowHeightCache } from '../../utils/row-height-cache';
 import { translateXY } from '../../utils/translate';
 import { RowDragService } from '../../services/row-drag.service';
-import { PerfectScrollbarComponent } from 'ngx-perfect-scrollbar';
+import { PerfectScrollbarComponent } from 'ngx-om-perfect-scrollbar';
 import { Subject, Subscription } from 'rxjs';
 import { takeUntil, throttleTime } from 'rxjs/operators';
 import { DataTableBodyRowComponent } from './body-row.component';
