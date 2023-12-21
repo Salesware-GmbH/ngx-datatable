@@ -113,6 +113,7 @@ import { Model } from './selection.component';
               [columns]="columns"
               [rowHeight]="getRowHeight(group)"
               [minRowHeight]="getMinRowHeight(group)"
+              [maxRowHeight]="virtualizedFluidRowHeightMax"
               [row]="group"
               [rowIndex]="getRowIndex(group)"
               [expanded]="getRowExpanded(group)"
@@ -137,6 +138,7 @@ import { Model } from './selection.component';
                 [columns]="columns"
                 [rowHeight]="getRowHeight(row)"
                 [minRowHeight]="getMinRowHeight(row)"
+                [maxRowHeight]="virtualizedFluidRowHeightMax"
                 [row]="row"
                 [group]="group.value"
                 [rowIndex]="getRowIndex(row)"
@@ -184,6 +186,7 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
   @Input() externalPaging: boolean;
   @Input() rowHeight: number | 'auto' | ((row?: any) => number);
   @Input() virtualizedFluidRowHeightMin: number | 'auto' | ((row?: any) => number);
+  @Input() virtualizedFluidRowHeightMax: number = undefined;
   @Input() offsetX: number;
   @Input() emptyMessage: string;
   @Input() selectionType: SelectionType;
