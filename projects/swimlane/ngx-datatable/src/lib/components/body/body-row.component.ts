@@ -169,6 +169,10 @@ export class DataTableBodyRowComponent implements DoCheck {
   @Input()
   minRowHeight: number;
 
+  @HostBinding('style.maxHeight.px')
+  @Input()
+  maxRowHeight: number = undefined;
+
   @HostBinding('style.width.px')
   get columnsTotalWidths(): string {
     return this._columnGroupWidths.total;

@@ -191,6 +191,8 @@ export class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
 
   @Input() virtualizedFluidRowHeightMin: number | 'auto' | ((row?: any) => number) = 30;
 
+  @Input() virtualizedFluidRowHeightMax: number = undefined;
+
   /**
    * Type of column width distribution formula.
    * Example: flex, force, standard
