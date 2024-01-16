@@ -334,7 +334,7 @@ export class DataTableHeaderComponent implements OnDestroy {
       translateXY(styles, offsetX * -1, 0);
     } else if (group === 'right') {
       const totalDiff = widths.total - this.innerWidth;
-      const offset = totalDiff * -1;
+      const offset = Math.min(0, totalDiff * -1);
       translateXY(styles, offset, 0);
     }
 
