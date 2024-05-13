@@ -1,0 +1,18 @@
+<div class="datatable-skeleton-loader">
+  <div *ngFor="let _ of [].constructor(numRows)" class="row-wrapper" [style.height.px]="getRowHeight()">
+    <div
+      *ngFor="let colGroup of _columnsByPin; trackBy: trackByGroups"
+      [class]="'skeleton-row datatable-row-' + colGroup.type"
+      [ngStyle]="_styleByGroup[colGroup.type]"
+    >
+      <div
+        *ngFor="let column of colGroup.columns; trackBy: columnTrackingFn"
+        [style.width.px]="column.width"
+        class="datatable-skeleton-column"
+        [ngClass]="_classes[column.prop]"
+      >
+        <ng-template *ngTemplateOutlet="template"></ng-template>
+      </div>
+    </div>
+  </div>
+</div>

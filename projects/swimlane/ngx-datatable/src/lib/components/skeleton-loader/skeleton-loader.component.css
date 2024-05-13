@@ -1,0 +1,5 @@
+.row-wrapper,
+.skeleton-row {
+  display: flex;
+  flex-direction: row;
+}

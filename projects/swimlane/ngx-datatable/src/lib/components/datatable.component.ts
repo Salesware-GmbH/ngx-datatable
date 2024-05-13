@@ -467,6 +467,10 @@ export class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
 
   @Input() forceDetailOpen: boolean = false;
 
+  @Input() skeletonTemplate: TemplateRef<any>;
+
+  @Input() useSkeletonLoader = false
+
   /**
    * Body was scrolled typically in a `scrollbarV:true` scenario.
    */

@@ -37,6 +37,7 @@ import { RowDropDirective } from './directives/row-droppable.directive';
 import { RowDragService } from './services/row-drag.service';
 import { ResizeObserverDirective } from './directives/resize-observer.directive';
 import { StickySummaryRowComponent } from './components/sticky-summary-row/sticky-summary-row.component';
+import { SkeletonLoaderComponent } from './components/skeleton-loader/skeleton-loader.component';
 
 @NgModule({
   imports: [CommonModule, PerfectScrollbarModule],
@@ -73,7 +74,8 @@ import { StickySummaryRowComponent } from './components/sticky-summary-row/stick
     RowDraggableDirective,
     RowDropDirective,
     ResizeObserverDirective,
-    StickySummaryRowComponent
+    StickySummaryRowComponent,
+    SkeletonLoaderComponent
   ],
   exports: [
     DatatableComponent,

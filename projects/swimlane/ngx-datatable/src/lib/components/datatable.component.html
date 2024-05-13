@@ -33,6 +33,14 @@
     [offsetX]="_offsetX | async"
     [innerWidth]="_innerWidth"
   ></sticky-summary-row>
+  <skeleton-loader
+    *ngIf="loadingIndicator && useSkeletonLoader && skeletonTemplate"
+    [template]="skeletonTemplate"
+    [columns]="_internalColumns"
+    [rowHeight]="rowHeight"
+    [offsetX]="_offsetX | async"
+    [innerWidth]="_innerWidth"
+  ></skeleton-loader>
   <datatable-body
     role="rowgroup"
     [groupRowsBy]="groupRowsBy"
@@ -42,7 +50,7 @@
     [scrollbarV]="scrollbarV"
     [scrollbarH]="scrollbarH"
     [virtualization]="virtualization"
-    [loadingIndicator]="loadingIndicator"
+    [loadingIndicator]="loadingIndicator && !useSkeletonLoader"
     [externalPaging]="externalPaging"
     [rowHeight]="rowHeight"
     [rowCount]="rowCount"
