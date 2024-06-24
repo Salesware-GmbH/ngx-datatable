@@ -926,7 +926,7 @@ export class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
       if (this.headerHeight) height = height - this.headerHeight;
       if (this.stickySummaryRow) height = height - this.headerHeight;
       if (this.footerHeight) height = height - this.footerHeight;
-      this.bodyHeight = height;
+      this.bodyHeight = Math.max(0, height);
     }
 
     this.recalculatePages();
