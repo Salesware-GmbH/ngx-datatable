@@ -1,4 +1,7 @@
-import { AfterViewInit, Directive, ElementRef, EventEmitter, OnDestroy, Output } from '@angular/core';
+import { AfterViewInit, Directive, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { SharedResizeObserver } from '../services/shared-resize-observer';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 // https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver
 declare class ResizeObserver {
@@ -12,33 +15,32 @@ declare class ResizeObserver {
   selector: '[resize-observer]'
 })
 export class ResizeObserverDirective implements AfterViewInit, OnDestroy {
-  private _resizeObserver: ResizeObserver;
+  @Input({ alias: 'resize-observer' }) enabled = false;
+
   private _element: HTMLElement;
+  private ngUnsubscribe = new Subject<void>();
 
   @Output() heightChanged: EventEmitter<any> = new EventEmitter();
 
-  constructor(element: ElementRef) {
+  constructor(element: ElementRef, private sharedResizeObserver: SharedResizeObserver) {
     this._element = element?.nativeElement;
-
-    if ('ResizeObserver' in window) {
-      this._resizeObserver = new ResizeObserver(data => {
-        this.heightChanged.next(data);
-      });
-    }
   }
 
   ngAfterViewInit() {
-    if (!this._resizeObserver) {
-      return;
+    if (this.enabled) {
+      this.sharedResizeObserver
+        .observe(this._element)
+        .pipe(takeUntil(this.ngUnsubscribe))
+        .subscribe(data => {
+          requestAnimationFrame(() => {
+            this.heightChanged.next(data);
+          });
+        });
     }
-
-    this._resizeObserver.observe(this._element);
   }
 
   ngOnDestroy() {
-    if (!!this._resizeObserver) {
-      this._resizeObserver.disconnect();
-      this._resizeObserver = null;
-    }
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 }

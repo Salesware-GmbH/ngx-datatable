@@ -79,7 +79,7 @@ import { Model } from './selection.component';
             [rowIndex]="getRowIndex(group && group[i])"
             [groupWidth]="columnGroupWidths?.total"
             (rowContextmenu)="rowContextmenu.emit($event)"
-            resize-observer
+            [resize-observer]="virtualizedFluidRowHeight"
             (heightChanged)="onRowHeightChanged(group, rowWrapper)"
             #rowWrapper
           >
