@@ -10,16 +10,26 @@ import {
   ChangeDetectorRef,
   KeyValueDiffers,
   ElementRef,
-  ViewChild,
-  ContentChild
+  OnDestroy
 } from '@angular/core';
-import { DataTableBodyRowComponent } from './body-row.component';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'datatable-row-wrapper',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <ng-content></ng-content>
+    @if (row?.isRowGroup && groupHeader?.template) {
+      <div class="datatable-body-row-group-header" [ngStyle]="getGroupHeaderStyle()" (click)="onGroupClick($event)">
+        <ng-template
+          [ngTemplateOutlet]="groupHeader.template"
+          [ngTemplateOutletContext]="groupContext"
+        >
+        </ng-template>
+      </div>
+    }
+    @else {
+      <ng-content></ng-content>
+    }
     <div
       *ngIf="rowDetail && rowDetail.template && expanded"
       [style.height.px]="detailRowHeight"
@@ -37,7 +47,7 @@ import { DataTableBodyRowComponent } from './body-row.component';
     class: 'datatable-row-wrapper'
   }
 })
-export class DataTableRowWrapperComponent implements DoCheck {
+export class DataTableRowWrapperComponent implements OnDestroy, DoCheck {
   @Input() innerWidth: number;
   @Input() rowDetail: any;
   @Input() groupHeader: any;
@@ -49,6 +59,7 @@ export class DataTableRowWrapperComponent implements DoCheck {
   @Input() groupWidth: number;
 
   @Output() rowContextmenu = new EventEmitter<{ event: MouseEvent; row: any }>(false);
+  @Output() activateGroup = new EventEmitter<any>();
 
   @Input() set rowIndex(val: number) {
     this._rowIndex = val;
@@ -65,6 +76,7 @@ export class DataTableRowWrapperComponent implements DoCheck {
     this._expanded = val;
     this.groupContext.expanded = val;
     this.rowContext.expanded = val;
+    this.expandedSubject.next(val);
     this.cd.markForCheck();
   }
 
@@ -78,21 +90,28 @@ export class DataTableRowWrapperComponent implements DoCheck {
   private rowDiffer: KeyValueDiffer<{}, {}>;
   private _expanded: boolean = false;
   private _rowIndex: number;
+  private expandedSubject = new BehaviorSubject(this._expanded);
 
   constructor(private cd: ChangeDetectorRef, private differs: KeyValueDiffers, private elementRef: ElementRef) {
     this.groupContext = {
       group: this.row,
       expanded: this.expanded,
+      expanded$: this.expandedSubject.asObservable(),
       rowIndex: this.rowIndex
     };
 
     this.rowContext = {
       row: this.row,
       expanded: this.expanded,
+      expanded2: this.expandedSubject.asObservable(),
       rowIndex: this.rowIndex
     };
 
     this.rowDiffer = differs.find({}).create();
+  }
+
+  ngOnDestroy(): void {
+    this.expandedSubject.complete();
   }
 
   ngDoCheck(): void {
@@ -139,5 +158,14 @@ export class DataTableRowWrapperComponent implements DoCheck {
     }
 
     return 0;
+  }
+
+  onGroupClick(event: MouseEvent) {
+    this.activateGroup.emit({
+      type: 'click',
+      event,
+      row: this.row,
+      expanded: this.expanded
+    });
   }
 }

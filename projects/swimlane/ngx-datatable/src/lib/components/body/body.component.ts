@@ -77,10 +77,11 @@ import { Model } from './selection.component';
             [row]="group"
             [expanded]="getRowExpanded(group)"
             [rowIndex]="getRowIndex(group && group[i])"
-            [groupWidth]="columnGroupWidths?.total"
+            [groupWidth]="useTotalWidthForGroupHeaders ? innerWidth : columnGroupWidths?.total"
             (rowContextmenu)="rowContextmenu.emit($event)"
             [resize-observer]="virtualizedFluidRowHeight"
             (heightChanged)="onRowHeightChanged(group, rowWrapper)"
+            (activateGroup)="onActivate($event)"
             #rowWrapper
           >
             <div
@@ -298,6 +299,7 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
   }
 
   @Input() endOfDataRow: { template: TemplateRef<any>; isShown: boolean };
+  @Input() useTotalWidthForGroupHeaders = false;
 
   @Output() scroll: EventEmitter<any> = new EventEmitter();
   @Output() page: EventEmitter<any> = new EventEmitter();

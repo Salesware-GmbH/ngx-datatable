@@ -258,12 +258,6 @@ $datatable-summary-row-background-hover: #ddd !default;
       padding: 10px;
     }
 
-    .datatable-group-header {
-      background: $datatable-group-header-background;
-      border-bottom: solid 1px $datatable-group-header-border-bottom-color;
-      border-top: solid 1px $datatable-group-header-border-top-color;
-    }
-
     .datatable-body-row {
       .datatable-body-cell {
         text-align: left;

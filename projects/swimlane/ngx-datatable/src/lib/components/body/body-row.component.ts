@@ -306,6 +306,10 @@ export class DataTableBodyRowComponent implements DoCheck {
   }
 
   simulateClick() {
+    if (this.row?.isRowGroup) {
+      return;
+    }
+
     if (this._columns.length > 0 && !this.isSelected) {
       this.activate.emit({
         type: 'click',
