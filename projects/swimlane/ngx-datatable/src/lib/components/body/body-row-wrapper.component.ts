@@ -51,7 +51,6 @@ export class DataTableRowWrapperComponent implements OnDestroy, DoCheck {
   @Input() innerWidth: number;
   @Input() rowDetail: any;
   @Input() groupHeader: any;
-  @Input() offsetX: number;
   @Input() detailRowHeight: any;
   @Input() groupRowHeight: any;
   @Input() row: any;
@@ -84,6 +83,16 @@ export class DataTableRowWrapperComponent implements OnDestroy, DoCheck {
     return this._expanded;
   }
 
+  private _offsetX: number;
+  @Input()
+  public get offsetX(): number {
+    return this._offsetX;
+  }
+  public set offsetX(value: number) {
+    this._offsetX = value;
+    this.groupContext.offsetX = value;
+  }
+
   groupContext: any;
   rowContext: any;
 
@@ -97,13 +106,14 @@ export class DataTableRowWrapperComponent implements OnDestroy, DoCheck {
       group: this.row,
       expanded: this.expanded,
       expanded$: this.expandedSubject.asObservable(),
-      rowIndex: this.rowIndex
+      rowIndex: this.rowIndex,
+      offsetX: this.offsetX
     };
 
     this.rowContext = {
       row: this.row,
       expanded: this.expanded,
-      expanded2: this.expandedSubject.asObservable(),
+      expanded$: this.expandedSubject.asObservable(),
       rowIndex: this.rowIndex
     };
 
