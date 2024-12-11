@@ -913,6 +913,23 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
     });
   }
 
+  toggleRows(rowExpansions: { row: any, expanded: boolean}[]) {
+    rowExpansions.forEach(expansion => {
+      if (expansion.expanded) {
+        this.rowExpansions.push(expansion.row);
+      } else {
+        const rowExpandedIdx = this.getRowExpandedIdx(expansion.row, this.rowExpansions);
+        if (rowExpandedIdx > -1) {
+          this.rowExpansions.splice(rowExpandedIdx, 1);
+        }
+      }
+    });
+
+    if (this.scrollbarV) {
+      this.recalcLayout();
+    }
+  }
+
   /**
    * Recalculates the table
    */
