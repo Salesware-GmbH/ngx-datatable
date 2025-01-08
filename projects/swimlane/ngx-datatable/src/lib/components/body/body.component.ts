@@ -1047,10 +1047,6 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
   }
 
   onActivate(event: Model) {
-    if (event.row?.isRowGroup && event.type === 'click') {
-      this.toggleRowExpansion(event.row);
-    }
-
     this.activate.emit(event);
   }
 }
