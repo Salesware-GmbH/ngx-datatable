@@ -31,7 +31,7 @@ import { BehaviorSubject } from 'rxjs';
       <ng-content></ng-content>
     }
     <div
-      *ngIf="rowDetail && rowDetail.template && expanded"
+      *ngIf="rowDetail && rowDetail.template && expanded && !row?.isRowGroup"
       [style.height.px]="detailRowHeight"
       class="datatable-row-detail"
     >

@@ -661,7 +661,7 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
    * Get the height of the detail row.
    */
   getDetailRowHeight = (row?: any, index?: any): number => {
-    if (!this.rowDetail) {
+    if (!this.rowDetail || row?.isRowGroup) {
       return 0;
     }
     const rowHeight = this.rowDetail.rowHeight;
