@@ -10,7 +10,8 @@ import {
   ChangeDetectorRef,
   KeyValueDiffers,
   ElementRef,
-  OnDestroy
+  OnDestroy,
+  TemplateRef
 } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
@@ -28,7 +29,18 @@ import { BehaviorSubject } from 'rxjs';
       </div>
     }
     @else {
-      <ng-content></ng-content>
+      @if (endOfDataRowTemplate && row?.format?.isEndOfDataRow) {
+        <div
+          class="datatable-body-row-group-header-end-of-data"
+          [style.width.px]="groupWidth"
+          [style.height.px]="groupRowHeight"
+        >
+          <ng-container [ngTemplateOutlet]="endOfDataRowTemplate"></ng-container>
+        </div>
+      }
+      @else {
+        <ng-content></ng-content>
+      }
     }
     <div
       *ngIf="rowDetail && rowDetail.template && expanded && !row?.isRowGroup"
@@ -42,6 +54,7 @@ import { BehaviorSubject } from 'rxjs';
       >
       </ng-template>
     </div>
+
   `,
   host: {
     class: 'datatable-row-wrapper'
@@ -56,6 +69,7 @@ export class DataTableRowWrapperComponent implements OnDestroy, DoCheck {
   @Input() row: any;
   @Input() groupedRows: any;
   @Input() groupWidth: number;
+  @Input() endOfDataRowTemplate: TemplateRef<any>;
 
   @Output() rowContextmenu = new EventEmitter<{ event: MouseEvent; row: any }>(false);
   @Output() activateGroup = new EventEmitter<any>();

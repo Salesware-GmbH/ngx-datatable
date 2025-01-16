@@ -78,6 +78,7 @@ import { Model } from './selection.component';
             [expanded]="getRowExpanded(group)"
             [rowIndex]="getRowIndex(group && group[i])"
             [groupWidth]="useTotalWidthForGroupHeaders ? innerWidth : columnGroupWidths?.total"
+            [endOfDataRowTemplate]="endOfDataRow?.template"
             (rowContextmenu)="rowContextmenu.emit($event)"
             [resize-observer]="virtualizedFluidRowHeight"
             (heightChanged)="onRowHeightChanged(group, rowWrapper)"

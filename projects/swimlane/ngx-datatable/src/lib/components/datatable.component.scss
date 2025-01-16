@@ -105,6 +105,10 @@
     flex-flow: row;
   }
 
+  .datatable-body-row-group-header-end-of-data {
+    display: flex;
+  }
+
   .datatable-body-cell,
   .datatable-header-cell {
     overflow-x: hidden;
