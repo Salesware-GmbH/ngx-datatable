@@ -2,8 +2,8 @@ import { Component } from '@angular/core';
 import { ColumnMode } from 'projects/swimlane/ngx-datatable/src/public-api';
 
 @Component({
-  selector: 'footer-demo',
-  template: `
+    selector: 'footer-demo',
+    template: `
     <div>
       <h3>
         Custom Footer
@@ -43,7 +43,8 @@ import { ColumnMode } from 'projects/swimlane/ngx-datatable/src/public-api';
         </ngx-datatable-footer>
       </ngx-datatable>
     </div>
-  `
+  `,
+    standalone: false
 })
 export class FooterDemoComponent {
   rows = [];

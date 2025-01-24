@@ -13,12 +13,13 @@ import {
 } from '@angular/core';
 
 @Component({
-  selector: 'datatable-scroller',
-  template: ` <ng-content></ng-content> `,
-  host: {
-    class: 'datatable-scroll'
-  },
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'datatable-scroller',
+    template: ` <ng-content></ng-content> `,
+    host: {
+        class: 'datatable-scroll'
+    },
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class ScrollerComponent implements OnInit, OnDestroy {
   @Input() scrollbarV: boolean = false;

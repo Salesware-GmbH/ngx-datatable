@@ -2,8 +2,8 @@ import { Component } from '@angular/core';
 import { ColumnMode, SelectionType } from 'projects/swimlane/ngx-datatable/src/public-api';
 
 @Component({
-  selector: 'multidisable-selection-demo',
-  template: `
+    selector: 'multidisable-selection-demo',
+    template: `
     <div>
       <h3>
         Selection Callback to Disable Selections
@@ -45,7 +45,8 @@ import { ColumnMode, SelectionType } from 'projects/swimlane/ngx-datatable/src/p
         </ul>
       </div>
     </div>
-  `
+  `,
+    standalone: false
 })
 export class MultiDisableSelectionComponent {
   rows = [];

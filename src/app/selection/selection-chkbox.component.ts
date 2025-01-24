@@ -2,8 +2,8 @@ import { Component } from '@angular/core';
 import { ColumnMode, SelectionType } from 'projects/swimlane/ngx-datatable/src/public-api';
 
 @Component({
-  selector: 'chkbox-selection-demo',
-  template: `
+    selector: 'chkbox-selection-demo',
+    template: `
     <div>
       <h3>
         Checkbox Selection
@@ -66,7 +66,8 @@ import { ColumnMode, SelectionType } from 'projects/swimlane/ngx-datatable/src/p
         </ul>
       </div>
     </div>
-  `
+  `,
+    standalone: false
 })
 export class CheckboxSelectionComponent {
   rows = [];

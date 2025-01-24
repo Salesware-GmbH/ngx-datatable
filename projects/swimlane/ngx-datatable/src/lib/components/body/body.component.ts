@@ -27,8 +27,8 @@ import { DataTableRowWrapperComponent } from './body-row-wrapper.component';
 import { Model } from './selection.component';
 
 @Component({
-  selector: 'datatable-body',
-  template: `
+    selector: 'datatable-body',
+    template: `
     <datatable-selection
       #selector
       [selected]="selected"
@@ -176,10 +176,11 @@ import { Model } from './selection.component';
       <div class="empty-row" *ngIf="!rows?.length && !loadingIndicator" [innerHTML]="emptyMessage"></div>
     </datatable-selection>
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  host: {
-    class: 'datatable-body'
-  }
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    host: {
+        class: 'datatable-body'
+    },
+    standalone: false
 })
 export class DataTableBodyComponent implements OnInit, OnDestroy {
   @Input() scrollbarV: boolean;

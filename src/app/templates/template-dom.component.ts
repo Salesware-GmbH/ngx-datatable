@@ -2,8 +2,8 @@ import { Component } from '@angular/core';
 import { ColumnMode } from 'projects/swimlane/ngx-datatable/src/public-api';
 
 @Component({
-  selector: 'inline-templates-demo',
-  template: `
+    selector: 'inline-templates-demo',
+    template: `
     <div>
       <h3>
         Expressive Templates
@@ -48,7 +48,8 @@ import { ColumnMode } from 'projects/swimlane/ngx-datatable/src/public-api';
         </ngx-datatable-column>
       </ngx-datatable>
     </div>
-  `
+  `,
+    standalone: false
 })
 export class InlineTemplatesComponent {
   rows = [];

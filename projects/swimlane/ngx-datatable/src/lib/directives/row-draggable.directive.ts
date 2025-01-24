@@ -17,7 +17,8 @@ export interface DraggableOptions {
 }
 
 @Directive({
-  selector: '[row-draggable]'
+    selector: '[row-draggable]',
+    standalone: false
 })
 export class RowDraggableDirective {
   @ContentChild(DataTableBodyRowComponent, { static: false }) row: DataTableBodyRowComponent;

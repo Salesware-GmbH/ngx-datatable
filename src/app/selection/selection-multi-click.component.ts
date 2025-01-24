@@ -2,8 +2,8 @@ import { Component } from '@angular/core';
 import { ColumnMode, SelectionType } from 'projects/swimlane/ngx-datatable/src/public-api';
 
 @Component({
-  selector: 'multi-click-selection-demo',
-  template: `
+    selector: 'multi-click-selection-demo',
+    template: `
     <div>
       <h3>
         Multi Click Selection
@@ -48,7 +48,8 @@ import { ColumnMode, SelectionType } from 'projects/swimlane/ngx-datatable/src/p
         </ul>
       </div>
     </div>
-  `
+  `,
+    standalone: false
 })
 export class MultiClickSelectionComponent {
   rows = [];

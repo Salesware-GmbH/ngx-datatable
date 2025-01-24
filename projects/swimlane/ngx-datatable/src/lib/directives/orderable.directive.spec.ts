@@ -7,8 +7,9 @@ import { DraggableDirective } from './draggable.directive';
 import { id } from '../utils/id';
 
 @Component({
-  selector: 'test-fixture-component',
-  template: ` <div orderable></div> `
+    selector: 'test-fixture-component',
+    template: ` <div orderable></div> `,
+    standalone: false
 })
 class TestFixtureComponent {}
 

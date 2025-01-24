@@ -5,8 +5,9 @@ import { By } from '@angular/platform-browser';
 import { DraggableDirective } from './draggable.directive';
 
 @Component({
-  selector: 'test-fixture-component',
-  template: ` <div draggable></div> `
+    selector: 'test-fixture-component',
+    template: ` <div draggable></div> `,
+    standalone: false
 })
 class TestFixtureComponent {}
 

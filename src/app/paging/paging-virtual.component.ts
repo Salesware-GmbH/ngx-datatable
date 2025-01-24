@@ -13,9 +13,9 @@ interface PageInfo {
 }
 
 @Component({
-  selector: 'virtual-paging-demo',
-  providers: [MockServerResultsService],
-  template: `
+    selector: 'virtual-paging-demo',
+    providers: [MockServerResultsService],
+    template: `
     <div>
       <h3>
         Virtual Server-side Paging
@@ -50,7 +50,8 @@ interface PageInfo {
       >
       </ngx-datatable>
     </div>
-  `
+  `,
+    standalone: false
 })
 export class VirtualPagingComponent {
   totalElements: number;

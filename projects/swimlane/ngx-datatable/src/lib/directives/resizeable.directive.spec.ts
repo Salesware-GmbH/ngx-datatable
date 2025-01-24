@@ -4,8 +4,9 @@ import { By } from '@angular/platform-browser';
 import { ResizeableDirective } from './resizeable.directive';
 
 @Component({
-  selector: 'test-fixture-component',
-  template: ` <div resizeable></div> `
+    selector: 'test-fixture-component',
+    template: ` <div resizeable></div> `,
+    standalone: false
 })
 class TestFixtureComponent {}
 

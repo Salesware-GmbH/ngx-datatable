@@ -2,8 +2,8 @@ import { Component, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { ColumnMode } from 'projects/swimlane/ngx-datatable/src/public-api';
 
 @Component({
-  selector: 'live-data-demo',
-  template: `
+    selector: 'live-data-demo',
+    template: `
     <div>
       <h3>
         Live Data Demo
@@ -38,7 +38,8 @@ import { ColumnMode } from 'projects/swimlane/ngx-datatable/src/public-api';
         <ngx-datatable-column name="Company"></ngx-datatable-column>
       </ngx-datatable>
     </div>
-  `
+  `,
+    standalone: false
 })
 export class LiveDataComponent {
   @ViewChild('mydatatable') mydatatable: any;

@@ -3,12 +3,13 @@ import { columnGroupWidths, columnsByPin, columnsByPinArr } from '../../utils/co
 import { translateXY } from '../../utils/translate';
 
 @Component({
-  selector: 'sticky-summary-row',
-  templateUrl: './sticky-summary-row.component.html',
-  host: {
-    class: 'datatable-sticky-summary-row'
-  },
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'sticky-summary-row',
+    templateUrl: './sticky-summary-row.component.html',
+    host: {
+        class: 'datatable-sticky-summary-row'
+    },
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class StickySummaryRowComponent implements OnDestroy {
   @Input() set columns(val: any[]) {

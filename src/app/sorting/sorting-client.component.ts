@@ -2,8 +2,8 @@ import { Component } from '@angular/core';
 import { ColumnMode, SortType } from 'projects/swimlane/ngx-datatable/src/public-api';
 
 @Component({
-  selector: 'client-sorting-demo',
-  template: `
+    selector: 'client-sorting-demo',
+    template: `
     <div>
       <h3>
         Client-side Sorting
@@ -29,7 +29,8 @@ import { ColumnMode, SortType } from 'projects/swimlane/ngx-datatable/src/public
       >
       </ngx-datatable>
     </div>
-  `
+  `,
+    standalone: false
 })
 export class ClientSortingComponent {
   rows = [];

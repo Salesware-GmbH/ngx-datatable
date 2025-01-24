@@ -2,8 +2,8 @@ import { Component } from '@angular/core';
 import { ColumnMode } from 'projects/swimlane/ngx-datatable/src/public-api';
 
 @Component({
-  selector: 'column-pinning-demo',
-  template: `
+    selector: 'column-pinning-demo',
+    template: `
     <div>
       <h3>
         Column Pinning
@@ -34,7 +34,8 @@ import { ColumnMode } from 'projects/swimlane/ngx-datatable/src/public-api';
         </ngx-datatable-column>
       </ngx-datatable>
     </div>
-  `
+  `,
+    standalone: false
 })
 export class ColumnPinningComponent {
   rows = [];

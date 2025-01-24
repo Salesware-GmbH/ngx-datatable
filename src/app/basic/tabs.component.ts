@@ -2,8 +2,8 @@ import { Component } from '@angular/core';
 import { ColumnMode } from 'projects/swimlane/ngx-datatable/src/public-api';
 
 @Component({
-  selector: 'tabs-demo',
-  template: `
+    selector: 'tabs-demo',
+    template: `
     <div>
       <h3>
         Hidden By Default
@@ -63,7 +63,8 @@ import { ColumnMode } from 'projects/swimlane/ngx-datatable/src/public-api';
         </div>
       </div>
     </div>
-  `
+  `,
+    standalone: false
 })
 export class TabsDemoComponent {
   rows = [];

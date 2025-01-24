@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'horz-vert-scrolling-demo',
-  template: `
+    selector: 'horz-vert-scrolling-demo',
+    template: `
     <div>
       <h3>
         Horizontal and Vertical Scrolling
@@ -32,7 +32,8 @@ import { Component } from '@angular/core';
         <ngx-datatable-column name="State" [width]="300" prop="address.state"></ngx-datatable-column>
       </ngx-datatable>
     </div>
-  `
+  `,
+    standalone: false
 })
 export class HorzVertScrolling {
   rows = [];

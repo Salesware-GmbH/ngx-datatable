@@ -2,8 +2,8 @@ import { Component } from '@angular/core';
 import { ColumnMode } from 'projects/swimlane/ngx-datatable/src/public-api';
 
 @Component({
-  selector: 'server-sorting-demo',
-  template: `
+    selector: 'server-sorting-demo',
+    template: `
     <div>
       <h3>
         Server-side Sorting
@@ -30,7 +30,8 @@ import { ColumnMode } from 'projects/swimlane/ngx-datatable/src/public-api';
       >
       </ngx-datatable>
     </div>
-  `
+  `,
+    standalone: false
 })
 export class ServerSortingComponent {
   loading = false;

@@ -12,10 +12,11 @@ import { columnsByPin, columnsByPinArr, columnGroupWidths } from '../../utils/co
 import { translateXY } from '../../utils/translate';
 
 @Component({
-  selector: 'skeleton-loader',
-  templateUrl: './skeleton-loader.component.html',
-  styleUrl: './skeleton-loader.component.css',
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'skeleton-loader',
+    templateUrl: './skeleton-loader.component.html',
+    styleUrl: './skeleton-loader.component.css',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class SkeletonLoaderComponent implements OnDestroy {
   @Input() template: TemplateRef<any>;

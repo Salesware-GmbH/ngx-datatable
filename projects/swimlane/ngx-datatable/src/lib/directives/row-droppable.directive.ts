@@ -15,7 +15,8 @@ export interface DropTargetOptions {
 }
 
 @Directive({
-  selector: '[row-droppable]'
+    selector: '[row-droppable]',
+    standalone: false
 })
 export class RowDropDirective {
   /**

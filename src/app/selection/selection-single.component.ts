@@ -2,8 +2,8 @@ import { Component } from '@angular/core';
 import { ColumnMode, SelectionType } from 'projects/swimlane/ngx-datatable/src/public-api';
 
 @Component({
-  selector: 'single-selection-demo',
-  template: `
+    selector: 'single-selection-demo',
+    template: `
     <div>
       <h3>
         Single Row Selection
@@ -48,7 +48,8 @@ import { ColumnMode, SelectionType } from 'projects/swimlane/ngx-datatable/src/p
         </ul>
       </div>
     </div>
-  `
+  `,
+    standalone: false
 })
 export class SingleSelectionComponent {
   rows = [];

@@ -2,8 +2,8 @@ import { Component } from '@angular/core';
 import { ColumnMode } from 'projects/swimlane/ngx-datatable/src/public-api';
 
 @Component({
-  selector: 'full-screen-demo',
-  template: `
+    selector: 'full-screen-demo',
+    template: `
     <div>
       <h3>
         Full Screen
@@ -35,7 +35,8 @@ import { ColumnMode } from 'projects/swimlane/ngx-datatable/src/public-api';
         <ngx-datatable-column name="State" [width]="300" prop="address.state"></ngx-datatable-column>
       </ngx-datatable>
     </div>
-  `
+  `,
+    standalone: false
 })
 export class FullScreenComponent {
   rows = [];

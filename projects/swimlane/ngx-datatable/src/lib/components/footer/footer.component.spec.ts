@@ -198,7 +198,7 @@ describe('DataTableFooterComponent', () => {
  * test host component
  */
 @Component({
-  template: `
+    template: `
     <datatable-footer
       [rowCount]="rowCount"
       [pageSize]="pageSize"
@@ -232,7 +232,8 @@ describe('DataTableFooterComponent', () => {
         <li>offset {{ offset }}</li>
       </ul>
     </ng-template>
-  `
+  `,
+    standalone: false
 })
 class TestFixtureComponent {
   footerHeight: number;
@@ -266,8 +267,9 @@ class TestFixtureComponent {
  * the DataTableFooterComponent
  */
 @Component({
-  selector: 'datatable-pager',
-  template: ''
+    selector: 'datatable-pager',
+    template: '',
+    standalone: false
 })
 class DataTablePagerComponentMock {
   @Input() pagerLeftArrowIcon: string;

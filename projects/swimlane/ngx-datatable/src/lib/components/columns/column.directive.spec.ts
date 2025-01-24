@@ -6,14 +6,15 @@ import { ColumnChangesService } from '../../services/column-changes.service';
 import { DataTableColumnDirective } from './column.directive';
 
 @Component({
-  selector: 'test-fixture-component',
-  template: `
+    selector: 'test-fixture-component',
+    template: `
     <ngx-datatable-column id="t1"></ngx-datatable-column>
     <ngx-datatable-column id="t2" [name]="columnName">
       <ng-template></ng-template>
       <ng-template></ng-template>
     </ngx-datatable-column>
-  `
+  `,
+    standalone: false
 })
 class TestFixtureComponent {
   columnName: string;

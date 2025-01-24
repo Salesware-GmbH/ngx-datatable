@@ -12,7 +12,8 @@ declare class ResizeObserver {
 }
 
 @Directive({
-  selector: '[resize-observer]'
+    selector: '[resize-observer]',
+    standalone: false
 })
 export class ResizeObserverDirective implements AfterViewInit, OnDestroy {
   @Input({ alias: 'resize-observer' }) enabled = false;

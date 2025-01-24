@@ -2,8 +2,8 @@ import { AfterViewInit, Component, ContentChild, NgZone, OnInit, TemplateRef, Vi
 import { ColumnMode, TableColumn } from 'projects/swimlane/ngx-datatable/src/public-api';
 
 @Component({
-  selector: 'virtual-auto-demo',
-  template: `
+    selector: 'virtual-auto-demo',
+    template: `
     <div>
       <h3>
         Virtual Fluid Row Heights
@@ -49,7 +49,8 @@ import { ColumnMode, TableColumn } from 'projects/swimlane/ngx-datatable/src/pub
         Random Height of {{ row.height }} px
       </div>
     </ng-template>
-  `
+  `,
+    standalone: false
 })
 export class VirtualAutoComponent implements AfterViewInit {
   rows = [];

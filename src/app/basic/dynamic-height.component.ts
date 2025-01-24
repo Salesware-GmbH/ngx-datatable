@@ -2,8 +2,8 @@ import { Component } from '@angular/core';
 import { ColumnMode } from 'projects/swimlane/ngx-datatable/src/public-api';
 
 @Component({
-  selector: 'dynamic-height-demo',
-  template: `
+    selector: 'dynamic-height-demo',
+    template: `
     <div>
       <h3>
         Dynamic Height w/ Virtual Scrolling
@@ -30,7 +30,8 @@ import { ColumnMode } from 'projects/swimlane/ngx-datatable/src/public-api';
         <ngx-datatable-column name="Row Height" prop="height"></ngx-datatable-column>
       </ngx-datatable>
     </div>
-  `
+  `,
+    standalone: false
 })
 export class DynamicHeightComponent {
   rows = [];

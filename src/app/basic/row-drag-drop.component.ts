@@ -2,8 +2,8 @@ import { SelectionType } from './../../../projects/swimlane/ngx-datatable/src/li
 import { Component, ViewEncapsulation, ViewChild } from '@angular/core';
 
 @Component({
-  selector: 'row-drag-drop-demo',
-  template: `
+    selector: 'row-drag-drop-demo',
+    template: `
     <div>
       <h3>
         Row Drag&Drop Demo
@@ -35,8 +35,8 @@ import { Component, ViewEncapsulation, ViewChild } from '@angular/core';
       </ngx-datatable>
     </div>
   `,
-  encapsulation: ViewEncapsulation.None
-
+    encapsulation: ViewEncapsulation.None,
+    standalone: false
 })
 export class RowDragDropComponent {
 

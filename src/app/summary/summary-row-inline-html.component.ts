@@ -2,8 +2,8 @@ import { Component } from '@angular/core';
 import { ColumnMode } from 'projects/swimlane/ngx-datatable/src/public-api';
 
 @Component({
-  selector: 'summary-row-inline-html',
-  template: `
+    selector: 'summary-row-inline-html',
+    template: `
     <div>
       <h3>
         Inline HTML template
@@ -37,7 +37,8 @@ import { ColumnMode } from 'projects/swimlane/ngx-datatable/src/public-api';
         </div>
       </ng-template>
     </div>
-  `
+  `,
+    standalone: false
 })
 export class SummaryRowInlineHtmlComponent {
   rows = [];
