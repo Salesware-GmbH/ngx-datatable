@@ -11,7 +11,6 @@ import {
   ChangeDetectionStrategy,
   HostListener,
   TemplateRef,
-  ElementRef
 } from '@angular/core';
 import { ScrollerComponent } from './scroller.component';
 import { SelectionType } from '../../types/selection.type';
@@ -19,10 +18,7 @@ import { columnsByPin, columnGroupWidths } from '../../utils/column';
 import { RowHeightCache } from '../../utils/row-height-cache';
 import { translateXY } from '../../utils/translate';
 import { RowDragService } from '../../services/row-drag.service';
-import { PerfectScrollbarComponent } from 'ngx-om-perfect-scrollbar';
-import { Subject, Subscription } from 'rxjs';
-import { takeUntil, throttleTime } from 'rxjs/operators';
-import { DataTableBodyRowComponent } from './body-row.component';
+import { Subject } from 'rxjs';
 import { DataTableRowWrapperComponent } from './body-row-wrapper.component';
 import { Model } from './selection.component';
 
@@ -40,8 +36,6 @@ import { Model } from './selection.component';
       (select)="select.emit($event)"
       (activate)="onActivate($event)"
     >
-      <perfect-scrollbar>
-        <datatable-progress *ngIf="loadingIndicator" [columnGroupWidths]="columnGroupWidths"> </datatable-progress>
         <datatable-scroller
           *ngIf="rows?.length"
           [scrollbarV]="scrollbarV"
@@ -89,7 +83,6 @@ import { Model } from './selection.component';
               *ngIf="dragService.dragActive && rowsDraggable && dragReference === dragService.dragReference"
               row-droppable
               (onDropEvent)="onDrop($event, indexes.first + i)"
-              (onDragOverEvent)="onDragOver(indexes.first + i)"
               [ngClass]="'drop-area-top' + (dragService.dragActive ? ' drag-active' : '')"
               dragOverClass="drop-over-active"
             >
@@ -99,7 +92,6 @@ import { Model } from './selection.component';
               *ngIf="dragService.dragActive && rowsDraggable && dragReference === dragService.dragReference"
               row-droppable
               (onDropEvent)="onDrop($event, indexes.first + i + 1)"
-              (onDragOverEvent)="onDragOver(indexes.first + i)"
               [ngClass]="'drop-area-bottom' + (dragService.dragActive ? ' drag-active' : '')"
               dragOverClass="drop-over-active"
             >
@@ -172,9 +164,9 @@ import { Model } from './selection.component';
             <ng-container [ngTemplateOutlet]="endOfDataRow.template"></ng-container>
           </div>
         </datatable-scroller>
-      </perfect-scrollbar>
       <div class="empty-row" *ngIf="!rows?.length && !loadingIndicator" [innerHTML]="emptyMessage"></div>
     </datatable-selection>
+    <datatable-progress *ngIf="loadingIndicator" [columnGroupWidths]="columnGroupWidths"> </datatable-progress>
   `,
     changeDetection: ChangeDetectionStrategy.OnPush,
     host: {
@@ -230,16 +222,6 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
   @Input() set rows(val: any[]) {
     this._rows = val;
     this.recalcLayout();
-
-    // scroll to previous x-offset
-    if (val.length && (this.previousOffsetX || this.scrollToLeftRequested)) {
-      this.scrollerSetSubscription?.unsubscribe();
-      this.scrollerSetSubscription = this.scrollerSet.pipe(takeUntil(this.ngUnsubscribe)).subscribe(() => {
-        this.scroller.scrollXPos = this.previousOffsetX;
-        this.perfectScrollbar?.directiveRef?.scrollToX(this.previousOffsetX);
-        this.scrollToLeftRequested = false;
-      });
-    }
   }
 
   get rows(): any[] {
@@ -250,7 +232,6 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
     this._columns = val;
     const colsByPin = columnsByPin(val);
     this.columnGroupWidths = columnGroupWidths(colsByPin, val);
-    this.perfectScrollbar?.directiveRef?.update();
   }
 
   get columns(): any[] {
@@ -315,9 +296,6 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
 
   private scrollerSet = new Subject<void>();
   scrollerSet$ = this.scrollerSet.asObservable();
-  private scrollOnDrag = new Subject<number>();
-  private previousOffsetX: number;
-  private scrollerSetSubscription: Subscription;
   private ngUnsubscribe = new Subject<void>();
 
   private _scroller: ScrollerComponent;
@@ -330,9 +308,6 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
   get scroller(): ScrollerComponent {
     return this._scroller;
   }
-
-  @ViewChild(PerfectScrollbarComponent) perfectScrollbar: PerfectScrollbarComponent;
-  @ViewChild(PerfectScrollbarComponent, { read: ElementRef }) perfectScrollbarElement: ElementRef;
 
   /**
    * Returns if selection is enabled.
@@ -365,7 +340,6 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
   listener: any;
   rowIndexes: any = new WeakMap<any, string>();
   rowExpansions: any[] = [];
-  scrollToLeftRequested = false;
 
   _rows: any[];
   _bodyHeight: any;
@@ -428,10 +402,6 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
         this.cd.markForCheck();
       });
     }
-
-    this.scrollOnDrag.pipe(takeUntil(this.ngUnsubscribe), throttleTime(500)).subscribe(offsetY => {
-      this.perfectScrollbar?.directiveRef?.scrollToY(offsetY);
-    });
   }
 
   /**
@@ -443,8 +413,6 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
     }
 
     this.scrollerSet.complete();
-    this.scrollOnDrag.complete();
-    this.scrollerSetSubscription?.unsubscribe();
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
   }
@@ -490,14 +458,6 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
 
     this.offsetY = scrollYPos;
     this.offsetX = scrollXPos;
-
-    if (this.rows?.length && scrollXPos >= 0) {
-      this.previousOffsetX = scrollXPos;
-    }
-
-    if (this.scrollToLeftRequested) {
-      this.previousOffsetX = 0;
-    }
 
     this.updateIndexes();
     this.updatePage(event.direction);
@@ -753,7 +713,7 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
     const styles = {
       position: 'absolute',
       display: 'flex',
-      width: `${this.perfectScrollbarElement.nativeElement.offsetWidth}px`
+      width: `100%`
     };
     const pos = this.rowHeightsCache.query(this.rows.length - 1);
 
@@ -1023,22 +983,6 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
       startindex: startIndex,
       destindex: destIndex
     });
-  }
-
-  onDragOver(rowIndex: number) {
-    if (rowIndex <= this.indexes.first) {
-      const id = rowIndex - 1;
-      const prevRow = this.rows[id];
-      if (prevRow) {
-        this.scrollOnDrag.next(this.rowHeightsCache.query(id - 1));
-      }
-    } else if (rowIndex >= this.indexes.last - 2) {
-      const id = rowIndex + 1;
-      const nextRow = this.rows[id];
-      if (nextRow) {
-        this.scrollOnDrag.next(this.rowHeightsCache.query(this.indexes.first));
-      }
-    }
   }
 
   @HostListener('focusout', ['$event'])
