@@ -20,7 +20,7 @@ import { BehaviorSubject } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     @if (row?.isRowGroup && groupHeader?.template) {
-      <div class="datatable-body-row-group-header" [ngStyle]="getGroupHeaderStyle()" (click)="onGroupClick($event)">
+      <div class="datatable-body-row-group-header" [class.expanded]="expanded" [ngStyle]="getGroupHeaderStyle()" (click)="onGroupClick($event)">
         <ng-template
           [ngTemplateOutlet]="groupHeader.template"
           [ngTemplateOutletContext]="groupContext"
