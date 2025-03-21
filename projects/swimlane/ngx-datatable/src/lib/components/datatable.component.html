@@ -33,6 +33,7 @@
     [height]="headerHeight"
     [offsetX]="_offsetX | async"
     [innerWidth]="_innerWidth"
+    [rowPadding]="rowPadding"
   ></sticky-summary-row>
   <skeleton-loader
     *ngIf="loadingIndicator && useSkeletonLoader && skeletonTemplate"
