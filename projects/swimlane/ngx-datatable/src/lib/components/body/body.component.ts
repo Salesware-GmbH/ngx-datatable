@@ -124,6 +124,7 @@ import { Model } from './selection.component';
               [dataAttributesCell]="dataAttributesCell"
               [getColSpan]="colSpan"
               [displayCheck]="displayCheck"
+              [rowPadding]="rowPadding"
               [treeStatus]="group && group.treeStatus"
               (treeAction)="onTreeAction(group)"
               (activate)="selector.onActivate($event, indexes.first + i)"
@@ -149,6 +150,7 @@ import { Model } from './selection.component';
                 [dataAttributesRow]="dataAttributesRow"
                 [dataAttributesCell]="dataAttributesCell"
                 [getColSpan]="colSpan"
+                [rowPadding]="rowPadding"
                 (activate)="selector.onActivate($event, i)"
               >
               </datatable-body-row>
@@ -217,6 +219,15 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
   @Input() virtualizedFluidRowHeight: boolean;
   @Input() forceDetailOpen = false;
 
+  private _rowPadding: number;
+  @Input() set rowPadding(val: number) {
+    this._rowPadding = val;
+    this.calculateColumns();
+  }
+  get rowPadding(): number {
+    return this._rowPadding;
+  }
+
   @Input() set pageSize(val: number) {
     this._pageSize = val;
     this.recalcLayout();
@@ -247,9 +258,7 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
 
   @Input() set columns(val: any[]) {
     this._columns = val;
-    const colsByPin = columnsByPin(val);
-    this.columnGroupWidths = columnGroupWidths(colsByPin, val);
-    this.perfectScrollbar?.directiveRef?.update();
+    this.calculateColumns();
   }
 
   get columns(): any[] {
@@ -446,6 +455,12 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
     this.scrollerSetSubscription?.unsubscribe();
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
+  }
+
+  private calculateColumns() {
+    const colsByPin = columnsByPin(this.columns);
+    this.columnGroupWidths = columnGroupWidths(colsByPin, this.columns, this.rowPadding);
+    this.perfectScrollbar?.directiveRef?.update();
   }
 
   /**

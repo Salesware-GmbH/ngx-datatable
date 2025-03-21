@@ -64,10 +64,7 @@ export class DataTableBodyRowComponent implements DoCheck {
   }
 
   @Input() set innerWidth(val: number) {
-    if (this._columns) {
-      const colByPin = columnsByPin(this._columns);
-      this._columnGroupWidths = columnGroupWidths(colByPin, this._columns);
-    }
+    this.calculateColumns();
 
     this._innerWidth = val;
     this.recalculateColumns();
@@ -106,6 +103,16 @@ export class DataTableBodyRowComponent implements DoCheck {
   @Input() rowIndex: number;
   @Input() displayCheck: any;
   @Input() treeStatus: TreeStatus = 'collapsed';
+
+  private _rowPadding: number;
+  @Input() set rowPadding(val: number) {
+    this._rowPadding = val;
+    this.calculateColumns();
+    this.buildStylesByGroup();
+  }
+  get rowPadding(): number {
+    return this._rowPadding;
+  }
 
   @Input()
   set offsetX(val: number) {
@@ -212,6 +219,13 @@ export class DataTableBodyRowComponent implements DoCheck {
     }
   }
 
+  private calculateColumns() {
+    if (this._columns) {
+      const colByPin = columnsByPin(this._columns);
+      this._columnGroupWidths = columnGroupWidths(colByPin, this._columns, this.rowPadding);
+    }
+  }
+
   trackByGroups(index: number, colGroup: any): any {
     return colGroup.type;
   }
@@ -237,6 +251,9 @@ export class DataTableBodyRowComponent implements DoCheck {
 
     if (group === 'left') {
       translateXY(styles, offsetX, 0);
+      if (this.rowPadding) {
+        styles['padding-left.px'] = this.rowPadding;
+      }
     } else if (group === 'right') {
       const bodyWidth = parseInt(this.innerWidth + '', 0);
       const totalDiff = widths.total - bodyWidth;
@@ -294,7 +311,7 @@ export class DataTableBodyRowComponent implements DoCheck {
     this._columns = val;
     const colsByPin = columnsByPin(this._columns);
     this._columnsByPin = columnsByPinArr(this._columns);
-    this._columnGroupWidths = columnGroupWidths(colsByPin, this._columns);
+    this._columnGroupWidths = columnGroupWidths(colsByPin, this._columns, this.rowPadding);
   }
 
   onTreeAction() {

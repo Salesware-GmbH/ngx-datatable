@@ -473,6 +473,8 @@ export class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
   
   @Input() useTotalWidthForGroupHeaders = false;
 
+  @Input() rowPadding = 0;
+
   /**
    * Body was scrolled typically in a `scrollbarV:true` scenario.
    */
@@ -904,7 +906,7 @@ export class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
     if (this.columnMode === ColumnMode.force) {
       forceFillColumnWidths(columns, width, forceIdx, allowBleed);
     } else if (this.columnMode === ColumnMode.flex) {
-      adjustColumnWidths(columns, width);
+      adjustColumnWidths(columns, width - 2*this.rowPadding);
     }
 
     if (!!this.bodyComponent) {
