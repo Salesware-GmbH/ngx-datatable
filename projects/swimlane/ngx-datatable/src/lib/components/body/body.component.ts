@@ -79,6 +79,7 @@ import { Model } from './selection.component';
             [rowIndex]="getRowIndex(group && group[i])"
             [groupWidth]="useTotalWidthForGroupHeaders ? innerWidth : columnGroupWidths?.total"
             [endOfDataRowTemplate]="endOfDataRow?.template"
+            [groupPadding]="groupPadding"
             (rowContextmenu)="rowContextmenu.emit($event)"
             [resize-observer]="virtualizedFluidRowHeight"
             (heightChanged)="onRowHeightChanged(group, rowWrapper)"
@@ -227,6 +228,8 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
   get rowPadding(): number {
     return this._rowPadding;
   }
+
+  @Input() groupPadding: number;
 
   @Input() set pageSize(val: number) {
     this._pageSize = val;
@@ -633,8 +636,10 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
       } else {
         idx = this.getRowIndex(rows);
       }
-      const newRowHeight = rowWrapper?.getActualRowHeight() ?? 0;
+      let newRowHeight = rowWrapper?.getActualRowHeight() ?? 0;
       const newDetailHeight = !this.rowDetail ? 0 : rowWrapper?.getActualRowDetailHeight() ?? 0;
+      const groupPadding = rowWrapper.row.isRowGroup ? this.groupPadding : 0;
+      newRowHeight += groupPadding;
       if (newRowHeight !== 0) {
         if (this.rowHeightsCache.set(idx, newRowHeight + newDetailHeight)) {
           this.rowSizeChanged.emit({ row: rows, newHeight: newRowHeight, detailHeight: newDetailHeight });
@@ -846,7 +851,8 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
         externalVirtual: this.scrollbarV && this.externalPaging,
         rowCount: this.rowCount,
         rowIndexes: this.rowIndexes,
-        rowExpansions
+        rowExpansions,
+        groupPadding: this.groupPadding
       });
     }
   }

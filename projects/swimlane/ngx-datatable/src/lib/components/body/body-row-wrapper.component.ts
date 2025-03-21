@@ -70,6 +70,7 @@ export class DataTableRowWrapperComponent implements OnDestroy, DoCheck {
   @Input() groupedRows: any;
   @Input() groupWidth: number;
   @Input() endOfDataRowTemplate: TemplateRef<any>;
+  @Input() groupPadding: number;
 
   @Output() rowContextmenu = new EventEmitter<{ event: MouseEvent; row: any }>(false);
   @Output() activateGroup = new EventEmitter<any>();
@@ -158,6 +159,7 @@ export class DataTableRowWrapperComponent implements OnDestroy, DoCheck {
     styles['backface-visibility'] = 'hidden';
     styles['width.px'] = this.groupWidth;
     styles['height.px'] = this.groupRowHeight;
+    styles['margin-top.px'] = this.groupPadding;
 
     return styles;
   }

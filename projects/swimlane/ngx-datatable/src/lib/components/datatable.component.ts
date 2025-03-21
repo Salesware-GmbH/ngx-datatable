@@ -475,6 +475,8 @@ export class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
 
   @Input() rowPadding = 0;
 
+  @Input() groupPadding = 0;
+
   /**
    * Body was scrolled typically in a `scrollbarV:true` scenario.
    */

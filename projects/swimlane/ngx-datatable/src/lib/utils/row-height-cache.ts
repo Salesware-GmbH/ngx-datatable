@@ -36,7 +36,7 @@ export class RowHeightCache {
    * @param detailRowHeight The detail row height.
    */
   initCache(details: any): void {
-    const { rows, rowHeight, detailRowHeight, externalVirtual, rowCount, rowIndexes, rowExpansions } = details;
+    const { rows, rowHeight, detailRowHeight, externalVirtual, rowCount, rowIndexes, rowExpansions, groupPadding } = details;
     const isFn = typeof rowHeight === 'function';
     const isDetailFn = typeof detailRowHeight === 'function';
 
@@ -75,6 +75,10 @@ export class RowHeightCache {
         } else {
           currentRowHeight += detailRowHeight;
         }
+      }
+
+      if (row.isRowGroup && groupPadding) {
+        currentRowHeight += groupPadding;
       }
 
       this.update(i, currentRowHeight);
