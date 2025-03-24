@@ -126,6 +126,7 @@ import { Model } from './selection.component';
               [getColSpan]="colSpan"
               [displayCheck]="displayCheck"
               [rowPadding]="rowPadding"
+              [groupPadding]="groupPadding"
               [treeStatus]="group && group.treeStatus"
               (treeAction)="onTreeAction(group)"
               (activate)="selector.onActivate($event, indexes.first + i)"
@@ -152,6 +153,7 @@ import { Model } from './selection.component';
                 [dataAttributesCell]="dataAttributesCell"
                 [getColSpan]="colSpan"
                 [rowPadding]="rowPadding"
+                [groupPadding]="groupPadding"
                 (activate)="selector.onActivate($event, i)"
               >
               </datatable-body-row>

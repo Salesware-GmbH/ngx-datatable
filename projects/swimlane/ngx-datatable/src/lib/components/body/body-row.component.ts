@@ -114,6 +114,8 @@ export class DataTableBodyRowComponent implements DoCheck {
     return this._rowPadding;
   }
 
+  @Input() groupPadding: number;
+
   @Input()
   set offsetX(val: number) {
     this._offsetX = val;
@@ -139,6 +141,9 @@ export class DataTableBodyRowComponent implements DoCheck {
 
     if (this.row?.isRowGroup) {
       cls += ' datatable-body-row-group-header';
+      if (this.expanded) {
+        cls += ' expanded';
+      }
     } else {
       if (this.isSelected) {
         cls += ' active';
@@ -183,6 +188,13 @@ export class DataTableBodyRowComponent implements DoCheck {
   @HostBinding('style.width.px')
   get columnsTotalWidths(): string {
     return this._columnGroupWidths.total;
+  }
+
+  @HostBinding('style.margin-top.px') get groupPaddingTop() {
+    if (this.row.isRowGroup && this.groupPadding) {
+      return this.groupPadding;
+    }
+    return undefined;
   }
 
   @Output() activate: EventEmitter<any> = new EventEmitter();
