@@ -1,3 +1,5 @@
+import { element } from "protractor";
+
 /**
  * Returns the columns by pin.
  */
@@ -26,12 +28,12 @@ export function columnsByPin(cols: any[]) {
 /**
  * Returns the widths of all group sets of a column
  */
-export function columnGroupWidths(groups: any, all: any) {
+export function columnGroupWidths(groups: any, all: any, rowPadding: number = 0) {
   return {
-    left: columnTotalWidth(groups.left),
+    left: columnTotalWidth(groups.left) + rowPadding,
     center: columnTotalWidth(groups.center),
-    right: columnTotalWidth(groups.right),
-    total: Math.floor(columnTotalWidth(all))
+    right: columnTotalWidth(groups.right) + rowPadding,
+    total: Math.floor(columnTotalWidth(all)) + 2*rowPadding
   };
 }
 

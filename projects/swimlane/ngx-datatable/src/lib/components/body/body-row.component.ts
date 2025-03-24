@@ -65,10 +65,7 @@ export class DataTableBodyRowComponent implements DoCheck {
   }
 
   @Input() set innerWidth(val: number) {
-    if (this._columns) {
-      const colByPin = columnsByPin(this._columns);
-      this._columnGroupWidths = columnGroupWidths(colByPin, this._columns);
-    }
+    this.calculateColumns();
 
     this._innerWidth = val;
     this.recalculateColumns();
@@ -108,6 +105,18 @@ export class DataTableBodyRowComponent implements DoCheck {
   @Input() displayCheck: any;
   @Input() treeStatus: TreeStatus = 'collapsed';
 
+  private _rowPadding: number;
+  @Input() set rowPadding(val: number) {
+    this._rowPadding = val;
+    this.calculateColumns();
+    this.buildStylesByGroup();
+  }
+  get rowPadding(): number {
+    return this._rowPadding;
+  }
+
+  @Input() groupPadding: number;
+
   @Input()
   set offsetX(val: number) {
     this._offsetX = val;
@@ -133,6 +142,9 @@ export class DataTableBodyRowComponent implements DoCheck {
 
     if (this.row?.isRowGroup) {
       cls += ' datatable-body-row-group-header';
+      if (this.expanded) {
+        cls += ' expanded';
+      }
     } else {
       if (this.isSelected) {
         cls += ' active';
@@ -179,6 +191,13 @@ export class DataTableBodyRowComponent implements DoCheck {
     return this._columnGroupWidths.total;
   }
 
+  @HostBinding('style.margin-top.px') get groupPaddingTop() {
+    if (this.row.isRowGroup && this.groupPadding) {
+      return this.groupPadding;
+    }
+    return undefined;
+  }
+
   @Output() activate: EventEmitter<any> = new EventEmitter();
   @Output() treeAction: EventEmitter<any> = new EventEmitter();
 
@@ -213,6 +232,13 @@ export class DataTableBodyRowComponent implements DoCheck {
     }
   }
 
+  private calculateColumns() {
+    if (this._columns) {
+      const colByPin = columnsByPin(this._columns);
+      this._columnGroupWidths = columnGroupWidths(colByPin, this._columns, this.rowPadding);
+    }
+  }
+
   trackByGroups(index: number, colGroup: any): any {
     return colGroup.type;
   }
@@ -238,6 +264,9 @@ export class DataTableBodyRowComponent implements DoCheck {
 
     if (group === 'left') {
       translateXY(styles, offsetX, 0);
+      if (this.rowPadding) {
+        styles['padding-left.px'] = this.rowPadding;
+      }
     } else if (group === 'right') {
       const bodyWidth = parseInt(this.innerWidth + '', 0);
       const totalDiff = widths.total - bodyWidth;
@@ -295,7 +324,7 @@ export class DataTableBodyRowComponent implements DoCheck {
     this._columns = val;
     const colsByPin = columnsByPin(this._columns);
     this._columnsByPin = columnsByPinArr(this._columns);
-    this._columnGroupWidths = columnGroupWidths(colsByPin, this._columns);
+    this._columnGroupWidths = columnGroupWidths(colsByPin, this._columns, this.rowPadding);
   }
 
   onTreeAction() {

@@ -18,6 +18,7 @@
     [allRowsSelected]="allRowsSelected"
     [selectionType]="selectionType"
     [dataAttributesCell]="dataAttributesCell"
+    [rowPadding]="rowPadding"
     (sort)="onColumnSort($event)"
     (resize)="onColumnResize($event)"
     (reorder)="onColumnReorder($event)"
@@ -32,6 +33,7 @@
     [height]="headerHeight"
     [offsetX]="_offsetX | async"
     [innerWidth]="_innerWidth"
+    [rowPadding]="rowPadding"
   ></sticky-summary-row>
   <skeleton-loader
     *ngIf="loadingIndicator && useSkeletonLoader && skeletonTemplate"
@@ -40,6 +42,7 @@
     [rowHeight]="rowHeight"
     [offsetX]="_offsetX | async"
     [innerWidth]="_innerWidth"
+    [rowPadding]="rowPadding"
   ></skeleton-loader>
   <datatable-body
     role="rowgroup"
@@ -50,7 +53,7 @@
     [scrollbarV]="scrollbarV"
     [scrollbarH]="scrollbarH"
     [virtualization]="virtualization"
-    [loadingIndicator]="loadingIndicator && !useSkeletonLoader"
+    [loadingIndicator]="loadingIndicator"
     [externalPaging]="externalPaging"
     [rowHeight]="rowHeight"
     [rowCount]="rowCount"
@@ -85,6 +88,9 @@
     [virtualizedFluidRowHeightMax]="virtualizedFluidRowHeightMax"
     [forceDetailOpen]="forceDetailOpen"
     [useTotalWidthForGroupHeaders]="useTotalWidthForGroupHeaders"
+    [rowPadding]="rowPadding"
+    [groupPadding]="groupPadding"
+    [useSkeletonLoader]="useSkeletonLoader"
     (page)="onBodyPage($event)"
     (activate)="activate.emit($event)"
     (rowContextmenu)="onRowContextmenu($event)"

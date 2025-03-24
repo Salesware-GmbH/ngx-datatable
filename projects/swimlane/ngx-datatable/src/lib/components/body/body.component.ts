@@ -73,6 +73,7 @@ import { Model } from './selection.component';
             [rowIndex]="getRowIndex(group && group[i])"
             [groupWidth]="useTotalWidthForGroupHeaders ? innerWidth : columnGroupWidths?.total"
             [endOfDataRowTemplate]="endOfDataRow?.template"
+            [groupPadding]="groupPadding"
             (rowContextmenu)="rowContextmenu.emit($event)"
             [resize-observer]="virtualizedFluidRowHeight"
             (heightChanged)="onRowHeightChanged(group, rowWrapper)"
@@ -116,6 +117,8 @@ import { Model } from './selection.component';
               [dataAttributesCell]="dataAttributesCell"
               [getColSpan]="colSpan"
               [displayCheck]="displayCheck"
+              [rowPadding]="rowPadding"
+              [groupPadding]="groupPadding"
               [treeStatus]="group && group.treeStatus"
               (treeAction)="onTreeAction(group)"
               (activate)="selector.onActivate($event, indexes.first + i)"
@@ -141,6 +144,8 @@ import { Model } from './selection.component';
                 [dataAttributesRow]="dataAttributesRow"
                 [dataAttributesCell]="dataAttributesCell"
                 [getColSpan]="colSpan"
+                [rowPadding]="rowPadding"
+                [groupPadding]="groupPadding"
                 (activate)="selector.onActivate($event, i)"
               >
               </datatable-body-row>
@@ -166,7 +171,7 @@ import { Model } from './selection.component';
         </datatable-scroller>
       <div class="empty-row" *ngIf="!rows?.length && !loadingIndicator" [innerHTML]="emptyMessage"></div>
     </datatable-selection>
-    <datatable-progress *ngIf="loadingIndicator" [columnGroupWidths]="columnGroupWidths"> </datatable-progress>
+    <datatable-progress *ngIf="loadingIndicator && !useSkeletonLoader" [columnGroupWidths]="columnGroupWidths"> </datatable-progress>
   `,
     changeDetection: ChangeDetectionStrategy.OnPush,
     host: {
@@ -210,6 +215,17 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
   @Input() virtualizedFluidRowHeight: boolean;
   @Input() forceDetailOpen = false;
 
+  private _rowPadding: number;
+  @Input() set rowPadding(val: number) {
+    this._rowPadding = val;
+    this.calculateColumns();
+  }
+  get rowPadding(): number {
+    return this._rowPadding;
+  }
+
+  @Input() groupPadding: number;
+
   @Input() set pageSize(val: number) {
     this._pageSize = val;
     this.recalcLayout();
@@ -230,8 +246,7 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
 
   @Input() set columns(val: any[]) {
     this._columns = val;
-    const colsByPin = columnsByPin(val);
-    this.columnGroupWidths = columnGroupWidths(colsByPin, val);
+    this.calculateColumns();
   }
 
   get columns(): any[] {
@@ -282,7 +297,8 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
   }
 
   @Input() endOfDataRow: { template: TemplateRef<any>; isShown: boolean };
-  @Input() useTotalWidthForGroupHeaders = false;
+  @Input() useTotalWidthForGroupHeaders = false;  
+  @Input() useSkeletonLoader = false;
 
   @Output() scroll: EventEmitter<any> = new EventEmitter();
   @Output() page: EventEmitter<any> = new EventEmitter();
@@ -415,6 +431,11 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
     this.scrollerSet.complete();
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
+  }
+
+  private calculateColumns() {
+    const colsByPin = columnsByPin(this.columns);
+    this.columnGroupWidths = columnGroupWidths(colsByPin, this.columns, this.rowPadding);
   }
 
   /**
@@ -579,8 +600,10 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
       } else {
         idx = this.getRowIndex(rows);
       }
-      const newRowHeight = rowWrapper?.getActualRowHeight() ?? 0;
+      let newRowHeight = rowWrapper?.getActualRowHeight() ?? 0;
       const newDetailHeight = !this.rowDetail ? 0 : rowWrapper?.getActualRowDetailHeight() ?? 0;
+      const groupPadding = rowWrapper.row.isRowGroup ? this.groupPadding : 0;
+      newRowHeight += groupPadding;
       if (newRowHeight !== 0) {
         if (this.rowHeightsCache.set(idx, newRowHeight + newDetailHeight)) {
           this.rowSizeChanged.emit({ row: rows, newHeight: newRowHeight, detailHeight: newDetailHeight });
@@ -792,7 +815,8 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
         externalVirtual: this.scrollbarV && this.externalPaging,
         rowCount: this.rowCount,
         rowIndexes: this.rowIndexes,
-        rowExpansions
+        rowExpansions,
+        groupPadding: this.groupPadding
       });
     }
   }
