@@ -23,11 +23,8 @@ export class SkeletonLoaderComponent implements OnDestroy {
 
   @Input() set columns(val: any[]) {
     this._columns = val;
-
-    const colsByPin = columnsByPin(val);
-    this._columnsByPin = columnsByPinArr(val);
     setTimeout(() => {
-      this._columnGroupWidths = columnGroupWidths(colsByPin, val);
+      this.calculateColumns();
       this.setStylesByGroup();
     });
   }
@@ -48,16 +45,23 @@ export class SkeletonLoaderComponent implements OnDestroy {
   @Input() set innerWidth(val: number) {
     this._innerWidth = val;
     setTimeout(() => {
-      if (this._columns) {
-        const colByPin = columnsByPin(this._columns);
-        this._columnGroupWidths = columnGroupWidths(colByPin, this._columns);
-        this.setStylesByGroup();
-      }
+      this.calculateColumns();
+      this.setStylesByGroup();
     });
   }
 
   get innerWidth(): number {
     return this._innerWidth;
+  }
+  
+  private _rowPadding: number;
+  @Input() set rowPadding(val: number) {
+    this._rowPadding = val;
+    this.calculateColumns();
+    this.setStylesByGroup();
+  }
+  get rowPadding(): number {
+    return this._rowPadding;
   }
 
   _columns: any[];
@@ -82,6 +86,13 @@ export class SkeletonLoaderComponent implements OnDestroy {
 
   ngOnDestroy(): void {
     this.destroyed = true;
+  }
+
+  private calculateColumns() {
+    const colsByPin = columnsByPin(this.columns);
+    this._columnsByPin = columnsByPinArr(this.columns);
+    this._columnGroupWidths = columnGroupWidths(colsByPin, this.columns, this.rowPadding);
+    this.setStylesByGroup();
   }
 
   trackByGroups(index: number, colGroup: any): any {
@@ -111,7 +122,9 @@ export class SkeletonLoaderComponent implements OnDestroy {
       width: `${widths[group]}px`
     };
 
-    if (group === 'center') {
+    if (group === 'left' && this.rowPadding) {
+      styles['padding-left.px'] = this.rowPadding;
+    } else if (group === 'center') {
       translateXY(styles, offsetX * -1, 0);
     } else if (group === 'right') {
       const totalDiff = widths.total - this.innerWidth;

@@ -41,7 +41,7 @@ import { Model } from './selection.component';
       (activate)="onActivate($event)"
     >
       <perfect-scrollbar>
-        <datatable-progress *ngIf="loadingIndicator" [columnGroupWidths]="columnGroupWidths"> </datatable-progress>
+        <datatable-progress *ngIf="loadingIndicator && !useSkeletonLoader" [columnGroupWidths]="columnGroupWidths"> </datatable-progress>
         <datatable-scroller
           *ngIf="rows?.length"
           [scrollbarV]="scrollbarV"
@@ -314,7 +314,8 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
   }
 
   @Input() endOfDataRow: { template: TemplateRef<any>; isShown: boolean };
-  @Input() useTotalWidthForGroupHeaders = false;
+  @Input() useTotalWidthForGroupHeaders = false;  
+  @Input() useSkeletonLoader = false;
 
   @Output() scroll: EventEmitter<any> = new EventEmitter();
   @Output() page: EventEmitter<any> = new EventEmitter();
