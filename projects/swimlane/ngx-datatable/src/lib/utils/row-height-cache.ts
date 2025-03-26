@@ -1,3 +1,8 @@
+interface RowHeightCacheData {
+  rowHeight: number;
+  rowSpacerHeight: number;
+}
+
 /**
  * This object contains the cache of the various row heights that are present inside
  * the data table.   Its based on Fenwick tree data structure that helps with
@@ -13,12 +18,12 @@ export class RowHeightCache {
    * range queries and updates.  Currently the tree is initialized to the base row
    * height instead of the detail row height.
    */
-  private treeArray: number[] = [];
+  private treeArray: RowHeightCacheData[] = [];
 
   /**
    * This is used to use as a Source of truth if a Rebuild is in progress.
    */
-  private swapTreeArray: number[] = null;
+  private swapTreeArray: RowHeightCacheData[] = null;
 
   /**
    * Clear the Tree array.
@@ -36,7 +41,7 @@ export class RowHeightCache {
    * @param detailRowHeight The detail row height.
    */
   initCache(details: any): void {
-    const { rows, rowHeight, detailRowHeight, externalVirtual, rowCount, rowIndexes, rowExpansions, groupPadding } = details;
+    const { rows, rowHeight, detailRowHeight, externalVirtual, rowCount, rowIndexes, rowExpansions, groupPadding, lastRowSpacerHeight } = details;
     const isFn = typeof rowHeight === 'function';
     const isDetailFn = typeof detailRowHeight === 'function';
 
@@ -55,7 +60,7 @@ export class RowHeightCache {
     this.treeArray = new Array(n);
 
     for (let i = 0; i < n; ++i) {
-      this.treeArray[i] = 0;
+      this.treeArray[i] = { rowHeight: 0, rowSpacerHeight: 0 };
     }
 
     for (let i = 0; i < n; ++i) {
@@ -80,8 +85,12 @@ export class RowHeightCache {
       if (row.isRowGroup && groupPadding) {
         currentRowHeight += groupPadding;
       }
-
-      this.update(i, currentRowHeight);
+      
+      if (lastRowSpacerHeight && !row.isRowGroup && (i === n -1 || rows[i + 1]?.isRowGroup)) {
+        this.update(i, currentRowHeight, lastRowSpacerHeight);
+      } else {
+        this.update(i, currentRowHeight);
+      }
     }
 
     this.swapTreeArray = null;
@@ -100,7 +109,7 @@ export class RowHeightCache {
    * When a row is expanded or rowHeight is changed, update the height.  This can
    * be utilized in future when Angular Data table supports dynamic row heights.
    */
-  update(atRowIndex: number, byRowHeight: number): void {
+  update(atRowIndex: number, byRowHeight: number, spacerHeight: number = -1): void {
     let source = this.treeArray;
     if (!this.treeArray.length) {
       if (!this.swapTreeArray) {
@@ -114,7 +123,10 @@ export class RowHeightCache {
     atRowIndex |= 0;
 
     while (atRowIndex < n) {
-      source[atRowIndex] += byRowHeight;
+      source[atRowIndex].rowHeight += byRowHeight;
+      if (spacerHeight >= 0) {
+        source[atRowIndex].rowSpacerHeight = spacerHeight;
+      }
       atRowIndex |= atRowIndex + 1;
     }
   }
@@ -144,7 +156,7 @@ export class RowHeightCache {
     atIndex |= 0;
 
     while (atIndex >= 0) {
-      sum += source[atIndex];
+      sum += source[atIndex].rowHeight + source[atIndex].rowSpacerHeight;
       atIndex = (atIndex & (atIndex + 1)) - 1;
     }
 
@@ -173,8 +185,8 @@ export class RowHeightCache {
 
     for (let blockSize = highestBit; blockSize !== 0; blockSize >>= 1) {
       const nextPos = pos + blockSize;
-      if (nextPos < dataLength && sum >= this.treeArray[nextPos]) {
-        sum -= this.treeArray[nextPos];
+      if (nextPos < dataLength && sum >= (this.treeArray[nextPos].rowHeight + this.treeArray[nextPos].rowSpacerHeight)) {
+        sum -= this.treeArray[nextPos].rowHeight - this.treeArray[nextPos].rowSpacerHeight;
         pos = nextPos;
       }
     }
