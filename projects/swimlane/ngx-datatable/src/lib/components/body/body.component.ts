@@ -106,36 +106,42 @@ import { Model } from './selection.component';
             >
               <div class="drop-indicator bottom" [class.last]="last"></div>
             </div>
-            <datatable-body-row
-              role="row"
-              *ngIf="!groupedRows; else groupedRowsTemplate"
-              tabindex="-1"
-              [isSelected]="selector.getRowSelected(group)"
-              [innerWidth]="innerWidth"
-              [offsetX]="offsetX"
-              [columns]="columns"
-              [rowHeight]="getRowHeight(group)"
-              [minRowHeight]="getMinRowHeight(group)"
-              [maxRowHeight]="virtualizedFluidRowHeightMax"
-              [row]="group"
-              [rowIndex]="getRowIndex(group)"
-              [expanded]="getRowExpanded(group)"
-              [rowClass]="rowClass"
-              [dataAttributesRow]="dataAttributesRow"
-              [dataAttributesCell]="dataAttributesCell"
-              [getColSpan]="colSpan"
-              [displayCheck]="displayCheck"
-              [rowPadding]="rowPadding"
-              [groupPadding]="groupPadding"
-              [treeStatus]="group && group.treeStatus"
-              (treeAction)="onTreeAction(group)"
-              (activate)="selector.onActivate($event, indexes.first + i)"
-            >
-            </datatable-body-row>
+            <ng-container *ngIf="!groupedRows; else groupedRowsTemplate">
+              <datatable-body-row
+                role="row"              
+                tabindex="-1"
+                [isSelected]="selector.getRowSelected(group)"
+                [innerWidth]="innerWidth"
+                [offsetX]="offsetX"
+                [columns]="columns"
+                [rowHeight]="getRowHeight(group)"
+                [minRowHeight]="getMinRowHeight(group)"
+                [maxRowHeight]="virtualizedFluidRowHeightMax"
+                [row]="group"
+                [rowIndex]="getRowIndex(group)"
+                [expanded]="getRowExpanded(group)"
+                [rowClass]="rowClass"
+                [dataAttributesRow]="dataAttributesRow"
+                [dataAttributesCell]="dataAttributesCell"
+                [getColSpan]="colSpan"
+                [displayCheck]="displayCheck"
+                [rowPadding]="rowPadding"
+                [groupPadding]="groupPadding"
+                [treeStatus]="group && group.treeStatus"
+                (treeAction)="onTreeAction(group)"
+                (activate)="selector.onActivate($event, indexes.first + i)"
+              >
+              </datatable-body-row>            
+              <div class="row-spacer" 
+                *ngIf="lastRowSpacerHeight && !group.isRowGroup && (last || temp[i + 1]?.isRowGroup)" 
+                [style.height.px]="lastRowSpacerHeight" 
+                [style.width.px]="innerWidth">
+              </div>
+            </ng-container>
             <ng-template #groupedRowsTemplate>
               <datatable-body-row
                 role="row"
-                *ngFor="let row of group.value; let i = index; trackBy: rowTrackingFn"
+                *ngFor="let row of group.value; let i = index; let last = last; trackBy: rowTrackingFn"
                 tabindex="-1"
                 [isSelected]="selector.getRowSelected(row)"
                 [innerWidth]="innerWidth"
@@ -157,6 +163,11 @@ import { Model } from './selection.component';
                 (activate)="selector.onActivate($event, i)"
               >
               </datatable-body-row>
+              <div class="row-spacer" 
+                *ngIf="lastRowSpacerHeight && last" 
+                [style.height.px]="lastRowSpacerHeight" 
+                [style.width.px]="innerWidth">
+              </div>
             </ng-template>
           </datatable-row-wrapper>
           <datatable-summary-row
@@ -232,6 +243,7 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
   }
 
   @Input() groupPadding: number;
+  @Input() lastRowSpacerHeight: number;
 
   @Input() set pageSize(val: number) {
     this._pageSize = val;
@@ -855,7 +867,8 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
         rowCount: this.rowCount,
         rowIndexes: this.rowIndexes,
         rowExpansions,
-        groupPadding: this.groupPadding
+        groupPadding: this.groupPadding,
+        lastRowSpacerHeight: this.lastRowSpacerHeight
       });
     }
   }
