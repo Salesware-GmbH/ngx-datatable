@@ -41,7 +41,7 @@ import { Model } from './selection.component';
       (activate)="onActivate($event)"
     >
       <perfect-scrollbar>
-        <datatable-progress *ngIf="loadingIndicator" [columnGroupWidths]="columnGroupWidths"> </datatable-progress>
+        <datatable-progress *ngIf="loadingIndicator && !useSkeletonLoader" [columnGroupWidths]="columnGroupWidths"> </datatable-progress>
         <datatable-scroller
           *ngIf="rows?.length"
           [scrollbarV]="scrollbarV"
@@ -79,6 +79,7 @@ import { Model } from './selection.component';
             [rowIndex]="getRowIndex(group && group[i])"
             [groupWidth]="useTotalWidthForGroupHeaders ? innerWidth : columnGroupWidths?.total"
             [endOfDataRowTemplate]="endOfDataRow?.template"
+            [groupPadding]="groupPadding"
             (rowContextmenu)="rowContextmenu.emit($event)"
             [resize-observer]="virtualizedFluidRowHeight"
             (heightChanged)="onRowHeightChanged(group, rowWrapper)"
@@ -105,34 +106,42 @@ import { Model } from './selection.component';
             >
               <div class="drop-indicator bottom" [class.last]="last"></div>
             </div>
-            <datatable-body-row
-              role="row"
-              *ngIf="!groupedRows; else groupedRowsTemplate"
-              tabindex="-1"
-              [isSelected]="selector.getRowSelected(group)"
-              [innerWidth]="innerWidth"
-              [offsetX]="offsetX"
-              [columns]="columns"
-              [rowHeight]="getRowHeight(group)"
-              [minRowHeight]="getMinRowHeight(group)"
-              [maxRowHeight]="virtualizedFluidRowHeightMax"
-              [row]="group"
-              [rowIndex]="getRowIndex(group)"
-              [expanded]="getRowExpanded(group)"
-              [rowClass]="rowClass"
-              [dataAttributesRow]="dataAttributesRow"
-              [dataAttributesCell]="dataAttributesCell"
-              [getColSpan]="colSpan"
-              [displayCheck]="displayCheck"
-              [treeStatus]="group && group.treeStatus"
-              (treeAction)="onTreeAction(group)"
-              (activate)="selector.onActivate($event, indexes.first + i)"
-            >
-            </datatable-body-row>
+            <ng-container *ngIf="!groupedRows; else groupedRowsTemplate">
+              <datatable-body-row
+                role="row"              
+                tabindex="-1"
+                [isSelected]="selector.getRowSelected(group)"
+                [innerWidth]="innerWidth"
+                [offsetX]="offsetX"
+                [columns]="columns"
+                [rowHeight]="getRowHeight(group)"
+                [minRowHeight]="getMinRowHeight(group)"
+                [maxRowHeight]="virtualizedFluidRowHeightMax"
+                [row]="group"
+                [rowIndex]="getRowIndex(group)"
+                [expanded]="getRowExpanded(group)"
+                [rowClass]="rowClass"
+                [dataAttributesRow]="dataAttributesRow"
+                [dataAttributesCell]="dataAttributesCell"
+                [getColSpan]="colSpan"
+                [displayCheck]="displayCheck"
+                [rowPadding]="rowPadding"
+                [groupPadding]="groupPadding"
+                [treeStatus]="group && group.treeStatus"
+                (treeAction)="onTreeAction(group)"
+                (activate)="selector.onActivate($event, indexes.first + i)"
+              >
+              </datatable-body-row>            
+              <div class="row-spacer" 
+                *ngIf="lastRowSpacerHeight && !group.isRowGroup && (last || temp[i + 1]?.isRowGroup)" 
+                [style.height.px]="lastRowSpacerHeight" 
+                [style.width.px]="innerWidth">
+              </div>
+            </ng-container>
             <ng-template #groupedRowsTemplate>
               <datatable-body-row
                 role="row"
-                *ngFor="let row of group.value; let i = index; trackBy: rowTrackingFn"
+                *ngFor="let row of group.value; let i = index; let last = last; trackBy: rowTrackingFn"
                 tabindex="-1"
                 [isSelected]="selector.getRowSelected(row)"
                 [innerWidth]="innerWidth"
@@ -149,9 +158,16 @@ import { Model } from './selection.component';
                 [dataAttributesRow]="dataAttributesRow"
                 [dataAttributesCell]="dataAttributesCell"
                 [getColSpan]="colSpan"
+                [rowPadding]="rowPadding"
+                [groupPadding]="groupPadding"
                 (activate)="selector.onActivate($event, i)"
               >
               </datatable-body-row>
+              <div class="row-spacer" 
+                *ngIf="lastRowSpacerHeight && last" 
+                [style.height.px]="lastRowSpacerHeight" 
+                [style.width.px]="innerWidth">
+              </div>
             </ng-template>
           </datatable-row-wrapper>
           <datatable-summary-row
@@ -218,6 +234,18 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
   @Input() virtualizedFluidRowHeight: boolean;
   @Input() forceDetailOpen = false;
 
+  private _rowPadding: number;
+  @Input() set rowPadding(val: number) {
+    this._rowPadding = val;
+    this.calculateColumns();
+  }
+  get rowPadding(): number {
+    return this._rowPadding;
+  }
+
+  @Input() groupPadding: number;
+  @Input() lastRowSpacerHeight: number;
+
   @Input() set pageSize(val: number) {
     this._pageSize = val;
     this.recalcLayout();
@@ -248,9 +276,7 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
 
   @Input() set columns(val: any[]) {
     this._columns = val;
-    const colsByPin = columnsByPin(val);
-    this.columnGroupWidths = columnGroupWidths(colsByPin, val);
-    this.perfectScrollbar?.directiveRef?.update();
+    this.calculateColumns();
   }
 
   get columns(): any[] {
@@ -301,7 +327,8 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
   }
 
   @Input() endOfDataRow: { template: TemplateRef<any>; isShown: boolean };
-  @Input() useTotalWidthForGroupHeaders = false;
+  @Input() useTotalWidthForGroupHeaders = false;  
+  @Input() useSkeletonLoader = false;
 
   @Output() scroll: EventEmitter<any> = new EventEmitter();
   @Output() page: EventEmitter<any> = new EventEmitter();
@@ -447,6 +474,12 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
     this.scrollerSetSubscription?.unsubscribe();
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
+  }
+
+  private calculateColumns() {
+    const colsByPin = columnsByPin(this.columns);
+    this.columnGroupWidths = columnGroupWidths(colsByPin, this.columns, this.rowPadding);
+    this.perfectScrollbar?.directiveRef?.update();
   }
 
   /**
@@ -619,8 +652,10 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
       } else {
         idx = this.getRowIndex(rows);
       }
-      const newRowHeight = rowWrapper?.getActualRowHeight() ?? 0;
+      let newRowHeight = rowWrapper?.getActualRowHeight() ?? 0;
       const newDetailHeight = !this.rowDetail ? 0 : rowWrapper?.getActualRowDetailHeight() ?? 0;
+      const groupPadding = rowWrapper.row.isRowGroup ? this.groupPadding : 0;
+      newRowHeight += groupPadding;
       if (newRowHeight !== 0) {
         if (this.rowHeightsCache.set(idx, newRowHeight + newDetailHeight)) {
           this.rowSizeChanged.emit({ row: rows, newHeight: newRowHeight, detailHeight: newDetailHeight });
@@ -832,7 +867,9 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
         externalVirtual: this.scrollbarV && this.externalPaging,
         rowCount: this.rowCount,
         rowIndexes: this.rowIndexes,
-        rowExpansions
+        rowExpansions,
+        groupPadding: this.groupPadding,
+        lastRowSpacerHeight: this.lastRowSpacerHeight
       });
     }
   }

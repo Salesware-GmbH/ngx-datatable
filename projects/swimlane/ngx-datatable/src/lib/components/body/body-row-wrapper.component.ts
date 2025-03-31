@@ -20,7 +20,7 @@ import { BehaviorSubject } from 'rxjs';
     changeDetection: ChangeDetectionStrategy.OnPush,
     template: `
     @if (row?.isRowGroup && groupHeader?.template) {
-      <div class="datatable-body-row-group-header" [ngStyle]="getGroupHeaderStyle()" (click)="onGroupClick($event)">
+      <div class="datatable-body-row-group-header datatable-body-row-group-header-template" [class.expanded]="expanded" [ngStyle]="getGroupHeaderStyle()" (click)="onGroupClick($event)">
         <ng-template
           [ngTemplateOutlet]="groupHeader.template"
           [ngTemplateOutletContext]="groupContext"
@@ -71,6 +71,7 @@ export class DataTableRowWrapperComponent implements OnDestroy, DoCheck {
   @Input() groupedRows: any;
   @Input() groupWidth: number;
   @Input() endOfDataRowTemplate: TemplateRef<any>;
+  @Input() groupPadding: number;
 
   @Output() rowContextmenu = new EventEmitter<{ event: MouseEvent; row: any }>(false);
   @Output() activateGroup = new EventEmitter<any>();
@@ -159,6 +160,7 @@ export class DataTableRowWrapperComponent implements OnDestroy, DoCheck {
     styles['backface-visibility'] = 'hidden';
     styles['width.px'] = this.groupWidth;
     styles['height.px'] = this.groupRowHeight;
+    styles['margin-top.px'] = this.groupPadding;
 
     return styles;
   }

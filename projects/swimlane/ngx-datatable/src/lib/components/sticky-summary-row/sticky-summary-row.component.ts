@@ -15,10 +15,10 @@ export class StickySummaryRowComponent implements OnDestroy {
   @Input() set columns(val: any[]) {
     this._columns = val;
 
-    const colsByPin = columnsByPin(val);
     this._columnsByPin = columnsByPinArr(val);
+    
     setTimeout(() => {
-      this._columnGroupWidths = columnGroupWidths(colsByPin, val);
+      this.calculateColumns();
       this.setStylesByGroup();
     });
   }
@@ -55,13 +55,22 @@ export class StickySummaryRowComponent implements OnDestroy {
   @Input() set innerWidth(val: number) {
     this._innerWidth = val;
     setTimeout(() => {
-      if (this._columns) {
-        const colByPin = columnsByPin(this._columns);
-        this._columnGroupWidths = columnGroupWidths(colByPin, this._columns);
-        this.setStylesByGroup();
-      }
+      this.calculateColumns();
+      this.setStylesByGroup();
     });
   }
+
+  private _rowPadding: number;
+  @Input() set rowPadding(val: number) {
+    this._rowPadding = val;
+    this.calculateColumns();
+    this.setStylesByGroup();
+    this.calculateStyles();
+  }
+  get rowPadding(): number {
+    return this._rowPadding;
+  }
+
 
   get innerWidth(): number {
     return this._innerWidth;
@@ -81,12 +90,28 @@ export class StickySummaryRowComponent implements OnDestroy {
   };
   _offsetX: number;
 
+  styles = {};
+
   private destroyed = false;
 
   constructor(private cd: ChangeDetectorRef) {}
 
   ngOnDestroy(): void {
     this.destroyed = true;
+  }
+
+  private calculateColumns() {
+    if (this._columns) {
+      const colByPin = columnsByPin(this._columns);
+      this._columnGroupWidths = columnGroupWidths(colByPin, this._columns, this.rowPadding);
+      this.calculateStyles();
+    }
+  }
+
+  private calculateStyles() {
+    this.styles = {
+      width: `${this._columnGroupWidths.total - 2 * this.rowPadding}px`
+    };
   }
 
   trackByGroups(index: number, colGroup: any): any {
@@ -114,7 +139,9 @@ export class StickySummaryRowComponent implements OnDestroy {
       width: `${widths[group]}px`
     };
 
-    if (group === 'center') {
+    if (group === 'left' && this.rowPadding) {
+      styles['padding-left.px'] = this.rowPadding;      
+    } else if (group === 'center') {
       translateXY(styles, offsetX * -1, 0);
     } else if (group === 'right') {
       const totalDiff = widths.total - this.innerWidth;
