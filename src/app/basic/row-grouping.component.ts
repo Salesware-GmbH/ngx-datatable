@@ -3,8 +3,8 @@ import { NgStyle } from '@angular/common';
 import { ColumnMode } from 'projects/swimlane/ngx-datatable/src/public-api';
 
 @Component({
-  selector: 'row-grouping-demo',
-  template: `
+    selector: 'row-grouping-demo',
+    template: `
     <div>
       <h3>
         Row Grouping
@@ -116,7 +116,8 @@ import { ColumnMode } from 'projects/swimlane/ngx-datatable/src/public-api';
         </ngx-datatable-column>
       </ngx-datatable>
     </div>
-  `
+  `,
+    standalone: false
 })
 export class RowGroupingComponent {
   @ViewChild('myTable') table: any;

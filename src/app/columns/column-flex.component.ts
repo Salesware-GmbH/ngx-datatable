@@ -2,8 +2,8 @@ import { Component } from '@angular/core';
 import { ColumnMode } from 'projects/swimlane/ngx-datatable/src/public-api';
 
 @Component({
-  selector: 'column-flex-demo',
-  template: `
+    selector: 'column-flex-demo',
+    template: `
     <div>
       <h3>
         Flex Column Width Distribution
@@ -41,7 +41,8 @@ import { ColumnMode } from 'projects/swimlane/ngx-datatable/src/public-api';
         </ngx-datatable-column>
       </ngx-datatable>
     </div>
-  `
+  `,
+    standalone: false
 })
 export class ColumnFlexComponent {
   rows = [];

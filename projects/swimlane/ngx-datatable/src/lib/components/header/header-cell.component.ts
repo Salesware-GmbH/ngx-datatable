@@ -17,8 +17,8 @@ import { nextSortDir } from '../../utils/sort';
 import { SortDirection } from '../../types/sort-direction.type';
 
 @Component({
-  selector: 'datatable-header-cell',
-  template: `
+    selector: 'datatable-header-cell',
+    template: `
     <div class="datatable-header-cell-template-wrap">
       <ng-template
         *ngIf="isTarget"
@@ -41,10 +41,11 @@ import { SortDirection } from '../../types/sort-direction.type';
       <span (click)="onSort()" [class]="sortClass"> </span>
     </div>
   `,
-  host: {
-    class: 'datatable-header-cell'
-  },
-  changeDetection: ChangeDetectionStrategy.OnPush
+    host: {
+        class: 'datatable-header-cell'
+    },
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class DataTableHeaderCellComponent implements OnInit {
   @Input() sortType: SortType;

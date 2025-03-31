@@ -5,9 +5,9 @@ import { Page } from './model/page';
 import { ColumnMode } from 'projects/swimlane/ngx-datatable/src/public-api';
 
 @Component({
-  selector: 'server-paging-demo',
-  providers: [MockServerResultsService],
-  template: `
+    selector: 'server-paging-demo',
+    providers: [MockServerResultsService],
+    template: `
     <div>
       <h3>
         Server-side Paging
@@ -36,7 +36,8 @@ import { ColumnMode } from 'projects/swimlane/ngx-datatable/src/public-api';
       >
       </ngx-datatable>
     </div>
-  `
+  `,
+    standalone: false
 })
 export class ServerPagingComponent {
   page = new Page();

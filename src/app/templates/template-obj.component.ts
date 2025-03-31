@@ -2,8 +2,8 @@ import { Component, TemplateRef, ViewChild } from '@angular/core';
 import { ColumnMode } from 'projects/swimlane/ngx-datatable/src/public-api';
 
 @Component({
-  selector: 'template-ref-demo',
-  template: `
+    selector: 'template-ref-demo',
+    template: `
     <div>
       <h3>
         TemplateRef via Column Property
@@ -34,7 +34,8 @@ import { ColumnMode } from 'projects/swimlane/ngx-datatable/src/public-api';
         <img *ngIf="value === 'female'" width="150" src="https://media.giphy.com/media/sxSVG3XHf7yww/giphy.gif" />
       </ng-template>
     </div>
-  `
+  `,
+    standalone: false
 })
 export class TemplateRefTemplatesComponent {
   @ViewChild('editTmpl', { static: true }) editTmpl: TemplateRef<any>;

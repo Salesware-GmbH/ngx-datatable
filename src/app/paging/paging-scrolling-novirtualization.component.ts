@@ -5,9 +5,9 @@ import { Page } from './model/page';
 import { ColumnMode } from 'projects/swimlane/ngx-datatable/src/public-api';
 
 @Component({
-  selector: 'paging-scrolling-novirtualization-demo',
-  providers: [MockServerResultsService],
-  template: `
+    selector: 'paging-scrolling-novirtualization-demo',
+    providers: [MockServerResultsService],
+    template: `
     <div>
       <h3>
         Server-side Paging
@@ -38,7 +38,8 @@ import { ColumnMode } from 'projects/swimlane/ngx-datatable/src/public-api';
       >
       </ngx-datatable>
     </div>
-  `
+  `,
+    standalone: false
 })
 export class PagingScrollingNoVirtualizationComponent {
   page = new Page();

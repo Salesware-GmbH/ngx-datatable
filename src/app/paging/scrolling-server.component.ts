@@ -25,9 +25,9 @@ export class MockServerResultsService {
 }
 
 @Component({
-  selector: 'server-scrolling-demo',
-  providers: [MockServerResultsService],
-  template: `
+    selector: 'server-scrolling-demo',
+    providers: [MockServerResultsService],
+    template: `
     <div>
       <h3>
         Server-side Scrolling
@@ -53,7 +53,8 @@ export class MockServerResultsService {
       ></ngx-datatable>
     </div>
   `,
-  styleUrls: ['./scrolling-server.component.css']
+    styleUrls: ['./scrolling-server.component.css'],
+    standalone: false
 })
 export class ServerScrollingComponent {
   readonly headerHeight = 50;

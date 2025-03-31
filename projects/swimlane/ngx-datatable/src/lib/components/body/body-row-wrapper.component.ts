@@ -16,9 +16,9 @@ import {
 import { BehaviorSubject } from 'rxjs';
 
 @Component({
-  selector: 'datatable-row-wrapper',
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  template: `
+    selector: 'datatable-row-wrapper',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    template: `
     @if (row?.isRowGroup && groupHeader?.template) {
       <div class="datatable-body-row-group-header datatable-body-row-group-header-template" [class.expanded]="expanded" [ngStyle]="getGroupHeaderStyle()" (click)="onGroupClick($event)">
         <ng-template
@@ -56,9 +56,10 @@ import { BehaviorSubject } from 'rxjs';
     </div>
 
   `,
-  host: {
-    class: 'datatable-row-wrapper'
-  }
+    host: {
+        class: 'datatable-row-wrapper'
+    },
+    standalone: false
 })
 export class DataTableRowWrapperComponent implements OnDestroy, DoCheck {
   @Input() innerWidth: number;

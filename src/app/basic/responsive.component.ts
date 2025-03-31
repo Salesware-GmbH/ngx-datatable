@@ -2,9 +2,9 @@ import { Component, ViewEncapsulation, ViewChild } from '@angular/core';
 import { ColumnMode } from 'projects/swimlane/ngx-datatable/src/public-api';
 
 @Component({
-  selector: 'responsive-demo',
-  styles: [
-    `
+    selector: 'responsive-demo',
+    styles: [
+        `
       @media screen and (max-width: 800px) {
         .desktop-hidden {
           display: initial;
@@ -22,8 +22,8 @@ import { ColumnMode } from 'projects/swimlane/ngx-datatable/src/public-api';
         }
       }
     `
-  ],
-  template: `
+    ],
+    template: `
     <div>
       <h3>
         Responsive Demo
@@ -111,7 +111,8 @@ import { ColumnMode } from 'projects/swimlane/ngx-datatable/src/public-api';
       appear in the row detail view.
     </div>
   `,
-  encapsulation: ViewEncapsulation.None
+    encapsulation: ViewEncapsulation.None,
+    standalone: false
 })
 export class ResponsiveComponent {
   @ViewChild('myTable') table: any;

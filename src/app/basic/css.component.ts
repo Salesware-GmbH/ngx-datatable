@@ -2,8 +2,8 @@ import { Component } from '@angular/core';
 import { ColumnMode } from 'projects/swimlane/ngx-datatable/src/public-api';
 
 @Component({
-  selector: 'row-css-demo',
-  template: `
+    selector: 'row-css-demo',
+    template: `
     <div>
       <h3>
         Row/Header/Cell CSS Class Demo
@@ -30,7 +30,8 @@ import { ColumnMode } from 'projects/swimlane/ngx-datatable/src/public-api';
         <ngx-datatable-column name="Age"></ngx-datatable-column>
       </ngx-datatable>
     </div>
-  `
+  `,
+    standalone: false
 })
 export class RowCssComponent {
   rows = [];

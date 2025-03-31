@@ -2,8 +2,8 @@ import { Component, ChangeDetectorRef } from '@angular/core';
 import { ColumnMode } from 'projects/swimlane/ngx-datatable/src/public-api';
 
 @Component({
-  selector: 'full-screen-tree-demo',
-  template: `
+    selector: 'full-screen-tree-demo',
+    template: `
     <div>
       <h3>
         Full Screen
@@ -56,7 +56,8 @@ import { ColumnMode } from 'projects/swimlane/ngx-datatable/src/public-api';
       </ngx-datatable>
     </div>
   `,
-  styles: ['.icon {height: 10px; width: 10px; }', '.disabled {opacity: 0.5; }']
+    styles: ['.icon {height: 10px; width: 10px; }', '.disabled {opacity: 0.5; }'],
+    standalone: false
 })
 export class FullScreenTreeComponent {
   rows = [];

@@ -2,8 +2,8 @@ import { Component } from '@angular/core';
 import { ColumnMode } from 'projects/swimlane/ngx-datatable/src/public-api';
 
 @Component({
-  selector: 'inline-edit-demo',
-  template: `
+    selector: 'inline-edit-demo',
+    template: `
     <div>
       <h3>
         Inline Editing
@@ -71,7 +71,8 @@ import { ColumnMode } from 'projects/swimlane/ngx-datatable/src/public-api';
         </ngx-datatable-column>
       </ngx-datatable>
     </div>
-  `
+  `,
+    standalone: false
 })
 export class InlineEditComponent {
   editing = {};

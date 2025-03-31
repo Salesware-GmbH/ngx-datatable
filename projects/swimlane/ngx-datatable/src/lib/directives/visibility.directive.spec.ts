@@ -4,16 +4,17 @@ import { By } from '@angular/platform-browser';
 import { VisibilityDirective } from './visibility.directive';
 
 @Component({
-  selector: 'test-fixture-component',
-  styles: [
-    `
+    selector: 'test-fixture-component',
+    styles: [
+        `
       div {
         width: 1px;
         height: 1px;
       }
     `
-  ],
-  template: ` <div visibilityObserver></div> `
+    ],
+    template: ` <div visibilityObserver></div> `,
+    standalone: false
 })
 class TestFixtureComponent {}
 

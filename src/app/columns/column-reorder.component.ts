@@ -2,9 +2,9 @@ import { Component } from '@angular/core';
 import { ColumnMode } from 'projects/swimlane/ngx-datatable/src/public-api';
 
 @Component({
-  selector: 'column-reorder-demo',
-  styles: [
-    `
+    selector: 'column-reorder-demo',
+    styles: [
+        `
       .icon {
         position: absolute;
       }
@@ -18,8 +18,8 @@ import { ColumnMode } from 'projects/swimlane/ngx-datatable/src/public-api';
         left: -13px;
       }
     `
-  ],
-  template: `
+    ],
+    template: `
     <div>
       <h3>
         Reorder Column
@@ -53,7 +53,8 @@ import { ColumnMode } from 'projects/swimlane/ngx-datatable/src/public-api';
         </div>
       </ng-template>
     </div>
-  `
+  `,
+    standalone: false
 })
 export class ColumnReorderComponent {
   rows = [];

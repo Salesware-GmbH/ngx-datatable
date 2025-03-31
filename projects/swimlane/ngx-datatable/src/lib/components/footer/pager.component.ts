@@ -1,8 +1,8 @@
 import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
-  selector: 'datatable-pager',
-  template: `
+    selector: 'datatable-pager',
+    template: `
     <ul class="pager">
       <li [class.disabled]="!canPrevious()">
         <a role="button" aria-label="go to first page" href="javascript:void(0)" (click)="selectPage(1)">
@@ -37,10 +37,11 @@ import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from 
       </li>
     </ul>
   `,
-  host: {
-    class: 'datatable-pager'
-  },
-  changeDetection: ChangeDetectionStrategy.OnPush
+    host: {
+        class: 'datatable-pager'
+    },
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class DataTablePagerComponent {
   @Input() pagerLeftArrowIcon: string;

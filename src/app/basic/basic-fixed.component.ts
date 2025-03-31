@@ -2,8 +2,8 @@ import { Component } from '@angular/core';
 import { ColumnMode } from 'projects/swimlane/ngx-datatable/src/public-api';
 
 @Component({
-  selector: 'basic-fixed-demo',
-  template: `
+    selector: 'basic-fixed-demo',
+    template: `
     <div>
       <h3>
         Fix Row Height
@@ -27,7 +27,8 @@ import { ColumnMode } from 'projects/swimlane/ngx-datatable/src/public-api';
       >
       </ngx-datatable>
     </div>
-  `
+  `,
+    standalone: false
 })
 export class BasicFixedComponent {
   rows = [];

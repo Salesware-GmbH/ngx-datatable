@@ -2,8 +2,8 @@ import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { ColumnMode } from 'projects/swimlane/ngx-datatable/src/public-api';
 
 @Component({
-  selector: 'summary-row-custom-template-demo',
-  template: `
+    selector: 'summary-row-custom-template-demo',
+    template: `
     <div>
       <h3>
         Summary Row with Custom Template
@@ -35,7 +35,8 @@ import { ColumnMode } from 'projects/swimlane/ngx-datatable/src/public-api';
       </ng-template>
     </div>
   `,
-  styleUrls: ['./summary-row-custom-template.component.scss']
+    styleUrls: ['./summary-row-custom-template.component.scss'],
+    standalone: false
 })
 export class SummaryRowCustomTemplateComponent implements OnInit {
   rows = [];

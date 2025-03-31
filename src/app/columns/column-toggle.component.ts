@@ -2,8 +2,8 @@ import { Component } from '@angular/core';
 import { ColumnMode } from 'projects/swimlane/ngx-datatable/src/public-api';
 
 @Component({
-  selector: 'column-toggle-demo',
-  template: `
+    selector: 'column-toggle-demo',
+    template: `
     <div>
       <h3>
         Column Toggling
@@ -38,7 +38,8 @@ import { ColumnMode } from 'projects/swimlane/ngx-datatable/src/public-api';
         </ul>
       </div>
     </div>
-  `
+  `,
+    standalone: false
 })
 export class ColumnToggleComponent {
   rows = [

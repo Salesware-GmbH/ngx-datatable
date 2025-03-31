@@ -3,8 +3,8 @@ import { DatatableComponent } from '../../../projects/swimlane/ngx-datatable/src
 import { ColumnMode } from 'projects/swimlane/ngx-datatable/src/public-api';
 
 @Component({
-  selector: 'filter-demo',
-  template: `
+    selector: 'filter-demo',
+    template: `
     <div>
       <h3>
         Client-side Search and Filtering
@@ -36,7 +36,8 @@ import { ColumnMode } from 'projects/swimlane/ngx-datatable/src/public-api';
       >
       </ngx-datatable>
     </div>
-  `
+  `,
+    standalone: false
 })
 export class FilterBarComponent {
   rows = [];
