@@ -654,7 +654,7 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
       }
       let newRowHeight = rowWrapper?.getActualRowHeight() ?? 0;
       const newDetailHeight = !this.rowDetail ? 0 : rowWrapper?.getActualRowDetailHeight() ?? 0;
-      const groupPadding = rowWrapper.row.isRowGroup ? this.groupPadding : 0;
+      const groupPadding = rowWrapper?.row?.isRowGroup ? this.groupPadding : 0;
       newRowHeight += groupPadding;
       if (newRowHeight !== 0) {
         if (this.rowHeightsCache.set(idx, newRowHeight + newDetailHeight)) {
