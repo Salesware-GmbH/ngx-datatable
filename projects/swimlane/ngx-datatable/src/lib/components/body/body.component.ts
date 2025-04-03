@@ -1047,7 +1047,7 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
     this.treeAction.emit({ row });
   }
 
-  /** custom 4sellers */
+  /** custom salesware */
   @HostListener('dragend', ['$event'])
   onDragEnd(event) {
     this.dragService.endDrag(event);

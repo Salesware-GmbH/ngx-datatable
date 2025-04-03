@@ -7,7 +7,7 @@ import { DOCUMENT } from '@angular/common';
  */
 @Injectable()
 export class ScrollbarHelper {
-  // 4Sellers: We use the perfect-scrollbar. So this value needs to be 0
+  // salesware: We use the perfect-scrollbar. So this value needs to be 0
   width: number = 0; // this.getWidth();
 
   constructor(@Inject(DOCUMENT) private document: any) {}
