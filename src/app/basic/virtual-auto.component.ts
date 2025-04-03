@@ -7,14 +7,6 @@ import { ColumnMode, TableColumn } from 'projects/swimlane/ngx-datatable/src/pub
     <div>
       <h3>
         Virtual Fluid Row Heights
-        <small>
-          <a
-            href="https://github.com/4SELLERS/ngx-datatable/blob/master/src/app/basic/virtual-auto.component.ts"
-            target="_blank"
-          >
-            Source
-          </a>
-        </small>
       </h3>
       <ngx-datatable
         class="material"

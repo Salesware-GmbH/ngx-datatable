@@ -107,7 +107,7 @@
         }
       }
     },
-    "ngx-datatable-4sellers": {
+    "ngx-datatable-salesware": {
       "projectType": "library",
       "root": "projects/swimlane/ngx-datatable",
       "sourceRoot": "projects/swimlane/ngx-datatable/src",
