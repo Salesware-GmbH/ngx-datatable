@@ -11,6 +11,7 @@ import {
   ChangeDetectionStrategy,
   HostListener,
   TemplateRef,
+  ElementRef,
 } from '@angular/core';
 import { ScrollerComponent } from './scroller.component';
 import { SelectionType } from '../../types/selection.type';
@@ -25,6 +26,7 @@ import { Model } from './selection.component';
 @Component({
     selector: 'datatable-body',
     template: `
+    <datatable-progress *ngIf="loadingIndicator && !useSkeletonLoader" [columnGroupWidths]="columnGroupWidths"> </datatable-progress>
     <datatable-selection
       #selector
       [selected]="selected"
@@ -182,7 +184,6 @@ import { Model } from './selection.component';
         </datatable-scroller>
       <div class="empty-row" *ngIf="!rows?.length && !loadingIndicator" [innerHTML]="emptyMessage"></div>
     </datatable-selection>
-    <datatable-progress *ngIf="loadingIndicator && !useSkeletonLoader" [columnGroupWidths]="columnGroupWidths"> </datatable-progress>
   `,
     changeDetection: ChangeDetectionStrategy.OnPush,
     host: {
@@ -381,7 +382,7 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
   /**
    * Creates an instance of DataTableBodyComponent.
    */
-  constructor(private cd: ChangeDetectorRef, public dragService: RowDragService) {
+  constructor(private cd: ChangeDetectorRef, public dragService: RowDragService, public element: ElementRef<HTMLElement>) {
     // declare fn here so we can get access to the `this` property
     this.rowTrackingFn = (index: number, row: any): any => {
       const idx = this.getRowIndex(row);

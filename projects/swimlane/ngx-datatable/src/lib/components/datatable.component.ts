@@ -1231,6 +1231,43 @@ export class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
     this.rowDropped.emit(event);
   }
 
+  scrollToTop() {
+    const element = this.bodyComponent?.element?.nativeElement;
+    if (!element) {
+      return;
+    }
+
+    element.scrollTop = 0;
+  }
+
+  scrollToBottom() {
+    const element = this.bodyComponent?.element?.nativeElement;
+    if (!element) {
+      return;
+    }
+
+    element.scrollTop = element.scrollHeight;
+  }
+
+  scrollToLeft() {
+    this._offsetX.next(0);
+    const element = this.bodyComponent?.element?.nativeElement;
+    if (!element) {
+      return;
+    }
+
+    element.scrollLeft = 0;
+  }
+
+  scrollToY(y: number) {
+    const element = this.bodyComponent?.element?.nativeElement;
+    if (!element) {
+      return;
+    }
+
+    element.scrollTop = y;
+  }
+
   /**
    * listen for changes to input bindings of all DataTableColumnDirective and
    * trigger the columnTemplates.changes observable to emit
