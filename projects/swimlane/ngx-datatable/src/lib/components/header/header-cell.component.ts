@@ -56,8 +56,15 @@ export class DataTableHeaderCellComponent implements OnInit {
   @Input() isTarget: boolean;
   @Input() targetMarkerTemplate: any;
   @Input() targetMarkerContext: any;
-
-  @Input() dataAttributesCell: any;
+  
+  private _dataAttributesCell: any;
+  @Input() public get dataAttributesCell(): any {
+    return this._dataAttributesCell;
+  }
+  public set dataAttributesCell(value: any) {
+    this._dataAttributesCell = value;
+    this.setDataAttributes();
+  }
 
   _allRowsSelected: boolean;
 
@@ -74,6 +81,7 @@ export class DataTableHeaderCellComponent implements OnInit {
   @Input() set column(column: TableColumn) {
     this._column = column;
     this.cellContext.column = column;
+    this.setDataAttributes();
     this.cd.markForCheck();
   }
 
@@ -183,9 +191,6 @@ export class DataTableHeaderCellComponent implements OnInit {
 
   ngOnInit(): void {
     this.sortClass = this.calcSortClass(this.sortDir);
-    if (this.dataAttributesCell && this.column) {
-      this.setDataAttributes();
-    }
   }
 
   @HostListener('contextmenu', ['$event'])
@@ -233,7 +238,7 @@ export class DataTableHeaderCellComponent implements OnInit {
   }
 
   setDataAttributes() {
-    if (this.dataAttributesCell) {
+    if (this.dataAttributesCell && this.column) {
       const pre = 'data-';
       const res = this.dataAttributesCell(this.column);
       if (res.dataAttributes && res.dataAttributes.length > 0) {
