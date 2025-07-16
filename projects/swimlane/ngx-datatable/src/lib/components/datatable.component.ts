@@ -471,7 +471,7 @@ export class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
   @Input() skeletonTemplate: TemplateRef<any>;
 
   @Input() useSkeletonLoader = false;
-  
+
   @Input() useTotalWidthForGroupHeaders = false;
 
   @Input() rowPadding = 0;
@@ -1232,19 +1232,40 @@ export class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
   }
 
   scrollToTop() {
-    this.bodyComponent.perfectScrollbar.directiveRef.scrollToTop();
+    const element = this.bodyComponent?.element?.nativeElement;
+    if (!element) {
+      return;
+    }
+
+    element.scrollTop = 0;
   }
 
   scrollToBottom() {
-    this.bodyComponent.perfectScrollbar.directiveRef.scrollToBottom();
+    const element = this.bodyComponent?.element?.nativeElement;
+    if (!element) {
+      return;
+    }
+
+    element.scrollTop = element.scrollHeight;
   }
 
   scrollToLeft() {
     this._offsetX.next(0);
-    if (this.bodyComponent) {
-      this.bodyComponent.scrollToLeftRequested = true;
-      this.bodyComponent.perfectScrollbar.directiveRef.scrollToLeft();
+    const element = this.bodyComponent?.element?.nativeElement;
+    if (!element) {
+      return;
     }
+
+    element.scrollLeft = 0;
+  }
+
+  scrollToY(y: number) {
+    const element = this.bodyComponent?.element?.nativeElement;
+    if (!element) {
+      return;
+    }
+
+    element.scrollTop = y;
   }
 
   /**
