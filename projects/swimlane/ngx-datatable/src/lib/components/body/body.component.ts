@@ -128,6 +128,7 @@ import { Model } from './selection.component';
                 [rowPadding]="rowPadding"
                 [groupPadding]="groupPadding"
                 [treeStatus]="group && group.treeStatus"
+                [skeletonTemplate]="skeletonTemplate"
                 (treeAction)="onTreeAction(group)"
                 (activate)="selector.onActivate($event, indexes.first + i)"
               >
@@ -160,6 +161,7 @@ import { Model } from './selection.component';
                 [getColSpan]="colSpan"
                 [rowPadding]="rowPadding"
                 [groupPadding]="groupPadding"
+                [skeletonTemplate]="skeletonTemplate"
                 (activate)="selector.onActivate($event, i)"
               >
               </datatable-body-row>
@@ -233,6 +235,7 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
   @Input() colSpan: (row: any, column: any, columns: any[]) => number;
   @Input() virtualizedFluidRowHeight: boolean;
   @Input() forceDetailOpen = false;
+  @Input() skeletonTemplate: TemplateRef<any>;
 
   private _rowPadding: number;
   @Input() set rowPadding(val: number) {

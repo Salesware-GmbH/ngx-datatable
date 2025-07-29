@@ -21,6 +21,7 @@ import { translateXY } from '../../utils/translate';
 export class SkeletonLoaderComponent implements OnDestroy {
   @Input() template: TemplateRef<any>;
   @Input() rowHeight: number | 'auto' | ((row?: any) => number);
+  @Input() numRows = 3;
 
   @Input() set columns(val: any[]) {
     this._columns = val;
@@ -79,8 +80,6 @@ export class SkeletonLoaderComponent implements OnDestroy {
   _offsetX: number;
   _classes: { [prop: string]: {} } = {};
 
-  numRows = 3;
-
   private destroyed = false;
 
   constructor(private cd: ChangeDetectorRef) {}
@@ -123,14 +122,11 @@ export class SkeletonLoaderComponent implements OnDestroy {
       width: `${widths[group]}px`
     };
 
-    if (group === 'left' && this.rowPadding) {
-      styles['padding-left.px'] = this.rowPadding;
-    } else if (group === 'center') {
-      translateXY(styles, offsetX * -1, 0);
-    } else if (group === 'right') {
-      const totalDiff = widths.total - this.innerWidth;
-      const offset = totalDiff * -1;
-      translateXY(styles, offset, 0);
+    if (group === 'left') {
+      translateXY(styles, offsetX, 0);
+      if (this.rowPadding) {
+        styles['padding-left.px'] = this.rowPadding;
+      }
     }
 
     return styles;
