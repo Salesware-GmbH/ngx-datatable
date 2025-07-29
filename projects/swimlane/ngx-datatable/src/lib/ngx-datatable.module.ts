@@ -31,7 +31,6 @@ import { DataTableColumnCellTreeToggle } from './components/columns/tree.directi
 import { DatatableFooterDirective } from './components/footer/footer.directive';
 import { DatatableGroupHeaderTemplateDirective } from './components/body/body-group-header-template.directive';
 import { DataTableSummaryRowComponent } from './components/body/summary/summary-row.component';
-import { PerfectScrollbarModule } from 'ngx-om-perfect-scrollbar';
 import { RowDraggableDirective } from './directives/row-draggable.directive';
 import { RowDropDirective } from './directives/row-droppable.directive';
 import { RowDragService } from './services/row-drag.service';
@@ -40,7 +39,7 @@ import { StickySummaryRowComponent } from './components/sticky-summary-row/stick
 import { SkeletonLoaderComponent } from './components/skeleton-loader/skeleton-loader.component';
 
 @NgModule({
-  imports: [CommonModule, PerfectScrollbarModule],
+  imports: [CommonModule],
   providers: [ScrollbarHelper, DimensionsHelper, ColumnChangesService, RowDragService],
   declarations: [
     DataTableFooterTemplateDirective,
