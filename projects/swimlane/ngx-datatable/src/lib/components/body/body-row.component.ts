@@ -11,7 +11,8 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   DoCheck,
-  SkipSelf
+  SkipSelf,
+  TemplateRef
 } from '@angular/core';
 
 import { TreeStatus } from './body-cell.component';
@@ -24,31 +25,43 @@ import { translateXY } from '../../utils/translate';
     selector: 'datatable-body-row',
     changeDetection: ChangeDetectionStrategy.OnPush,
     template: `
-    <div
-      *ngFor="let colGroup of _columnsByPin; let i = index; trackBy: trackByGroups"
-      class="datatable-row-{{ colGroup.type }} datatable-row-group"
-      [ngStyle]="_groupStyles[colGroup.type]"
-    >
-      <datatable-body-cell
-        role="cell"
-        *ngFor="let column of colGroup.columns; let ii = index; trackBy: columnTrackingFn"
-        tabindex="-1"
-        [row]="row"
-        [group]="group"
-        [expanded]="expanded"
-        [isSelected]="isSelected"
-        [rowIndex]="rowIndex"
-        [column]="column"
+    @if (row?.flags?.isSkeleton) {
+      <skeleton-loader
+        [template]="skeletonTemplate"
+        [numRows]="1"
+        [columns]="columns"
         [rowHeight]="rowHeight"
-        [displayCheck]="displayCheck"
-        [treeStatus]="treeStatus"
-        [dataAttributesCell]="dataAttributesCell"
-        [explicitWidth]="getExplicitWidth(column)"
-        (activate)="onActivate($event, ii)"
-        (treeAction)="onTreeAction()"
+        [offsetX]="offsetX"
+        [innerWidth]="innerWidth"
+        [rowPadding]="rowPadding"
+      ></skeleton-loader>
+    } @else {
+      <div
+        *ngFor="let colGroup of _columnsByPin; let i = index; trackBy: trackByGroups"
+        class="datatable-row-{{ colGroup.type }} datatable-row-group"
+        [ngStyle]="_groupStyles[colGroup.type]"
       >
-      </datatable-body-cell>
-    </div>
+        <datatable-body-cell
+          role="cell"
+          *ngFor="let column of colGroup.columns; let ii = index; trackBy: columnTrackingFn"
+          tabindex="-1"
+          [row]="row"
+          [group]="group"
+          [expanded]="expanded"
+          [isSelected]="isSelected"
+          [rowIndex]="rowIndex"
+          [column]="column"
+          [rowHeight]="rowHeight"
+          [displayCheck]="displayCheck"
+          [treeStatus]="treeStatus"
+          [dataAttributesCell]="dataAttributesCell"
+          [explicitWidth]="getExplicitWidth(column)"
+          (activate)="onActivate($event, ii)"
+          (treeAction)="onTreeAction()"
+        >
+        </datatable-body-cell>
+      </div>
+    }
   `,
     standalone: false
 })
@@ -104,6 +117,7 @@ export class DataTableBodyRowComponent implements DoCheck {
   @Input() rowIndex: number;
   @Input() displayCheck: any;
   @Input() treeStatus: TreeStatus = 'collapsed';
+  @Input() skeletonTemplate: TemplateRef<any>;
 
   private _rowPadding: number;
   @Input() set rowPadding(val: number) {
