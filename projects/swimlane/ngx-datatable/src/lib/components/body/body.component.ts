@@ -580,7 +580,7 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
    * Get the row height
    */
   getRowHeight(row: any): number {
-    if (this.virtualizedFluidRowHeight) {
+    if (this.virtualizedFluidRowHeight && !row?.isRowGroup) {
       return undefined;
     }
 
@@ -616,9 +616,11 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
       } else {
         idx = this.getRowIndex(rows);
       }
-      let newRowHeight = rowWrapper?.getActualRowHeight() ?? 0;
+
+      const isRowGroup = rowWrapper?.row?.isRowGroup;
+      let newRowHeight = (isRowGroup ? this.getRowHeight(rowWrapper?.row) : rowWrapper?.getActualRowHeight()) ?? 0;
       const newDetailHeight = !this.rowDetail ? 0 : rowWrapper?.getActualRowDetailHeight() ?? 0;
-      const groupPadding = rowWrapper?.row?.isRowGroup ? this.groupPadding : 0;
+      const groupPadding = isRowGroup ? this.groupPadding : 0;
       newRowHeight += groupPadding;
       if (newRowHeight !== 0) {
         if (this.rowHeightsCache.set(idx, newRowHeight + newDetailHeight)) {
