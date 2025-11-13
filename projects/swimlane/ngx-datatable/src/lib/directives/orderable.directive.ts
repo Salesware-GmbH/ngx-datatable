@@ -7,10 +7,11 @@ import {
   KeyValueDiffers,
   AfterContentInit,
   OnDestroy,
-  Inject
+  Inject,
+  DOCUMENT
 } from '@angular/core';
 import { DraggableDirective } from './draggable.directive';
-import { DOCUMENT } from '@angular/common';
+
 
 @Directive({
     selector: '[orderable]',
