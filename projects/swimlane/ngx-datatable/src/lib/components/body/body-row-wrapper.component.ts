@@ -45,6 +45,8 @@ import { BehaviorSubject } from 'rxjs';
     <div
       *ngIf="rowDetail && rowDetail.template && expanded && !row?.isRowGroup"
       [style.height.px]="detailRowHeight"
+      [style.max-width.px]="innerWidth"
+      [style.transform]="'translateX(' + offsetX + 'px)'"
       class="datatable-row-detail"
     >
       <ng-template
