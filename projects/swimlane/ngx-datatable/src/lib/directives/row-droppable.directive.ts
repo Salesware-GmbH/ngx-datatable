@@ -58,8 +58,8 @@ export class RowDropDirective {
     this.onDragOverEvent.emit();
   }
 
-  @HostListener('dragexit', ['$event'])
-  onDragLeave(event: DragEvent) {
+  @HostListener('dragexit')
+  onDragLeave() {
     this.removeDragOverClass();
   }
 

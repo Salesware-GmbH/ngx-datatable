@@ -24,40 +24,42 @@ import { BehaviorSubject } from 'rxjs';
         <ng-template
           [ngTemplateOutlet]="groupHeader.template"
           [ngTemplateOutletContext]="groupContext"
-        >
+          >
         </ng-template>
       </div>
     }
     @else {
-      @if (endOfDataRowTemplate && row?.format?.isEndOfDataRow) {
-        <div
-          class="datatable-body-row-group-header-end-of-data"
-          [style.width.px]="groupWidth"
-          [style.height.px]="groupRowHeight"
+    @if (endOfDataRowTemplate && row?.format?.isEndOfDataRow) {
+      <div
+        class="datatable-body-row-group-header-end-of-data"
+        [style.width.px]="groupWidth"
+        [style.height.px]="groupRowHeight"
         >
-          <ng-container [ngTemplateOutlet]="endOfDataRowTemplate"></ng-container>
-        </div>
-      }
-      @else {
-        <ng-content></ng-content>
-      }
+        <ng-container [ngTemplateOutlet]="endOfDataRowTemplate"></ng-container>
+      </div>
     }
-    <div
-      *ngIf="rowDetail && rowDetail.template && expanded && !row?.isRowGroup"
-      [style.height.px]="detailRowHeight"
-      [style.max-width.px]="innerWidth"
-      [style.transform]="'translateX(' + offsetX + 'px)'"
-      class="datatable-row-detail"
-    >
-      <ng-template
-        *ngIf="rowDetail && rowDetail.template"
-        [ngTemplateOutlet]="rowDetail.template"
-        [ngTemplateOutletContext]="rowContext"
-      >
-      </ng-template>
-    </div>
-
-  `,
+    @else {
+    <ng-content></ng-content>
+    }
+    }
+    @if (rowDetail && rowDetail.template && expanded && !row?.isRowGroup) {
+      <div
+        [style.height.px]="detailRowHeight"
+        [style.max-width.px]="innerWidth"
+        [style.transform]="'translateX(' + offsetX + 'px)'"
+        class="datatable-row-detail"
+        >
+        @if (rowDetail && rowDetail.template) {
+          <ng-template
+            [ngTemplateOutlet]="rowDetail.template"
+            [ngTemplateOutletContext]="rowContext"
+            >
+          </ng-template>
+        }
+      </div>
+    }
+    
+    `,
     host: {
         class: 'datatable-row-wrapper'
     },
