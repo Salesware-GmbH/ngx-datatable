@@ -29,176 +29,178 @@ import { Model } from './selection.component';
     @if (loadingIndicator && !useSkeletonLoader) {
       <datatable-progress [columnGroupWidths]="columnGroupWidths"> </datatable-progress>
     }
-    <datatable-selection
-      #selector
-      [selected]="selected"
-      [rows]="rows"
-      [selectCheck]="selectCheck"
-      [selectEnabled]="selectEnabled"
-      [selectionType]="selectionType"
-      [rowIdentity]="rowIdentity"
-      (select)="select.emit($event)"
-      (activate)="onActivate($event)"
-      >
-      @if (rows?.length) {
-        <datatable-scroller
-          [scrollbarV]="scrollbarV"
-          [scrollbarH]="scrollbarH"
-          [scrollHeight]="scrollHeight"
-          [scrollWidth]="columnGroupWidths?.total"
-          (scroll)="onBodyScroll($event)"
-          >
-          @if (summaryRow && summaryPosition === 'top') {
-            <datatable-summary-row
-              [rowHeight]="summaryHeight"
-              [offsetX]="offsetX"
-              [innerWidth]="innerWidth"
-              [rows]="rows"
-              [columns]="columns"
-              >
-            </datatable-summary-row>
-          }
-          @for (group of temp; track rowTrackingFn(i, group); let i = $index; let last = $last) {
-            <datatable-row-wrapper
-              row-draggable
-              [dragReference]="dragReference"
-              [dragEnabled]="rowsDraggable && !useCustomDragHandling"
-              [dragData]="indexes.first + i"
-              [groupedRows]="groupedRows"
-              [selectOnDrag]="selectRowOnDrag"
-              [innerWidth]="innerWidth"
-              [ngStyle]="getRowsStyles(group, rowWrapper)"
-              [rowDetail]="rowDetail"
-              [groupHeader]="groupHeader"
-              [offsetX]="offsetX"
-              [detailRowHeight]="getDetailRowHeight(group && group[i], i)"
-              [groupRowHeight]="getRowHeight(group)"
-              [row]="group"
-              [expanded]="getRowExpanded(group)"
-              [rowIndex]="getRowIndex(group && group[i])"
-              [groupWidth]="useTotalWidthForGroupHeaders ? innerWidth : columnGroupWidths?.total"
-              [endOfDataRowTemplate]="endOfDataRow?.template"
-              [groupPadding]="groupPadding"
-              (rowContextmenu)="rowContextmenu.emit($event)"
-              [resize-observer]="virtualizedFluidRowHeight"
-              (heightChanged)="onRowHeightChanged(group, rowWrapper)"
-              (activateGroup)="onActivate($event)"
-              #rowWrapper
-              >
-              @if (dragService.dragActive && rowsDraggable && dragReference === dragService.dragReference) {
-                <div
-                  row-droppable
-                  (onDropEvent)="onDrop($event, indexes.first + i)"
-                  [ngClass]="'drop-area-top' + (dragService.dragActive ? ' drag-active' : '')"
-                  dragOverClass="drop-over-active"
-                  >
-                  <div class="drop-indicator"></div>
-                </div>
-              }
-              @if (dragService.dragActive && rowsDraggable && dragReference === dragService.dragReference) {
-                <div
-                  row-droppable
-                  (onDropEvent)="onDrop($event, indexes.first + i + 1)"
-                  [ngClass]="'drop-area-bottom' + (dragService.dragActive ? ' drag-active' : '')"
-                  dragOverClass="drop-over-active"
-                  >
-                  <div class="drop-indicator bottom" [class.last]="last"></div>
-                </div>
-              }
-              @if (!groupedRows) {
-                <datatable-body-row
-                  role="row"
-                  tabindex="-1"
-                  [isSelected]="selector.getRowSelected(group)"
-                  [innerWidth]="innerWidth"
-                  [offsetX]="offsetX"
-                  [columns]="columns"
-                  [rowHeight]="getRowHeight(group)"
-                  [minRowHeight]="getMinRowHeight(group)"
-                  [maxRowHeight]="virtualizedFluidRowHeightMax"
-                  [row]="group"
-                  [rowIndex]="getRowIndex(group)"
-                  [expanded]="getRowExpanded(group)"
-                  [rowClass]="rowClass"
-                  [dataAttributesRow]="dataAttributesRow"
-                  [dataAttributesCell]="dataAttributesCell"
-                  [getColSpan]="colSpan"
-                  [displayCheck]="displayCheck"
-                  [rowPadding]="rowPadding"
-                  [groupPadding]="groupPadding"
-                  [treeStatus]="group && group.treeStatus"
-                  [skeletonTemplate]="skeletonTemplate"
-                  (treeAction)="onTreeAction(group)"
-                  (activate)="selector.onActivate($event, indexes.first + i)"
-                  >
-                </datatable-body-row>
-                @if (lastRowSpacerHeight && !group.isRowGroup && (last || temp[i + 1]?.isRowGroup)) {
-                  <div class="row-spacer"
-                    [style.height.px]="lastRowSpacerHeight"
-                    [style.width.px]="innerWidth">
+    <div #viewport class="datatable-viewport">
+      <datatable-selection
+        #selector
+        [selected]="selected"
+        [rows]="rows"
+        [selectCheck]="selectCheck"
+        [selectEnabled]="selectEnabled"
+        [selectionType]="selectionType"
+        [rowIdentity]="rowIdentity"
+        (select)="select.emit($event)"
+        (activate)="onActivate($event)"
+        >
+        @if (rows?.length) {
+          <datatable-scroller
+            [scrollbarV]="scrollbarV"
+            [scrollbarH]="scrollbarH"
+            [scrollHeight]="scrollHeight"
+            [scrollWidth]="columnGroupWidths?.total"
+            (scroll)="onBodyScroll($event)"
+            >
+            @if (summaryRow && summaryPosition === 'top') {
+              <datatable-summary-row
+                [rowHeight]="summaryHeight"
+                [offsetX]="offsetX"
+                [innerWidth]="innerWidth"
+                [rows]="rows"
+                [columns]="columns"
+                >
+              </datatable-summary-row>
+            }
+            @for (group of temp; track rowTrackingFn(i, group); let i = $index; let last = $last) {
+              <datatable-row-wrapper
+                row-draggable
+                [dragReference]="dragReference"
+                [dragEnabled]="rowsDraggable && !useCustomDragHandling"
+                [dragData]="indexes.first + i"
+                [groupedRows]="groupedRows"
+                [selectOnDrag]="selectRowOnDrag"
+                [innerWidth]="innerWidth"
+                [ngStyle]="getRowsStyles(group, rowWrapper)"
+                [rowDetail]="rowDetail"
+                [groupHeader]="groupHeader"
+                [offsetX]="offsetX"
+                [detailRowHeight]="getDetailRowHeight(group && group[i], i)"
+                [groupRowHeight]="getRowHeight(group)"
+                [row]="group"
+                [expanded]="getRowExpanded(group)"
+                [rowIndex]="getRowIndex(group && group[i])"
+                [groupWidth]="useTotalWidthForGroupHeaders ? innerWidth : columnGroupWidths?.total"
+                [endOfDataRowTemplate]="endOfDataRow?.template"
+                [groupPadding]="groupPadding"
+                (rowContextmenu)="rowContextmenu.emit($event)"
+                [resize-observer]="virtualizedFluidRowHeight"
+                (heightChanged)="onRowHeightChanged(group, rowWrapper)"
+                (activateGroup)="onActivate($event)"
+                #rowWrapper
+                >
+                @if (dragService.dragActive && rowsDraggable && dragReference === dragService.dragReference) {
+                  <div
+                    row-droppable
+                    (onDropEvent)="onDrop($event, indexes.first + i)"
+                    [ngClass]="'drop-area-top' + (dragService.dragActive ? ' drag-active' : '')"
+                    dragOverClass="drop-over-active"
+                    >
+                    <div class="drop-indicator"></div>
                   </div>
                 }
-              } @else {
-                @for (row of group.value; track rowTrackingFn(i, row); let i = $index; let last = $last) {
+                @if (dragService.dragActive && rowsDraggable && dragReference === dragService.dragReference) {
+                  <div
+                    row-droppable
+                    (onDropEvent)="onDrop($event, indexes.first + i + 1)"
+                    [ngClass]="'drop-area-bottom' + (dragService.dragActive ? ' drag-active' : '')"
+                    dragOverClass="drop-over-active"
+                    >
+                    <div class="drop-indicator bottom" [class.last]="last"></div>
+                  </div>
+                }
+                @if (!groupedRows) {
                   <datatable-body-row
                     role="row"
                     tabindex="-1"
-                    [isSelected]="selector.getRowSelected(row)"
+                    [isSelected]="selector.getRowSelected(group)"
                     [innerWidth]="innerWidth"
                     [offsetX]="offsetX"
                     [columns]="columns"
-                    [rowHeight]="getRowHeight(row)"
-                    [minRowHeight]="getMinRowHeight(row)"
+                    [rowHeight]="getRowHeight(group)"
+                    [minRowHeight]="getMinRowHeight(group)"
                     [maxRowHeight]="virtualizedFluidRowHeightMax"
-                    [row]="row"
-                    [group]="group.value"
-                    [rowIndex]="getRowIndex(row)"
-                    [expanded]="getRowExpanded(row)"
+                    [row]="group"
+                    [rowIndex]="getRowIndex(group)"
+                    [expanded]="getRowExpanded(group)"
                     [rowClass]="rowClass"
                     [dataAttributesRow]="dataAttributesRow"
                     [dataAttributesCell]="dataAttributesCell"
                     [getColSpan]="colSpan"
+                    [displayCheck]="displayCheck"
                     [rowPadding]="rowPadding"
                     [groupPadding]="groupPadding"
+                    [treeStatus]="group && group.treeStatus"
                     [skeletonTemplate]="skeletonTemplate"
-                    (activate)="selector.onActivate($event, i)"
+                    (treeAction)="onTreeAction(group)"
+                    (activate)="selector.onActivate($event, indexes.first + i)"
                     >
                   </datatable-body-row>
+                  @if (lastRowSpacerHeight && !group.isRowGroup && (last || temp[i + 1]?.isRowGroup)) {
+                    <div class="row-spacer"
+                      [style.height.px]="lastRowSpacerHeight"
+                      [style.width.px]="innerWidth">
+                    </div>
+                  }
+                } @else {
+                  @for (row of group.value; track rowTrackingFn(i, row); let i = $index; let last = $last) {
+                    <datatable-body-row
+                      role="row"
+                      tabindex="-1"
+                      [isSelected]="selector.getRowSelected(row)"
+                      [innerWidth]="innerWidth"
+                      [offsetX]="offsetX"
+                      [columns]="columns"
+                      [rowHeight]="getRowHeight(row)"
+                      [minRowHeight]="getMinRowHeight(row)"
+                      [maxRowHeight]="virtualizedFluidRowHeightMax"
+                      [row]="row"
+                      [group]="group.value"
+                      [rowIndex]="getRowIndex(row)"
+                      [expanded]="getRowExpanded(row)"
+                      [rowClass]="rowClass"
+                      [dataAttributesRow]="dataAttributesRow"
+                      [dataAttributesCell]="dataAttributesCell"
+                      [getColSpan]="colSpan"
+                      [rowPadding]="rowPadding"
+                      [groupPadding]="groupPadding"
+                      [skeletonTemplate]="skeletonTemplate"
+                      (activate)="selector.onActivate($event, i)"
+                      >
+                    </datatable-body-row>
+                  }
+                  @if (lastRowSpacerHeight && last) {
+                    <div class="row-spacer"
+                      [style.height.px]="lastRowSpacerHeight"
+                      [style.width.px]="innerWidth">
+                    </div>
+                  }
                 }
-                @if (lastRowSpacerHeight && last) {
-                  <div class="row-spacer"
-                    [style.height.px]="lastRowSpacerHeight"
-                    [style.width.px]="innerWidth">
-                  </div>
-                }
-              }
-            </datatable-row-wrapper>
-          }
-          @if (summaryRow && summaryPosition === 'bottom') {
-            <datatable-summary-row
-              role="row"
-              [ngStyle]="getBottomSummaryRowStyles()"
-              [rowHeight]="summaryHeight"
-              [offsetX]="offsetX"
-              [innerWidth]="innerWidth"
-              [rows]="rows"
-              [columns]="columns"
-              >
-            </datatable-summary-row>
-          }
-          @if (endOfDataRow && endOfDataRow.template && endOfDataRow.isShown) {
-            <div
-              [ngStyle]="getEndOfDataRowStyles()"
-              >
-              <ng-container [ngTemplateOutlet]="endOfDataRow.template"></ng-container>
-            </div>
-          }
-        </datatable-scroller>
-      }
-      @if (!rows?.length && !loadingIndicator) {
-        <div class="empty-row" [innerHTML]="emptyMessage"></div>
-      }
-    </datatable-selection>
+              </datatable-row-wrapper>
+            }
+            @if (summaryRow && summaryPosition === 'bottom') {
+              <datatable-summary-row
+                role="row"
+                [ngStyle]="getBottomSummaryRowStyles()"
+                [rowHeight]="summaryHeight"
+                [offsetX]="offsetX"
+                [innerWidth]="innerWidth"
+                [rows]="rows"
+                [columns]="columns"
+                >
+              </datatable-summary-row>
+            }
+            @if (endOfDataRow && endOfDataRow.template && endOfDataRow.isShown) {
+              <div
+                [ngStyle]="getEndOfDataRowStyles()"
+                >
+                <ng-container [ngTemplateOutlet]="endOfDataRow.template"></ng-container>
+              </div>
+            }
+          </datatable-scroller>
+        }
+        @if (!rows?.length && !loadingIndicator) {
+          <div class="empty-row" [innerHTML]="emptyMessage"></div>
+        }
+      </datatable-selection>
+    </div>
     `,
     changeDetection: ChangeDetectionStrategy.OnPush,
     host: {
@@ -342,6 +344,8 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
   private scrollerSet = new Subject<void>();
   scrollerSet$ = this.scrollerSet.asObservable();
   private ngUnsubscribe = new Subject<void>();
+  
+  @ViewChild('viewport') viewportElement: ElementRef<HTMLElement>;
 
   private _scroller: ScrollerComponent;
   @ViewChild(ScrollerComponent) set scroller(scroller: ScrollerComponent) {
