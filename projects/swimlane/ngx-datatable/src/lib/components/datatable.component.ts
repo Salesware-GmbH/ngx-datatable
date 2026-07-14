@@ -1232,7 +1232,7 @@ export class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
   }
 
   scrollToTop() {
-    const element = this.bodyComponent?.element?.nativeElement;
+    const element = this.bodyComponent?.viewportElement?.nativeElement;
     if (!element) {
       return;
     }
@@ -1241,7 +1241,7 @@ export class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
   }
 
   scrollToBottom() {
-    const element = this.bodyComponent?.element?.nativeElement;
+    const element = this.bodyComponent?.viewportElement?.nativeElement;
     if (!element) {
       return;
     }
@@ -1251,7 +1251,7 @@ export class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
 
   scrollToLeft() {
     this._offsetX.next(0);
-    const element = this.bodyComponent?.element?.nativeElement;
+    const element = this.bodyComponent?.viewportElement?.nativeElement;
     if (!element) {
       return;
     }
@@ -1260,7 +1260,7 @@ export class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
   }
 
   scrollToY(y: number) {
-    const element = this.bodyComponent?.element?.nativeElement;
+    const element = this.bodyComponent?.viewportElement?.nativeElement;
     if (!element) {
       return;
     }
