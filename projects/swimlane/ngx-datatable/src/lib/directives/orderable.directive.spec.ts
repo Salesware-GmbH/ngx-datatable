@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { Component, ElementRef } from '@angular/core';
+import { Component, ElementRef, ChangeDetectionStrategy } from '@angular/core';
 import { By } from '@angular/platform-browser';
 
 import { OrderableDirective } from './orderable.directive';
@@ -7,9 +7,10 @@ import { DraggableDirective } from './draggable.directive';
 import { id } from '../utils/id';
 
 @Component({
-    selector: 'test-fixture-component',
-    template: ` <div orderable></div> `,
-    standalone: false
+  selector: 'test-fixture-component',
+  template: ` <div orderable></div> `,
+  changeDetection: ChangeDetectionStrategy.Eager,
+  standalone: false
 })
 class TestFixtureComponent {}
 

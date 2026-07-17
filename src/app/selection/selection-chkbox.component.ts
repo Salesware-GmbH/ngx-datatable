@@ -1,9 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { ColumnMode, SelectionType } from 'projects/swimlane/ngx-datatable/src/public-api';
 
 @Component({
-    selector: 'chkbox-selection-demo',
-    template: `
+  selector: 'chkbox-selection-demo',
+  template: `
     <div>
       <h3>
         Checkbox Selection
@@ -11,7 +11,7 @@ import { ColumnMode, SelectionType } from 'projects/swimlane/ngx-datatable/src/p
           <a
             href="https://github.com/swimlane/ngx-datatable/blob/master/src/app/selection/selection-chkbox.component.ts"
             target="_blank"
-            >
+          >
             Source
           </a>
         </small>
@@ -37,7 +37,7 @@ import { ColumnMode, SelectionType } from 'projects/swimlane/ngx-datatable/src/p
           [displayCheck]="displayCheck"
           (activate)="onActivate($event)"
           (select)="onSelect($event)"
-          >
+        >
           <ngx-datatable-column
             [width]="30"
             [sortable]="false"
@@ -46,32 +46,32 @@ import { ColumnMode, SelectionType } from 'projects/swimlane/ngx-datatable/src/p
             [resizeable]="false"
             [headerCheckboxable]="true"
             [checkboxable]="true"
-            >
+          >
           </ngx-datatable-column>
           <ngx-datatable-column name="Name"></ngx-datatable-column>
           <ngx-datatable-column name="Gender"></ngx-datatable-column>
           <ngx-datatable-column name="Company"></ngx-datatable-column>
         </ngx-datatable>
       </div>
-    
+
       <div class="selected-column">
         <h4>
           Selections <small>({{ selected?.length }})</small>
         </h4>
         <ul>
           @for (sel of selected; track sel) {
-            <li>
-              {{ sel.name }}
-            </li>
-          }
-          @if (!selected?.length) {
-            <li>No Selections</li>
+          <li>
+            {{ sel.name }}
+          </li>
+          } @if (!selected?.length) {
+          <li>No Selections</li>
           }
         </ul>
       </div>
     </div>
-    `,
-    standalone: false
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager,
+  standalone: false
 })
 export class CheckboxSelectionComponent {
   rows = [];

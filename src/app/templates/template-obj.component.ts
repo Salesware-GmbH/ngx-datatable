@@ -1,9 +1,9 @@
-import { Component, TemplateRef, ViewChild } from '@angular/core';
+import { Component, TemplateRef, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { ColumnMode } from 'projects/swimlane/ngx-datatable/src/public-api';
 
 @Component({
-    selector: 'template-ref-demo',
-    template: `
+  selector: 'template-ref-demo',
+  template: `
     <div>
       <h3>
         TemplateRef via Column Property
@@ -11,7 +11,7 @@ import { ColumnMode } from 'projects/swimlane/ngx-datatable/src/public-api';
           <a
             href="https://github.com/swimlane/ngx-datatable/blob/master/src/app/templates/template-obj.component.ts"
             target="_blank"
-            >
+          >
             Source
           </a>
         </small>
@@ -24,22 +24,22 @@ import { ColumnMode } from 'projects/swimlane/ngx-datatable/src/public-api';
         [headerHeight]="50"
         [footerHeight]="50"
         rowHeight="auto"
-        >
+      >
       </ngx-datatable>
-    
+
       <ng-template #hdrTpl let-column="column"> <strong>Fancy</strong>: {{ column.name }} !! </ng-template>
-    
+
       <ng-template #editTmpl let-row="row" let-value="value">
         @if (value === 'male') {
-          <img width="150" src="https://media.giphy.com/media/I8nepxWwlEuqI/giphy.gif" />
-        }
-        @if (value === 'female') {
-          <img width="150" src="https://media.giphy.com/media/sxSVG3XHf7yww/giphy.gif" />
+        <img width="150" src="https://media.giphy.com/media/I8nepxWwlEuqI/giphy.gif" />
+        } @if (value === 'female') {
+        <img width="150" src="https://media.giphy.com/media/sxSVG3XHf7yww/giphy.gif" />
         }
       </ng-template>
     </div>
-    `,
-    standalone: false
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager,
+  standalone: false
 })
 export class TemplateRefTemplatesComponent {
   @ViewChild('editTmpl', { static: true }) editTmpl: TemplateRef<any>;

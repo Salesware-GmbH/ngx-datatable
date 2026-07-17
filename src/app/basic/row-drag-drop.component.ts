@@ -1,31 +1,36 @@
 import { SelectionType } from './../../../projects/swimlane/ngx-datatable/src/lib/types/selection.type';
-import { Component, ViewEncapsulation, ViewChild } from '@angular/core';
+import { Component, ViewEncapsulation, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
-    selector: 'row-drag-drop-demo',
-    template: `
+  selector: 'row-drag-drop-demo',
+  template: `
     <div>
       <h3>
         Row Drag&Drop Demo
         <small>
-          <a href="https://github.com/swimlane/ngx-datatable/blob/master/demo/basic/row-drag-drop.component.ts" target="_blank">
+          <a
+            href="https://github.com/swimlane/ngx-datatable/blob/master/demo/basic/row-drag-drop.component.ts"
+            target="_blank"
+          >
             Source
           </a>
-        </small>        
+        </small>
       </h3>
-      <ngx-datatable style="height : 700px;"
+      <ngx-datatable
+        style="height : 700px;"
         class="material"
         [rowsDraggable]="true"
         [rows]="rows"
         [selectionType]="selectionType"
         [headerHeight]="50"
-        [scrollbarV]="true"        
+        [scrollbarV]="true"
         [rowHeight]="50"
         [selected]="selected"
         [dataAttributesRow]="setDataAttributesRow"
         [dataAttributesCell]="setDataAttributesCell"
-        (select)='onSelect($event)'
-        (rowDropped)="onDrop($event)">
+        (select)="onSelect($event)"
+        (rowDropped)="onDrop($event)"
+      >
         <ngx-datatable-column name="Id" [width]="80"></ngx-datatable-column>
         <ngx-datatable-column name="Name" [width]="300"></ngx-datatable-column>
         <ngx-datatable-column name="Gender"></ngx-datatable-column>
@@ -35,18 +40,18 @@ import { Component, ViewEncapsulation, ViewChild } from '@angular/core';
       </ngx-datatable>
     </div>
   `,
-    encapsulation: ViewEncapsulation.None,
-    standalone: false
+  encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.Eager,
+  standalone: false
 })
 export class RowDragDropComponent {
-
   selectionType = SelectionType.multi;
 
   rows = [];
-  public selected: any[] = [];  
+  public selected: any[] = [];
 
   constructor() {
-    this.fetch((data) => {
+    this.fetch(data => {
       this.rows = data;
     });
   }
@@ -119,28 +124,24 @@ export class RowDragDropComponent {
   }
 
   setDataAttributesRow(row) {
-    return { 
-      dataAttributes: [
-        {key: 'row-id', value: row.id}
-      ]
+    return {
+      dataAttributes: [{ key: 'row-id', value: row.id }]
     };
   }
-  
+
   setDataAttributesCell(column);
   setDataAttributesCell(column, row?) {
     if (!!row) {
-      return { 
+      return {
         dataAttributes: [
-          {key: 'row-id', value: row.id},
-          {key: 'column-name', value: column.name}
+          { key: 'row-id', value: row.id },
+          { key: 'column-name', value: column.name }
         ]
       };
     } else {
       return {
-        dataAttributes: [
-          {key: 'header-cell-name', value: column.name}
-        ]
-      }
+        dataAttributes: [{ key: 'header-cell-name', value: column.name }]
+      };
     }
   }
 }

@@ -1,9 +1,9 @@
-import { Component, ChangeDetectorRef } from '@angular/core';
+import { Component, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
 import { ColumnMode } from 'projects/swimlane/ngx-datatable/src/public-api';
 
 @Component({
-    selector: 'full-screen-tree-demo',
-    template: `
+  selector: 'full-screen-tree-demo',
+  template: `
     <div>
       <h3>
         Full Screen
@@ -11,7 +11,7 @@ import { ColumnMode } from 'projects/swimlane/ngx-datatable/src/public-api';
           <a
             href="https://github.com/swimlane/ngx-datatable/blob/master/src/app/tree/fullscreen.component.ts"
             target="_blank"
-            >
+          >
             Source
           </a>
         </small>
@@ -29,30 +29,19 @@ import { ColumnMode } from 'projects/swimlane/ngx-datatable/src/public-api';
         [treeFromRelation]="'parentId'"
         [treeToRelation]="'id'"
         (treeAction)="onTreeAction($event)"
-        >
+      >
         <ngx-datatable-column name="Id" [width]="80"></ngx-datatable-column>
         <ngx-datatable-column name="Name" [isTreeColumn]="true" [width]="300" [treeLevelIndent]="20">
           <ng-template ngx-datatable-tree-toggle let-tree="cellContext">
             <button [disabled]="tree.treeStatus === 'disabled'" (click)="tree.onTreeAction()">
               @if (tree.treeStatus === 'loading') {
-                <span>
-                  ...
-                </span>
-              }
-              @if (tree.treeStatus === 'collapsed') {
-                <span>
-                  ↑
-                </span>
-              }
-              @if (tree.treeStatus === 'expanded') {
-                <span>
-                  ↓
-                </span>
-              }
-              @if (tree.treeStatus === 'disabled') {
-                <span>
-                  ⃠
-                </span>
+              <span> ... </span>
+              } @if (tree.treeStatus === 'collapsed') {
+              <span> ↑ </span>
+              } @if (tree.treeStatus === 'expanded') {
+              <span> ↓ </span>
+              } @if (tree.treeStatus === 'disabled') {
+              <span> ⃠ </span>
               }
             </button>
           </ng-template>
@@ -63,9 +52,10 @@ import { ColumnMode } from 'projects/swimlane/ngx-datatable/src/public-api';
         <ngx-datatable-column name="State" [width]="300" prop="address.state"></ngx-datatable-column>
       </ngx-datatable>
     </div>
-    `,
-    styles: ['.icon {height: 10px; width: 10px; }', '.disabled {opacity: 0.5; }'],
-    standalone: false
+  `,
+  styles: ['.icon {height: 10px; width: 10px; }', '.disabled {opacity: 0.5; }'],
+  changeDetection: ChangeDetectionStrategy.Eager,
+  standalone: false
 })
 export class FullScreenTreeComponent {
   rows = [];
