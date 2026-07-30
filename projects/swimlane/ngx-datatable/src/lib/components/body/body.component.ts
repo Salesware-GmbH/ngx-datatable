@@ -976,8 +976,31 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
    */
   recalcLayout(): void {
     this.refreshRowHeightCache();
+    this.syncOffsetYWithViewport();
     this.updateIndexes();
     this.updateRows();
+  }
+
+  private syncOffsetYWithViewport(): void {
+    if (!this.scrollbarV || !this.virtualization) {
+      return;
+    }
+
+    const viewport = this.viewportElement?.nativeElement;
+    if (!viewport?.clientHeight) {
+      return;
+    }
+
+    const offsetY = Math.min(viewport.scrollTop, Math.max(0, viewport.scrollHeight - viewport.clientHeight));
+    if (offsetY === this.offsetY) {
+      return;
+    }
+
+    this.offsetY = offsetY;
+    if (offsetY !== viewport.scrollTop) {
+      // The content no longer reaches that far - keep the viewport in sync, otherwise both drift apart again.
+      this.scroller?.setOffset(offsetY);
+    }
   }
 
   /**
