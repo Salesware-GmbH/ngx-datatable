@@ -644,6 +644,9 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
       newRowHeight += groupPadding;
       if (newRowHeight !== 0) {
         const measuredHeight = newRowHeight + newDetailHeight;
+        if (measuredRow && this.measuredRowHeights.has(measuredRow) && !this.viewportElement?.nativeElement?.clientHeight) {
+          return;
+        }
         if (measuredRow) {
           this.measuredRowHeights.set(measuredRow, measuredHeight);
         }
