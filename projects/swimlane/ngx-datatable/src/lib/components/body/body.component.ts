@@ -398,6 +398,7 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
   _pageSize: number;
 
   private preventFocusOut = false;
+  private measuredRowHeights = new WeakMap<any, number>();
 
   /**
    * Creates an instance of DataTableBodyComponent.
@@ -625,10 +626,12 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
   onRowHeightChanged(rows: any, rowWrapper: DataTableRowWrapperComponent) {
     if (this.scrollbarV && this.virtualization && this.virtualizedFluidRowHeight) {
       let idx = 0;
+      let measuredRow = rows;
 
       if (this.groupedRows) {
         // Get the latest row rowindex in a group
         const row = rows[rows.length - 1];
+        measuredRow = row;
         idx = row ? this.getRowIndex(row) : 0;
       } else {
         idx = this.getRowIndex(rows);
@@ -640,7 +643,14 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
       const groupPadding = isRowGroup ? this.groupPadding : 0;
       newRowHeight += groupPadding;
       if (newRowHeight !== 0) {
-        if (this.rowHeightsCache.set(idx, newRowHeight + newDetailHeight)) {
+        const measuredHeight = newRowHeight + newDetailHeight;
+        if (measuredRow && this.measuredRowHeights.has(measuredRow) && !this.viewportElement?.nativeElement?.clientHeight) {
+          return;
+        }
+        if (measuredRow) {
+          this.measuredRowHeights.set(measuredRow, measuredHeight);
+        }
+        if (this.rowHeightsCache.set(idx, measuredHeight)) {
           this.rowSizeChanged.emit({ row: rows, newHeight: newRowHeight, detailHeight: newDetailHeight });
         }
       }
@@ -854,6 +864,15 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
         groupPadding: this.groupPadding,
         lastRowSpacerHeight: this.lastRowSpacerHeight
       });
+
+      if (this.virtualizedFluidRowHeight && !this.groupedRows) {
+        this.rows.forEach((row, index) => {
+          const measuredHeight = this.measuredRowHeights.get(row);
+          if (measuredHeight) {
+            this.rowHeightsCache.set(index, measuredHeight);
+          }
+        });
+      }
     }
   }
 
@@ -957,8 +976,31 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
    */
   recalcLayout(): void {
     this.refreshRowHeightCache();
+    this.syncOffsetYWithViewport();
     this.updateIndexes();
     this.updateRows();
+  }
+
+  private syncOffsetYWithViewport(): void {
+    if (!this.scrollbarV || !this.virtualization) {
+      return;
+    }
+
+    const viewport = this.viewportElement?.nativeElement;
+    if (!viewport?.clientHeight) {
+      return;
+    }
+
+    const offsetY = Math.min(viewport.scrollTop, Math.max(0, viewport.scrollHeight - viewport.clientHeight));
+    if (offsetY === this.offsetY) {
+      return;
+    }
+
+    this.offsetY = offsetY;
+    if (offsetY !== viewport.scrollTop) {
+      // The content no longer reaches that far - keep the viewport in sync, otherwise both drift apart again.
+      this.scroller?.setOffset(offsetY);
+    }
   }
 
   /**
