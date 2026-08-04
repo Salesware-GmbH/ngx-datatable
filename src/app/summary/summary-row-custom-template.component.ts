@@ -1,16 +1,16 @@
-import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { ColumnMode } from 'projects/swimlane/ngx-datatable/src/public-api';
 
 @Component({
-    selector: 'summary-row-custom-template-demo',
-    template: `
+  selector: 'summary-row-custom-template-demo',
+  template: `
     <div>
       <h3>
         Summary Row with Custom Template
         <small>
           <a
             href="https://github.com/swimlane/ngx-datatable/blob/master/src/app/summary/summary-row-custom-template.component.ts"
-            >
+          >
             Source
           </a>
         </small>
@@ -24,21 +24,22 @@ import { ColumnMode } from 'projects/swimlane/ngx-datatable/src/public-api';
         [rowHeight]="'auto'"
         [summaryHeight]="55"
         [rows]="rows"
-        >
+      >
       </ngx-datatable>
       <ng-template #nameSummaryCell let-row="row" let-value="value">
         <div class="name-container">
           @for (name of getNames(); track name) {
-            <div class="chip">
-              <span class="chip-content">{{ name }}</span>
-            </div>
+          <div class="chip">
+            <span class="chip-content">{{ name }}</span>
+          </div>
           }
         </div>
       </ng-template>
     </div>
-    `,
-    styleUrls: ['./summary-row-custom-template.component.scss'],
-    standalone: false
+  `,
+  styleUrls: ['./summary-row-custom-template.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
+  standalone: false
 })
 export class SummaryRowCustomTemplateComponent implements OnInit {
   rows = [];

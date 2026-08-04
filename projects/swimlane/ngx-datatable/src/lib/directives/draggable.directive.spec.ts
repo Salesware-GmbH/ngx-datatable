@@ -1,13 +1,14 @@
 import { TestBed, ComponentFixture, waitForAsync } from '@angular/core/testing';
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { By } from '@angular/platform-browser';
 
 import { DraggableDirective } from './draggable.directive';
 
 @Component({
-    selector: 'test-fixture-component',
-    template: ` <div draggable></div> `,
-    standalone: false
+  selector: 'test-fixture-component',
+  template: ` <div draggable></div> `,
+  changeDetection: ChangeDetectionStrategy.Eager,
+  standalone: false
 })
 class TestFixtureComponent {}
 

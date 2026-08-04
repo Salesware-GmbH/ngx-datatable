@@ -1,9 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { ColumnMode } from 'projects/swimlane/ngx-datatable/src/public-api';
 
 @Component({
-    selector: 'basic-bootstrap-theme-demo',
-    template: `
+  selector: 'basic-bootstrap-theme-demo',
+  template: `
     <div>
       <h3>
         Bootstrap Theme
@@ -33,7 +33,8 @@ import { ColumnMode } from 'projects/swimlane/ngx-datatable/src/public-api';
       </ngx-datatable>
     </div>
   `,
-    standalone: false
+  changeDetection: ChangeDetectionStrategy.Eager,
+  standalone: false
 })
 export class BootstrapThemeComponent {
   rows = [];

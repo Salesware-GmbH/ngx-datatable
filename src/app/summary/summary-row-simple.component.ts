@@ -1,9 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { ColumnMode } from 'projects/swimlane/ngx-datatable/src/public-api';
 
 @Component({
-    selector: 'summary-row-simple-demo',
-    template: `
+  selector: 'summary-row-simple-demo',
+  template: `
     <div>
       <h3>
         Simple Summary Row
@@ -47,8 +47,9 @@ import { ColumnMode } from 'projects/swimlane/ngx-datatable/src/public-api';
       </ngx-datatable>
     </div>
   `,
-    styleUrls: ['./summary-row-simple.component.scss'],
-    standalone: false
+  styleUrls: ['./summary-row-simple.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
+  standalone: false
 })
 export class SummaryRowSimpleComponent {
   rows = [];

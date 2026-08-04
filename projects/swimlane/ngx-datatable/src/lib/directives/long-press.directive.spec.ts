@@ -1,12 +1,13 @@
 import { TestBed, ComponentFixture, fakeAsync, tick, waitForAsync } from '@angular/core/testing';
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { LongPressDirective } from './long-press.directive';
 
 @Component({
-    selector: 'test-fixture-component',
-    template: ` <div long-press></div> `,
-    standalone: false
+  selector: 'test-fixture-component',
+  template: ` <div long-press></div> `,
+  changeDetection: ChangeDetectionStrategy.Eager,
+  standalone: false
 })
 class TestFixtureComponent {}
 

@@ -1,4 +1,4 @@
-import { Component, ElementRef, Injectable } from '@angular/core';
+import { Component, ElementRef, Injectable, ChangeDetectionStrategy } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { delay, map } from 'rxjs/operators';
 import { CorporateEmployee } from './model/corporate-employee';
@@ -25,9 +25,9 @@ export class MockServerResultsService {
 }
 
 @Component({
-    selector: 'server-scrolling-demo',
-    providers: [MockServerResultsService],
-    template: `
+  selector: 'server-scrolling-demo',
+  providers: [MockServerResultsService],
+  template: `
     <div>
       <h3>
         Server-side Scrolling
@@ -53,8 +53,9 @@ export class MockServerResultsService {
       ></ngx-datatable>
     </div>
   `,
-    styleUrls: ['./scrolling-server.component.css'],
-    standalone: false
+  styleUrls: ['./scrolling-server.component.css'],
+  changeDetection: ChangeDetectionStrategy.Eager,
+  standalone: false
 })
 export class ServerScrollingComponent {
   readonly headerHeight = 50;

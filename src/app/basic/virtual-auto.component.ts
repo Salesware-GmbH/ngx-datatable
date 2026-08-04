@@ -1,13 +1,20 @@
-import { AfterViewInit, Component, ContentChild, NgZone, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ContentChild,
+  NgZone,
+  OnInit,
+  TemplateRef,
+  ViewChild,
+  ChangeDetectionStrategy
+} from '@angular/core';
 import { ColumnMode, TableColumn } from 'projects/swimlane/ngx-datatable/src/public-api';
 
 @Component({
-    selector: 'virtual-auto-demo',
-    template: `
+  selector: 'virtual-auto-demo',
+  template: `
     <div>
-      <h3>
-        Virtual Fluid Row Heights
-      </h3>
+      <h3>Virtual Fluid Row Heights</h3>
       <ngx-datatable
         class="material"
         [rows]="rows"
@@ -42,7 +49,8 @@ import { ColumnMode, TableColumn } from 'projects/swimlane/ngx-datatable/src/pub
       </div>
     </ng-template>
   `,
-    standalone: false
+  changeDetection: ChangeDetectionStrategy.Eager,
+  standalone: false
 })
 export class VirtualAutoComponent implements AfterViewInit {
   rows = [];
