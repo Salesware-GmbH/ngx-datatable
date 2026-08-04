@@ -82,20 +82,14 @@ export class ScrollerComponent implements OnInit, OnDestroy {
   }
 
   updateOffset(): void {
-    let direction: string;
-    if (this.scrollYPos < this.prevScrollYPos) {
-      direction = 'down';
-    } else if (this.scrollYPos > this.prevScrollYPos) {
-      direction = 'up';
+    if (!this.parentElement?.clientHeight) {
+      return;
     }
 
-    this.scroll.emit({
-      direction,
-      scrollYPos: this.scrollYPos
-    });
+    this.scrollYPos = this.parentElement.scrollTop;
+    this.scrollXPos = this.parentElement.scrollLeft;
 
-    this.prevScrollYPos = this.scrollYPos;
-    this.prevScrollXPos = this.scrollXPos;
+    this.updateOffsetInternal();
   }
 
   private updateOffsetInternal(): void {
