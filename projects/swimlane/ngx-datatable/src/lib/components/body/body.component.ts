@@ -6,6 +6,8 @@ import {
   HostBinding,
   ChangeDetectorRef,
   ViewChild,
+  ViewChildren,
+  QueryList,
   OnInit,
   OnDestroy,
   ChangeDetectionStrategy,
@@ -17,9 +19,11 @@ import { ScrollerComponent } from './scroller.component';
 import { SelectionType } from '../../types/selection.type';
 import { columnsByPin, columnGroupWidths } from '../../utils/column';
 import { RowHeightCache } from '../../utils/row-height-cache';
+import { getTabbableElements } from '../../utils/tabbable';
 import { translateXY } from '../../utils/translate';
 import { RowDragService } from '../../services/row-drag.service';
 import { Subject } from 'rxjs';
+import { DataTableBodyRowComponent } from './body-row.component';
 import { DataTableRowWrapperComponent } from './body-row-wrapper.component';
 import { Model } from './selection.component';
 
@@ -344,8 +348,9 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
   private scrollerSet = new Subject<void>();
   scrollerSet$ = this.scrollerSet.asObservable();
   private ngUnsubscribe = new Subject<void>();
-  
+
   @ViewChild('viewport') viewportElement: ElementRef<HTMLElement>;
+  @ViewChildren(DataTableBodyRowComponent) rowComponents: QueryList<DataTableBodyRowComponent>;
 
   private _scroller: ScrollerComponent;
   @ViewChild(ScrollerComponent) set scroller(scroller: ScrollerComponent) {
@@ -1095,6 +1100,70 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
   }
 
   onActivate(event: Model) {
+    if (event.type === 'tabForward' || event.type === 'tabBackward') {
+      this.handleRowBoundaryTab(event);
+      return;
+    }
     this.activate.emit(event);
+  }
+
+  private handleRowBoundaryTab(model: Model): void {
+    const isForward = model.type === 'tabForward';
+    const currentIndex = this.getRowIndex(model.row);
+    const targetIndex = currentIndex + (isForward ? 1 : -1);
+    const targetRow = this.rows?.[targetIndex];
+
+    if (!targetRow || targetRow.isRowGroup || targetRow.format?.isEndOfDataRow) {
+      return;
+    }
+
+    const event = model.event as KeyboardEvent;
+    event.preventDefault();
+    event.stopPropagation();
+
+    this.scrollRowIndexIntoView(targetIndex, isForward);
+    this.focusRenderedRow(targetIndex, isForward, 15);
+  }
+
+  private scrollRowIndexIntoView(targetIndex: number, isForward: boolean): void {
+    const viewport = this.viewportElement?.nativeElement;
+    if (!this.scroller || !viewport) {
+      return;
+    }
+
+    const rowTop = this.rowHeightsCache.query(targetIndex - 1);
+    const rowBottom = this.rowHeightsCache.query(targetIndex);
+    const { scrollTop, clientHeight } = viewport;
+
+    const target = isForward
+      ? rowBottom > scrollTop + clientHeight
+        ? Math.min(rowBottom - clientHeight, rowTop)
+        : scrollTop
+      : Math.min(rowTop, scrollTop);
+
+    this.scroller.setOffset(Math.max(0, target));
+  }
+
+  private focusRenderedRow(targetIndex: number, isForward: boolean, remainingAttempts: number): void {
+    const row = this.rowComponents?.find((rowComponent) => rowComponent.rowIndex === targetIndex);
+    const container = row?.element?.closest('datatable-row-wrapper') as HTMLElement;
+    const tabbable = container ? getTabbableElements(container, { includeHidden: true }) : [];
+    const target = isForward ? tabbable[0] : tabbable[tabbable.length - 1];
+
+    if (target) {
+      const wasHidden = getComputedStyle(target).visibility === 'hidden';
+      if (wasHidden) {
+        target.style.setProperty('visibility', 'visible');
+      }
+      target.focus();
+      if (wasHidden) {
+        target.style.removeProperty('visibility');
+      }
+      return;
+    }
+
+    if (remainingAttempts > 0) {
+      requestAnimationFrame(() => this.focusRenderedRow(targetIndex, isForward, remainingAttempts - 1));
+    }
   }
 }
