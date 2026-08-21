@@ -14,6 +14,8 @@ import {
   TemplateRef
 } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { Keys } from '../../utils/keys';
+import { getTabbableElements } from '../../utils/tabbable';
 
 @Component({
     selector: 'datatable-row-wrapper',
@@ -121,6 +123,10 @@ export class DataTableRowWrapperComponent implements OnDestroy, DoCheck {
   private _rowIndex: number;
   private expandedSubject = new BehaviorSubject(this._expanded);
 
+  get element(): HTMLElement {
+    return this.elementRef.nativeElement;
+  }
+
   constructor(private cd: ChangeDetectorRef, private differs: KeyValueDiffers, private elementRef: ElementRef) {
     this.groupContext = {
       group: this.row,
@@ -197,6 +203,32 @@ export class DataTableRowWrapperComponent implements OnDestroy, DoCheck {
       event,
       row: this.row,
       expanded: this.expanded
+    });
+  }
+
+  @HostListener('keydown', ['$event'])
+  onKeyDown(event: KeyboardEvent): void {
+    if (event.keyCode !== Keys.tab) {
+      return;
+    }
+
+    const tabbable = getTabbableElements(this.element);
+    if (!tabbable.length) {
+      return;
+    }
+
+    const target = event.target as HTMLElement;
+    const isForward = !event.shiftKey;
+    const boundaryElement = isForward ? tabbable[tabbable.length - 1] : tabbable[0];
+
+    if (target !== boundaryElement) {
+      return;
+    }
+
+    this.activateGroup.emit({
+      type: isForward ? 'tabForward' : 'tabBackward',
+      event,
+      row: this.row
     });
   }
 }
