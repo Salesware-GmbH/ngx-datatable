@@ -1,9 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { ColumnMode } from 'projects/swimlane/ngx-datatable/src/public-api';
 
 @Component({
-    selector: 'contextmenu-demo',
-    template: `
+  selector: 'contextmenu-demo',
+  template: `
     <div>
       <h3>
         Context Menu Event
@@ -11,7 +11,7 @@ import { ColumnMode } from 'projects/swimlane/ngx-datatable/src/public-api';
           <a
             href="https://github.com/swimlane/ngx-datatable/blob/master/src/app/basic/contextmenu.component.ts"
             target="_blank"
-            >
+          >
             Source
           </a>
         </small>
@@ -22,17 +22,13 @@ import { ColumnMode } from 'projects/swimlane/ngx-datatable/src/public-api';
           access the <code>contextmenu</code> event to display your own custom context menu.
         </p>
         @if (rawEvent) {
-          <p>
-            <strong>Mouse position:</strong> <code>(x: {{ rawEvent?.x }}, y: {{ rawEvent?.y }})</code>
-          </p>
-        }
-        @if (contextmenuRow) {
-          <p><strong>Row:</strong> {{ contextmenuRow?.name }}</p>
-        }
-        @if (contextmenuColumn) {
-          <p>
-            <strong>Header:</strong> name: {{ contextmenuColumn?.name }} prop: {{ contextmenuColumn?.prop }}
-          </p>
+        <p>
+          <strong>Mouse position:</strong> <code>(x: {{ rawEvent?.x }}, y: {{ rawEvent?.y }})</code>
+        </p>
+        } @if (contextmenuRow) {
+        <p><strong>Row:</strong> {{ contextmenuRow?.name }}</p>
+        } @if (contextmenuColumn) {
+        <p><strong>Header:</strong> name: {{ contextmenuColumn?.name }} prop: {{ contextmenuColumn?.prop }}</p>
         }
       </div>
       <ngx-datatable
@@ -44,11 +40,12 @@ import { ColumnMode } from 'projects/swimlane/ngx-datatable/src/public-api';
         [footerHeight]="50"
         rowHeight="auto"
         (tableContextmenu)="onTableContextMenu($event)"
-        >
+      >
       </ngx-datatable>
     </div>
-    `,
-    standalone: false
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager,
+  standalone: false
 })
 export class ContextMenuDemoComponent {
   rows = [];

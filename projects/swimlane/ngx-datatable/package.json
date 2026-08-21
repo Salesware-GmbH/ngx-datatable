@@ -1,6 +1,6 @@
 {
   "name": "@salesware/ngx-datatable",
-  "version": "21.2.1",
+  "version": "22.1.0",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -10,9 +10,9 @@
     "tslib": "^2.0.0"
   },
   "peerDependencies": {
-    "@angular/common": "^21.1.2",
-    "@angular/core": "^21.1.2",
-    "@angular/platform-browser": "^21.1.2",
+    "@angular/common": "^22.0.0",
+    "@angular/core": "^22.0.0",
+    "@angular/platform-browser": "^22.0.0",
     "rxjs": "^6.6.3 || ^7.4.0"
   }
 }

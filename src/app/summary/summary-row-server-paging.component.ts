@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { MockServerResultsService } from '../paging/mock-server-results-service';
 import { PagedData } from '../paging/model/paged-data';
 import { CorporateEmployee } from '../paging/model/corporate-employee';
@@ -6,9 +6,9 @@ import { Page } from '../paging/model/page';
 import { ColumnMode } from 'projects/swimlane/ngx-datatable/src/public-api';
 
 @Component({
-    selector: 'summary-row-server-paging-demo',
-    providers: [MockServerResultsService],
-    template: `
+  selector: 'summary-row-server-paging-demo',
+  providers: [MockServerResultsService],
+  template: `
     <div>
       <h3>
         Server-side paging
@@ -39,7 +39,8 @@ import { ColumnMode } from 'projects/swimlane/ngx-datatable/src/public-api';
       </ngx-datatable>
     </div>
   `,
-    standalone: false
+  changeDetection: ChangeDetectionStrategy.Eager,
+  standalone: false
 })
 export class SummaryRowServerPagingComponent {
   page = new Page();

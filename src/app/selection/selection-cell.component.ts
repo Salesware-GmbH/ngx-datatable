@@ -1,9 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { ColumnMode, SelectionType } from 'projects/swimlane/ngx-datatable/src/public-api';
 
 @Component({
-    selector: 'cell-selection-demo',
-    template: `
+  selector: 'cell-selection-demo',
+  template: `
     <div>
       <h3>
         Cell Selection
@@ -32,7 +32,8 @@ import { ColumnMode, SelectionType } from 'projects/swimlane/ngx-datatable/src/p
       </ngx-datatable>
     </div>
   `,
-    standalone: false
+  changeDetection: ChangeDetectionStrategy.Eager,
+  standalone: false
 })
 export class CellSelectionComponent {
   rows: any[] = [];

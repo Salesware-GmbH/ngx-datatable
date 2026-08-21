@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
@@ -393,8 +393,9 @@ describe('DatatableComponent With Custom Templates', () => {
 });
 
 @Component({
-    template: ` <ngx-datatable [columns]="columns" [rows]="rows" [sorts]="sorts"> </ngx-datatable> `,
-    standalone: false
+  template: ` <ngx-datatable [columns]="columns" [rows]="rows" [sorts]="sorts"> </ngx-datatable> `,
+  changeDetection: ChangeDetectionStrategy.Eager,
+  standalone: false
 })
 class TestFixtureComponent {
   columns: any[] = [];
@@ -403,7 +404,7 @@ class TestFixtureComponent {
 }
 
 @Component({
-    template: `
+  template: `
     <ngx-datatable [rows]="rows" [sorts]="sorts">
       <ngx-datatable-column name="Id" prop="id">
         <ng-template let-column="column" ngx-datatable-header-template>
@@ -423,7 +424,8 @@ class TestFixtureComponent {
       </ngx-datatable-column>
     </ngx-datatable>
   `,
-    standalone: false
+  changeDetection: ChangeDetectionStrategy.Eager,
+  standalone: false
 })
 class TestFixtureComponentWithCustomTemplates {
   rows: any[] = [];
