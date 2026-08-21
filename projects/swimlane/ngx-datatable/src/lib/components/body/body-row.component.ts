@@ -217,6 +217,10 @@ export class DataTableBodyRowComponent implements DoCheck {
   @Output() activate: EventEmitter<any> = new EventEmitter();
   @Output() treeAction: EventEmitter<any> = new EventEmitter();
 
+  get element(): HTMLElement {
+    return this._element;
+  }
+
   _element: any;
   _columnGroupWidths: any;
   _columnsByPin: any;
