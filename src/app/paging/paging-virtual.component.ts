@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { MockServerResultsService } from './mock-server-results-service';
 import { CorporateEmployee } from './model/corporate-employee';
 import { Page } from './model/page';
@@ -13,9 +13,9 @@ interface PageInfo {
 }
 
 @Component({
-    selector: 'virtual-paging-demo',
-    providers: [MockServerResultsService],
-    template: `
+  selector: 'virtual-paging-demo',
+  providers: [MockServerResultsService],
+  template: `
     <div>
       <h3>
         Virtual Server-side Paging
@@ -51,7 +51,8 @@ interface PageInfo {
       </ngx-datatable>
     </div>
   `,
-    standalone: false
+  changeDetection: ChangeDetectionStrategy.Eager,
+  standalone: false
 })
 export class VirtualPagingComponent {
   totalElements: number;

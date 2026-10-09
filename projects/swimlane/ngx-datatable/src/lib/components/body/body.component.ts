@@ -13,7 +13,7 @@ import {
   ChangeDetectionStrategy,
   HostListener,
   TemplateRef,
-  ElementRef,
+  ElementRef
 } from '@angular/core';
 import { ScrollerComponent } from './scroller.component';
 import { SelectionType } from '../../types/selection.type';
@@ -28,8 +28,8 @@ import { DataTableRowWrapperComponent } from './body-row-wrapper.component';
 import { Model } from './selection.component';
 
 @Component({
-    selector: 'datatable-body',
-    template: `
+  selector: 'datatable-body',
+  template: `
     @if (loadingIndicator && !useSkeletonLoader) {
       <datatable-progress [columnGroupWidths]="columnGroupWidths"> </datatable-progress>
     }
@@ -192,9 +192,7 @@ import { Model } from './selection.component';
               </datatable-summary-row>
             }
             @if (endOfDataRow && endOfDataRow.template && endOfDataRow.isShown) {
-              <div
-                [ngStyle]="getEndOfDataRowStyles()"
-                >
+              <div [ngStyle]="getEndOfDataRowStyles()">
                 <ng-container [ngTemplateOutlet]="endOfDataRow.template"></ng-container>
               </div>
             }
@@ -205,12 +203,12 @@ import { Model } from './selection.component';
         }
       </datatable-selection>
     </div>
-    `,
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    host: {
-        class: 'datatable-body'
-    },
-    standalone: false
+  `,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  host: {
+    class: 'datatable-body'
+  },
+  standalone: false
 })
 export class DataTableBodyComponent implements OnInit, OnDestroy {
   @Input() scrollbarV: boolean;
@@ -332,7 +330,7 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
   }
 
   @Input() endOfDataRow: { template: TemplateRef<any>; isShown: boolean };
-  @Input() useTotalWidthForGroupHeaders = false;  
+  @Input() useTotalWidthForGroupHeaders = false;
   @Input() useSkeletonLoader = false;
 
   @Output() scroll: EventEmitter<any> = new EventEmitter();
@@ -408,7 +406,11 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
   /**
    * Creates an instance of DataTableBodyComponent.
    */
-  constructor(private cd: ChangeDetectorRef, public dragService: RowDragService, public element: ElementRef<HTMLElement>) {
+  constructor(
+    private cd: ChangeDetectorRef,
+    public dragService: RowDragService,
+    public element: ElementRef<HTMLElement>
+  ) {
     // declare fn here so we can get access to the `this` property
     this.rowTrackingFn = (index: number, row: any): any => {
       const idx = this.getRowIndex(row);
@@ -959,7 +961,7 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
     });
   }
 
-  toggleRows(rowExpansions: { row: any, expanded: boolean}[]) {
+  toggleRows(rowExpansions: { row: any; expanded: boolean }[]) {
     rowExpansions.forEach(expansion => {
       if (expansion.expanded) {
         this.rowExpansions.push(expansion.row);

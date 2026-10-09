@@ -1,16 +1,16 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { ColumnMode } from 'projects/swimlane/ngx-datatable/src/public-api';
 
 @Component({
-    selector: 'summary-row-inline-html',
-    template: `
+  selector: 'summary-row-inline-html',
+  template: `
     <div>
       <h3>
         Inline HTML template
         <small>
           <a
             href="https://github.com/swimlane/ngx-datatable/blob/master/src/app/summary/summary-row-inline-html.component.ts"
-            >
+          >
             Source
           </a>
         </small>
@@ -24,7 +24,7 @@ import { ColumnMode } from 'projects/swimlane/ngx-datatable/src/public-api';
         [headerHeight]="50"
         rowHeight="auto"
         [rows]="rows"
-        >
+      >
         <ngx-datatable-column prop="name" [summaryTemplate]="nameSummaryCell"></ngx-datatable-column>
         <ngx-datatable-column name="Gender" [summaryFunc]="summaryForGender"></ngx-datatable-column>
         <ngx-datatable-column prop="age" [summaryFunc]="avgAge"></ngx-datatable-column>
@@ -32,15 +32,16 @@ import { ColumnMode } from 'projects/swimlane/ngx-datatable/src/public-api';
       <ng-template #nameSummaryCell>
         <div class="name-container">
           @for (name of getNames(); track name) {
-            <div class="chip">
-              <span class="chip-content">{{ name }}</span>
-            </div>
+          <div class="chip">
+            <span class="chip-content">{{ name }}</span>
+          </div>
           }
         </div>
       </ng-template>
     </div>
-    `,
-    standalone: false
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager,
+  standalone: false
 })
 export class SummaryRowInlineHtmlComponent {
   rows = [];

@@ -1,8 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
-    selector: 'horz-vert-scrolling-demo',
-    template: `
+  selector: 'horz-vert-scrolling-demo',
+  template: `
     <div>
       <h3>
         Horizontal and Vertical Scrolling
@@ -33,7 +33,8 @@ import { Component } from '@angular/core';
       </ngx-datatable>
     </div>
   `,
-    standalone: false
+  changeDetection: ChangeDetectionStrategy.Eager,
+  standalone: false
 })
 export class HorzVertScrolling {
   rows = [];

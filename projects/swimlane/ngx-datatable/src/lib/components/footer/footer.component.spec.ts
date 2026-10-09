@@ -1,4 +1,13 @@
-import { Component, DebugElement, Input, Output, EventEmitter, ViewChild, TemplateRef } from '@angular/core';
+import {
+  Component,
+  DebugElement,
+  Input,
+  Output,
+  EventEmitter,
+  ViewChild,
+  TemplateRef,
+  ChangeDetectionStrategy
+} from '@angular/core';
 import { TestBed, ComponentFixture, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
@@ -198,7 +207,7 @@ describe('DataTableFooterComponent', () => {
  * test host component
  */
 @Component({
-    template: `
+  template: `
     <datatable-footer
       [rowCount]="rowCount"
       [pageSize]="pageSize"
@@ -233,7 +242,8 @@ describe('DataTableFooterComponent', () => {
       </ul>
     </ng-template>
   `,
-    standalone: false
+  changeDetection: ChangeDetectionStrategy.Eager,
+  standalone: false
 })
 class TestFixtureComponent {
   footerHeight: number;
@@ -267,9 +277,10 @@ class TestFixtureComponent {
  * the DataTableFooterComponent
  */
 @Component({
-    selector: 'datatable-pager',
-    template: '',
-    standalone: false
+  selector: 'datatable-pager',
+  template: '',
+  changeDetection: ChangeDetectionStrategy.Eager,
+  standalone: false
 })
 class DataTablePagerComponentMock {
   @Input() pagerLeftArrowIcon: string;

@@ -1,20 +1,21 @@
 import { TestBed, ComponentFixture, waitForAsync } from '@angular/core/testing';
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { VisibilityDirective } from './visibility.directive';
 
 @Component({
-    selector: 'test-fixture-component',
-    styles: [
-        `
+  selector: 'test-fixture-component',
+  styles: [
+    `
       div {
         width: 1px;
         height: 1px;
       }
     `
-    ],
-    template: ` <div visibilityObserver></div> `,
-    standalone: false
+  ],
+  template: ` <div visibilityObserver></div> `,
+  changeDetection: ChangeDetectionStrategy.Eager,
+  standalone: false
 })
 class TestFixtureComponent {}
 

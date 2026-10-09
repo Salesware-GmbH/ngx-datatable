@@ -1,9 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { ColumnMode } from 'projects/swimlane/ngx-datatable/src/public-api';
 
 @Component({
-    selector: 'column-toggle-demo',
-    template: `
+  selector: 'column-toggle-demo',
+  template: `
     <div>
       <h3>
         Column Toggling
@@ -11,7 +11,7 @@ import { ColumnMode } from 'projects/swimlane/ngx-datatable/src/public-api';
           <a
             href="https://github.com/swimlane/ngx-datatable/blob/master/src/app/columns/column-toggle.component.ts"
             target="_blank"
-            >
+          >
             Source
           </a>
         </small>
@@ -24,9 +24,9 @@ import { ColumnMode } from 'projects/swimlane/ngx-datatable/src/public-api';
           [headerHeight]="50"
           [footerHeight]="50"
           rowHeight="auto"
-          >
+        >
           @for (col of columns; track col) {
-            <ngx-datatable-column [name]="col.name"> </ngx-datatable-column>
+          <ngx-datatable-column [name]="col.name"> </ngx-datatable-column>
           }
         </ngx-datatable>
       </div>
@@ -34,16 +34,17 @@ import { ColumnMode } from 'projects/swimlane/ngx-datatable/src/public-api';
         <h4>Available Columns</h4>
         <ul>
           @for (col of allColumns; track col) {
-            <li>
-              <input type="checkbox" [id]="col.name" (click)="toggle(col)" [checked]="isChecked(col)" />
-              <label [attr.for]="col.name">{{ col.name }}</label>
-            </li>
+          <li>
+            <input type="checkbox" [id]="col.name" (click)="toggle(col)" [checked]="isChecked(col)" />
+            <label [attr.for]="col.name">{{ col.name }}</label>
+          </li>
           }
         </ul>
       </div>
     </div>
-    `,
-    standalone: false
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager,
+  standalone: false
 })
 export class ColumnToggleComponent {
   rows = [

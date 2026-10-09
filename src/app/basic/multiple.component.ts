@@ -1,9 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { ColumnMode } from 'projects/swimlane/ngx-datatable/src/public-api';
 
 @Component({
-    selector: 'multiple-tables-demo',
-    template: `
+  selector: 'multiple-tables-demo',
+  template: `
     <div>
       <h3>
         Multiple Tables
@@ -38,7 +38,8 @@ import { ColumnMode } from 'projects/swimlane/ngx-datatable/src/public-api';
       </ngx-datatable>
     </div>
   `,
-    standalone: false
+  changeDetection: ChangeDetectionStrategy.Eager,
+  standalone: false
 })
 export class MultipleTablesComponent {
   columns1 = [{ prop: 'name' }, { name: 'Gender' }, { name: 'Company' }];

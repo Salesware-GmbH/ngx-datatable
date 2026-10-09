@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, PipeTransform, TemplateRef } from '@angular/core';
+import { Component, Input, OnChanges, PipeTransform, TemplateRef, ChangeDetectionStrategy } from '@angular/core';
 
 export interface ISummaryColumn {
   summaryFunc?: (cells: any[]) => any;
@@ -26,25 +26,26 @@ function noopSumFunc(cells: any[]): void {
 }
 
 @Component({
-    selector: 'datatable-summary-row',
-    template: `
+  selector: 'datatable-summary-row',
+  template: `
     @if (summaryRow && _internalColumns) {
-      <datatable-body-row
-        tabindex="-1"
-        [innerWidth]="innerWidth"
-        [offsetX]="offsetX"
-        [columns]="_internalColumns"
-        [rowHeight]="rowHeight"
-        [row]="summaryRow"
-        [rowIndex]="-1"
-        >
-      </datatable-body-row>
+    <datatable-body-row
+      tabindex="-1"
+      [innerWidth]="innerWidth"
+      [offsetX]="offsetX"
+      [columns]="_internalColumns"
+      [rowHeight]="rowHeight"
+      [row]="summaryRow"
+      [rowIndex]="-1"
+    >
+    </datatable-body-row>
     }
-    `,
-    host: {
-        class: 'datatable-summary-row'
-    },
-    standalone: false
+  `,
+  host: {
+    class: 'datatable-summary-row'
+  },
+  changeDetection: ChangeDetectionStrategy.Eager,
+  standalone: false
 })
 export class DataTableSummaryRowComponent implements OnChanges {
   @Input() rows: any[];

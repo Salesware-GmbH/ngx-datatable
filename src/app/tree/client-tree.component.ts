@@ -1,9 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { ColumnMode } from 'projects/swimlane/ngx-datatable/src/public-api';
 
 @Component({
-    selector: 'client-side-tree-demo',
-    template: `
+  selector: 'client-side-tree-demo',
+  template: `
     <div>
       <h3>
         Flex Column Width Distribution
@@ -45,8 +45,9 @@ import { ColumnMode } from 'projects/swimlane/ngx-datatable/src/public-api';
       </ngx-datatable>
     </div>
   `,
-    styles: ['.icon {height: 10px; width: 10px; }', '.disabled {opacity: 0.5; }'],
-    standalone: false
+  styles: ['.icon {height: 10px; width: 10px; }', '.disabled {opacity: 0.5; }'],
+  changeDetection: ChangeDetectionStrategy.Eager,
+  standalone: false
 })
 export class ClientTreeComponent {
   rows = [];

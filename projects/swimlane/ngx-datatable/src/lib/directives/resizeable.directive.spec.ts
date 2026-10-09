@@ -1,12 +1,13 @@
 import { TestBed, ComponentFixture, waitForAsync } from '@angular/core/testing';
-import { Component, DebugElement } from '@angular/core';
+import { Component, DebugElement, ChangeDetectionStrategy } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { ResizeableDirective } from './resizeable.directive';
 
 @Component({
-    selector: 'test-fixture-component',
-    template: ` <div resizeable></div> `,
-    standalone: false
+  selector: 'test-fixture-component',
+  template: ` <div resizeable></div> `,
+  changeDetection: ChangeDetectionStrategy.Eager,
+  standalone: false
 })
 class TestFixtureComponent {}
 

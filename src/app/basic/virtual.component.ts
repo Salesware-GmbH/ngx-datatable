@@ -1,9 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { ColumnMode } from 'projects/swimlane/ngx-datatable/src/public-api';
 
 @Component({
-    selector: 'virtual-scroll-demo',
-    template: `
+  selector: 'virtual-scroll-demo',
+  template: `
     <div>
       <h3>
         Virtual Scrolling with 10k Rows
@@ -40,7 +40,8 @@ import { ColumnMode } from 'projects/swimlane/ngx-datatable/src/public-api';
       </ngx-datatable>
     </div>
   `,
-    standalone: false
+  changeDetection: ChangeDetectionStrategy.Eager,
+  standalone: false
 })
 export class VirtualScrollComponent {
   rows;

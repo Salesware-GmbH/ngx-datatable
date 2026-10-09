@@ -1,9 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { ColumnMode } from 'projects/swimlane/ngx-datatable/src/public-api';
 
 @Component({
-    selector: 'footer-demo',
-    template: `
+  selector: 'footer-demo',
+  template: `
     <div>
       <h3>
         Custom Footer
@@ -11,7 +11,7 @@ import { ColumnMode } from 'projects/swimlane/ngx-datatable/src/public-api';
           <a
             href="https://github.com/swimlane/ngx-datatable/blob/master/src/app/basic/footer.component.ts"
             target="_blank"
-            >
+          >
             Source
           </a>
         </small>
@@ -24,29 +24,30 @@ import { ColumnMode } from 'projects/swimlane/ngx-datatable/src/public-api';
         [footerHeight]="100"
         [headerHeight]="50"
         rowHeight="auto"
-        >
+      >
         @if (true) {
-          <ngx-datatable-footer>
-            <ng-template
-              ngx-datatable-footer-template
-              let-rowCount="rowCount"
-              let-pageSize="pageSize"
-              let-selectedCount="selectedCount"
-              let-curPage="curPage"
-              let-offset="offset"
-              >
-              <div style="padding: 5px 10px">
-                <div><strong>Summary</strong>: Gender: Female</div>
-                <hr style="width:100%" />
-                <div>Rows: {{ rowCount }} | Size: {{ pageSize }} | Current: {{ curPage }} | Offset: {{ offset }}</div>
-              </div>
-            </ng-template>
-          </ngx-datatable-footer>
+        <ngx-datatable-footer>
+          <ng-template
+            ngx-datatable-footer-template
+            let-rowCount="rowCount"
+            let-pageSize="pageSize"
+            let-selectedCount="selectedCount"
+            let-curPage="curPage"
+            let-offset="offset"
+          >
+            <div style="padding: 5px 10px">
+              <div><strong>Summary</strong>: Gender: Female</div>
+              <hr style="width:100%" />
+              <div>Rows: {{ rowCount }} | Size: {{ pageSize }} | Current: {{ curPage }} | Offset: {{ offset }}</div>
+            </div>
+          </ng-template>
+        </ngx-datatable-footer>
         }
       </ngx-datatable>
     </div>
-    `,
-    standalone: false
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager,
+  standalone: false
 })
 export class FooterDemoComponent {
   rows = [];
