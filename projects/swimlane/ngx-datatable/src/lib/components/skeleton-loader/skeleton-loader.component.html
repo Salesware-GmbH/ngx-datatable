@@ -1,5 +1,5 @@
 <div class="datatable-skeleton-loader">
-  @for (_ of [].constructor(numRows); track _) {
+  @for (_ of [].constructor(numRows); track $index) {
     <div class="row-wrapper" [style.height.px]="getRowHeight()">
       @for (colGroup of _columnsByPin; track trackByGroups($index, colGroup)) {
         <div
