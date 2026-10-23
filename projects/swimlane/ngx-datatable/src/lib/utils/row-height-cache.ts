@@ -121,18 +121,20 @@ export class RowHeightCache {
 
     const n = source.length;
     atRowIndex |= 0;
+    // a tree node sums a whole block of rows, so the spacer has to be added as a difference like the row height
+    const bySpacerHeight = spacerHeight >= 0 ? spacerHeight - this.querySpacerBetween(source, atRowIndex) : 0;
 
     while (atRowIndex < n) {
       source[atRowIndex].rowHeight += byRowHeight;
-      if (spacerHeight >= 0) {
-        source[atRowIndex].rowSpacerHeight = spacerHeight;
-      }
+      source[atRowIndex].rowSpacerHeight += bySpacerHeight;
       atRowIndex |= atRowIndex + 1;
     }
   }
 
   set(atRowIndex: number, value: number): boolean {
-    const current = this.queryBetween(atRowIndex, atRowIndex);
+    // the measured value is the row without its group spacer, which is rendered as a separate element
+    const source = this.treeArray.length ? this.treeArray : this.swapTreeArray;
+    const current = this.queryBetween(atRowIndex, atRowIndex) - (source ? this.querySpacerBetween(source, atRowIndex) : 0);
     if (value !== current) {
       this.update(atRowIndex, value - current);
       return true;
@@ -186,11 +188,27 @@ export class RowHeightCache {
     for (let blockSize = highestBit; blockSize !== 0; blockSize >>= 1) {
       const nextPos = pos + blockSize;
       if (nextPos < dataLength && sum >= (this.treeArray[nextPos].rowHeight + this.treeArray[nextPos].rowSpacerHeight)) {
-        sum -= this.treeArray[nextPos].rowHeight - this.treeArray[nextPos].rowSpacerHeight;
+        sum -= this.treeArray[nextPos].rowHeight + this.treeArray[nextPos].rowSpacerHeight;
         pos = nextPos;
       }
     }
 
     return pos + 1;
+  }
+
+  private querySpacerBetween(source: RowHeightCacheData[], atRowIndex: number): number {
+    return this.querySpacer(source, atRowIndex) - this.querySpacer(source, atRowIndex - 1);
+  }
+
+  private querySpacer(source: RowHeightCacheData[], atIndex: number): number {
+    let sum = 0;
+    atIndex |= 0;
+
+    while (atIndex >= 0) {
+      sum += source[atIndex].rowSpacerHeight;
+      atIndex = (atIndex & (atIndex + 1)) - 1;
+    }
+
+    return sum;
   }
 }
