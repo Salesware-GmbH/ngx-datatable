@@ -77,7 +77,7 @@ export class ScrollerComponent implements OnInit, OnDestroy {
     requestAnimationFrame(() => {
       this.scrollYPos = dom?.scrollTop || 0;
       this.scrollXPos = dom?.scrollLeft || 0;
-      this.updateOffsetInternal();
+      this.updateOffsetInternal(true);
     });
   }
 
@@ -89,10 +89,10 @@ export class ScrollerComponent implements OnInit, OnDestroy {
     this.scrollYPos = this.parentElement.scrollTop;
     this.scrollXPos = this.parentElement.scrollLeft;
 
-    this.updateOffsetInternal();
+    this.updateOffsetInternal(false);
   }
 
-  private updateOffsetInternal(): void {
+  private updateOffsetInternal(fromScrollEvent: boolean): void {
     let direction: string;
     if (this.scrollYPos < this.prevScrollYPos) {
       direction = 'down';
@@ -103,7 +103,8 @@ export class ScrollerComponent implements OnInit, OnDestroy {
     this.scroll.emit({
       direction,
       scrollYPos: this.scrollYPos,
-      scrollXPos: this.scrollXPos
+      scrollXPos: this.scrollXPos,
+      fromScrollEvent
     });
 
     this.prevScrollYPos = this.scrollYPos;
