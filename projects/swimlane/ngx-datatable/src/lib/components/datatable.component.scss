@@ -138,6 +138,24 @@
     position: relative;
   }
 
+  // sticky instead of a JS transform: the compositor scrolls the viewport before JS can re-position the pins
+  .datatable-body {
+    .datatable-row-group.datatable-row-left {
+      position: sticky;
+      left: 0;
+    }
+
+    .datatable-row-group.datatable-row-right {
+      position: sticky;
+      right: 0;
+    }
+
+    // own stacking context so cell content with a z-index cannot paint over the pins
+    .datatable-row-group.datatable-row-center {
+      z-index: 0;
+    }
+  }
+
   /**
    * Header Styles
    */

@@ -11,15 +11,12 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   DoCheck,
-  SkipSelf,
   TemplateRef
 } from '@angular/core';
 
 import { TreeStatus } from './body-cell.component';
 import { columnsByPin, columnGroupWidths, columnsByPinArr } from '../../utils/column';
 import { Keys } from '../../utils/keys';
-import { ScrollbarHelper } from '../../services/scrollbar-helper.service';
-import { translateXY } from '../../utils/translate';
 
 @Component({
     selector: 'datatable-body-row',
@@ -238,7 +235,6 @@ export class DataTableBodyRowComponent implements DoCheck {
 
   constructor(
     private differs: KeyValueDiffers,
-    @SkipSelf() private scrollbarHelper: ScrollbarHelper,
     private cd: ChangeDetectorRef,
     element: ElementRef
   ) {
@@ -276,23 +272,13 @@ export class DataTableBodyRowComponent implements DoCheck {
 
   calcStylesByGroup(group: string) {
     const widths = this._columnGroupWidths;
-    const offsetX = this.offsetX;
 
     const styles = {
       width: `${widths[group]}px`
     };
 
-    if (group === 'left') {
-      translateXY(styles, offsetX, 0);
-      if (this.rowPadding) {
-        styles['padding-left.px'] = this.rowPadding;
-      }
-    } else if (group === 'right') {
-      const bodyWidth = parseInt(this.innerWidth + '', 0);
-      const totalDiff = widths.total - bodyWidth;
-      const offsetDiff = totalDiff - (isNaN(offsetX) ? 0 : offsetX);
-      const offset = Math.min(0, (offsetDiff + this.scrollbarHelper.width) * -1);
-      translateXY(styles, offset, 0);
+    if (group === 'left' && this.rowPadding) {
+      styles['padding-left.px'] = this.rowPadding;
     }
 
     return styles;

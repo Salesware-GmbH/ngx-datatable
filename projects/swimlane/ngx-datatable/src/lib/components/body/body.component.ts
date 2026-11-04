@@ -507,16 +507,7 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
     const scrollYPos: number = event.scrollYPos;
     const scrollXPos: number = event.scrollXPos;
 
-    // if scroll change, trigger update
-    // this is mainly used for header cell positions
-    if (this.offsetY !== scrollYPos || this.offsetX !== scrollXPos) {
-      setTimeout(() =>
-        this.scroll.emit({
-          offsetY: scrollYPos,
-          offsetX: scrollXPos
-        })
-      );
-    }
+    const changed = this.offsetY !== scrollYPos || this.offsetX !== scrollXPos;
 
     this.offsetY = scrollYPos;
     this.offsetX = scrollXPos;
@@ -524,6 +515,19 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
     this.updateIndexes();
     this.updatePage(event.direction);
     this.updateRows();
+
+    if (!changed) {
+      return;
+    }
+
+    const scrollEvent = { offsetY: scrollYPos, offsetX: scrollXPos };
+    // a real scroll emits synchronously so the header follows in the same frame; listeners read the updated indexes, hence last.
+    // programmatic updateOffset() calls can happen during change detection and keep the deferred emit
+    if (event.fromScrollEvent) {
+      this.scroll.emit(scrollEvent);
+    } else {
+      setTimeout(() => this.scroll.emit(scrollEvent));
+    }
   }
 
   /**
